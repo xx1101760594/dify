@@ -76,7 +76,7 @@ const AppPublisher = ({
   const appDetail = useAppStore(state => state.appDetail)
   const { app_base_url: appBaseURL = '', access_token: accessToken = '' } = appDetail?.site ?? {}
   const appMode = (appDetail?.mode !== 'completion' && appDetail?.mode !== 'workflow') ? 'chat' : appDetail.mode
-  const appURL = `${appBaseURL}/${basePath}/${appMode}/${accessToken}`
+  const appURL = `${appBaseURL}${basePath}/${appMode}/${accessToken}`
   const isChatApp = ['chat', 'agent-chat', 'completion'].includes(appDetail?.mode || '')
 
   const language = useGetLanguage()
@@ -253,7 +253,7 @@ const AppPublisher = ({
                     {t('workflow.common.embedIntoSite')}
                   </SuggestedAction>
                 )}
-              <SuggestedAction
+              {/* <SuggestedAction
                 onClick={() => {
                   publishedAt && handleOpenInExplore()
                 }}
@@ -261,14 +261,14 @@ const AppPublisher = ({
                 icon={<RiPlanetLine className='h-4 w-4' />}
               >
                 {t('workflow.common.openInExplore')}
-              </SuggestedAction>
-              <SuggestedAction
+              </SuggestedAction> */}
+              {/* <SuggestedAction
                 disabled={!publishedAt}
                 link='./develop'
                 icon={<RiTerminalBoxLine className='h-4 w-4' />}
               >
                 {t('workflow.common.accessAPIReference')}
-              </SuggestedAction>
+              </SuggestedAction> */}
               {appDetail?.mode === 'workflow' && (
                 <WorkflowToolConfigureButton
                   disabled={!publishedAt}

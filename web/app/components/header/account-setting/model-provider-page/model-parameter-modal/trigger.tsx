@@ -50,7 +50,7 @@ const Trigger: FC<TriggerProps> = ({
         isInWorkflow && 'border border-workflow-block-parma-bg bg-workflow-block-parma-bg pr-[30px]  hover:border-components-input-border-active',
       )}
     >
-      {
+      {/* {
         currentProvider && (
           <ModelIcon
             className='mr-1.5 !h-5 !w-5'
@@ -67,7 +67,7 @@ const Trigger: FC<TriggerProps> = ({
             modelName={modelId}
           />
         )
-      }
+      } */}
       {
         currentModel && (
           <ModelName

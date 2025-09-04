@@ -144,11 +144,11 @@ export default function InviteSettingsPage() {
     <div className="system-xs-regular mt-2 block w-full">
       {t('login.license.tip')}
       &nbsp;
-      <Link
+      {/* <Link
         className='system-xs-medium text-text-accent-secondary'
         target='_blank' rel='noopener noreferrer'
         href={`https://docs.dify.ai/${language !== LanguagesSupported[1] ? 'user-agreement' : `v/${locale.toLowerCase()}/policies`}/open-source`}
-      >{t('login.license.link')}</Link>
+      >{t('login.license.link')}</Link> */}
     </div>
   </div>
 }

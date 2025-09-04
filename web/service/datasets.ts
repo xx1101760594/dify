@@ -68,6 +68,16 @@ export const fetchDatasetRelatedApps: Fetcher<RelatedAppResponse, string> = (dat
 }
 
 export const fetchDatasets: Fetcher<DataSetListResponse, FetchDatasetsParams> = ({ url, params }) => {
+  // 检查是否有大量ID，如果有则使用POST请求避免URL过长
+  const hasManyIds = params.ids && params.ids.length > 50
+  const urlLength = qs.stringify(params, { indices: false }).length
+  
+  if (hasManyIds || urlLength > 2000) {
+    // 使用新的批量查询API，直接使用相对路径，让fetch.ts处理前缀
+    const batchUrl = `${url}/batch-query`
+    return post<DataSetListResponse>(batchUrl, { body: params })
+  }
+  
   const urlParams = qs.stringify(params, { indices: false })
   return get<DataSetListResponse>(`${url}?${urlParams}`)
 }
@@ -286,4 +296,16 @@ export const getErrorDocs: Fetcher<ErrorDocsResponse, { datasetId: string }> = (
 
 export const retryErrorDocs: Fetcher<CommonResponse, { datasetId: string; document_ids: string[] }> = ({ datasetId, document_ids }) => {
   return post<CommonResponse>(`/datasets/${datasetId}/retry`, { body: { document_ids } })
+}
+
+export const fetchDocumentPreview: Fetcher<any, { dataset_id: string; document_id: string }> = ({ dataset_id, document_id }) => {
+  return post<any>(`/files/uploadFilePreview`,{body: {dataset_id, document_id}})
+}
+
+// export const getDocsUrl: Fetcher<any, { dataset_id: string; document_id: string}> = ({ dataset_id,document_id }) => {
+//   return post<any>(`/files/uploadFileDownload/${dataset_id}/${document_id}`)
+// }
+
+export const getDocsUrl: Fetcher<any, { dataset_id: string; document_id: string}> = ({ dataset_id,document_id }) => {
+  return get<any>(`/files/uploadFilePreview/${dataset_id}/${document_id}`,{}, { needAllResponseContent: true })
 }

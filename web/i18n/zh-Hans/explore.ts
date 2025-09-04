@@ -4,6 +4,7 @@ const translation = {
     discovery: '发现',
     chat: '智聊',
     workspace: '工作区',
+    applicationList: '应用列表',
     action: {
       pin: '置顶',
       unpin: '取消置顶',
@@ -16,7 +17,7 @@ const translation = {
     },
   },
   apps: {
-    title: '探索 Dify 的应用',
+    title: '探索应用',
     description: '使用这些模板应用程序，或根据模板自定义您自己的应用程序。',
     allCategories: '推荐',
   },
@@ -39,6 +40,6 @@ const translation = {
     Workflow: '工作流',
     Entertainment: '娱乐',
   },
-}
+};
 
-export default translation
+export default translation;

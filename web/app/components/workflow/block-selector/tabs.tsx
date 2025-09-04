@@ -36,7 +36,7 @@ const Tabs: FC<TabsProps> = ({
     <div onClick={e => e.stopPropagation()}>
       {
         !noBlocks && (
-          <div className='flex items-center border-b-[0.5px] border-divider-subtle px-3'>
+          <div className='flex items-center border-b-[0.5px] border-divider-subtle px-4 mb-2'>
             {
               tabs.map(tab => (
                 <div

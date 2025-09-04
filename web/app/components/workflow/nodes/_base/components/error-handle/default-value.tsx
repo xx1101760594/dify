@@ -33,13 +33,13 @@ const DefaultValue = ({
       <div className='body-xs-regular mb-2 text-text-tertiary'>
         {t('workflow.nodes.common.errorHandle.defaultValue.desc')}
         &nbsp;
-        <a
-          href='https://docs.dify.ai/guides/workflow/error-handling'
+        {/* <a
+          href='https://docs.cubix.ai/en/guides/workflow/error-handling/README'
           target='_blank'
           className='text-text-accent'
         >
           {t('workflow.common.learnMore')}
-        </a>
+        </a> */}
       </div>
       <div className='space-y-1'>
         {

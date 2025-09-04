@@ -4,9 +4,10 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  RiEditBoxLine,
+  RiAddLine,
   RiExpandRightLine,
   RiLayoutLeft2Line,
+  RiRadioButtonLine
 } from '@remixicon/react'
 import { useChatWithHistoryContext } from '../context'
 import AppIcon from '@/app/components/base/app-icon'
@@ -16,7 +17,7 @@ import List from '@/app/components/base/chat/chat-with-history/sidebar/list'
 import MenuDropdown from '@/app/components/share/text-generation/menu-dropdown'
 import Confirm from '@/app/components/base/confirm'
 import RenameModal from '@/app/components/base/chat/chat-with-history/sidebar/rename-modal'
-import LogoSite from '@/app/components/base/logo/logo-site'
+import DifyLogo from '@/app/components/base/logo/dify-logo'
 import type { ConversationItem } from '@/models/share'
 import cn from '@/utils/classnames'
 
@@ -82,11 +83,11 @@ const Sidebar = ({ isPanel }: Props) => {
       isPanel && 'rounded-xl border-[0.5px] border-components-panel-border-subtle bg-components-panel-bg shadow-lg',
     )}>
       <div className={cn(
-        'flex shrink-0 items-center gap-3 p-3 pr-2',
+        'flex shrink-0 items-center gap-3 p-5 pr-0 -mr-1',
       )}>
         <div className='shrink-0'>
           <AppIcon
-            size='large'
+            size='medium'
             iconType={appData?.site.icon_type}
             icon={appData?.site.icon}
             background={appData?.site.icon_background}
@@ -105,13 +106,13 @@ const Sidebar = ({ isPanel }: Props) => {
           </ActionButton>
         )}
       </div>
-      <div className='shrink-0 px-3 py-4'>
-        <Button variant='secondary-accent' disabled={isResponding} className='w-full justify-center' onClick={handleNewConversation}>
-          <RiEditBoxLine className='mr-1 h-4 w-4' />
+      <div className='shrink-0 pl-5 pt-0 pb-2'>
+        <Button variant='secondary-accent' disabled={isResponding} className='w-full justify-center border-dashed border-red-600' onClick={handleNewConversation}>
+          <RiAddLine className='mr-1 h-4 w-4' />
           {t('share.chat.newChat')}
         </Button>
       </div>
-      <div className='h-0 grow space-y-2 overflow-y-auto px-3 pt-4'>
+      <div className='h-0 grow space-y-2 overflow-y-auto pl-5 pt-4'>
         {/* pinned list */}
         {!!pinnedConversationList.length && (
           <div className='mb-4'>
@@ -135,25 +136,25 @@ const Sidebar = ({ isPanel }: Props) => {
           />
         )}
       </div>
-      <div className='flex shrink-0 items-center justify-between p-3'>
+      {/* <div className='flex shrink-0 items-center justify-between p-3'>
         <MenuDropdown placement='top-start' data={appData?.site} />
-        {/* powered by */}
+        // powered by
         <div className='shrink-0'>
           {!appData?.custom_config?.remove_webapp_brand && (
             <div className={cn(
-              'flex shrink-0 items-center gap-1.5 px-2',
+              'flex shrink-0 items-center gap-1.5 px-1',
             )}>
               <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
               {appData?.custom_config?.replace_webapp_logo && (
                 <img src={appData?.custom_config?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
               )}
               {!appData?.custom_config?.replace_webapp_logo && (
-                <LogoSite className='!h-5' />
+                <CubixLogo size='small' />
               )}
             </div>
           )}
         </div>
-      </div>
+      </div> */}
       {!!showConfirm && (
         <Confirm
           title={t('share.chat.deleteConversation.title')}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import classNames from '@/utils/classnames'
+import type { App } from '@/types/app'
 
 export type IItem = {
   key: string
@@ -8,7 +9,7 @@ export type IItem = {
 }
 type ICollapse = {
   title: string | undefined
-  items: IItem[]
+  items: IItem[] & App[]
   renderItem: (item: IItem) => React.ReactNode
   onSelect?: (item: IItem) => void
   wrapperClassName?: string

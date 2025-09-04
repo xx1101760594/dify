@@ -284,6 +284,14 @@ export const initialNodes = (originNodes: Node[], originEdges: Edge[]) => {
       }
     }
 
+    if (node.data.type === BlockEnum.Database && !node.data.retry_config) {
+      node.data.retry_config = {
+        retry_enabled: true,
+        max_retries: DEFAULT_RETRY_MAX,
+        retry_interval: DEFAULT_RETRY_INTERVAL,
+      }
+    }
+
     return node
   })
 }

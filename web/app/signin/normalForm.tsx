@@ -128,15 +128,15 @@ const NormalForm = () => {
 
   return (
     <>
-      <div className="mx-auto mt-8 w-full">
+      <div className="mx-auto w-full">
         {isInviteLink
           ? <div className="mx-auto w-full">
             <h2 className="title-4xl-semi-bold text-text-primary">{t('login.join')}{workspaceName}</h2>
             <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.joinTipStart')}{workspaceName}{t('login.joinTipEnd')}</p>
           </div>
           : <div className="mx-auto w-full">
-            <h2 className="title-4xl-semi-bold text-text-primary">{t('login.pageTitle')}</h2>
-            <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.welcome')}</p>
+            <h2 className="text-2xl text-text-primary">{t('login.signBtn')}</h2>
+            {/* <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.welcome')}</p> */}
           </div>}
         <div className="relative">
           <div className="mt-6 flex flex-col gap-3">
@@ -163,7 +163,7 @@ const NormalForm = () => {
                 </div>}
               </>}
               {systemFeatures.enable_email_password_login && authType === 'password' && <>
-                <MailAndPasswordAuth isInvite={isInviteLink} isEmailSetup={systemFeatures.is_email_setup} allowRegistration={systemFeatures.is_allow_register} />
+                <MailAndPasswordAuth isInvite={isInviteLink} isEmailSetup={systemFeatures.is_email_setup} allowRegistration={systemFeatures.is_allow_register}  allowSsoLogin={systemFeatures.cloudwalk_sso_enabled} />
                 {systemFeatures.enable_email_code_login && <div className='cursor-pointer py-1 text-center' onClick={() => { updateAuthType('code') }}>
                   <span className='system-xs-medium text-components-button-secondary-accent-text'>{t('login.useVerificationCode')}</span>
                 </div>}
@@ -184,7 +184,7 @@ const NormalForm = () => {
               </div>
             </div>
           </>}
-          <div className="system-xs-regular mt-2 block w-full text-text-tertiary">
+          {/* <div className="system-xs-regular mt-2 block w-full text-text-tertiary">
             {t('login.tosDesc')}
             &nbsp;
             <Link
@@ -206,7 +206,7 @@ const NormalForm = () => {
               className='system-xs-medium text-text-secondary hover:underline'
               href='/install'
             >{t('login.setAdminAccount')}</Link>
-          </div>}
+          </div>} */}
 
         </div>
       </div>

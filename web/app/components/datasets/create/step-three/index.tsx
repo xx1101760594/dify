@@ -7,6 +7,10 @@ import EmbeddingProcess from '../embedding-process'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import type { FullDocumentDetail, createDocumentResponse } from '@/models/datasets'
 import AppIcon from '@/app/components/base/app-icon'
+import Button from '@/app/components/base/button'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useInvalidDocumentList } from '@/service/knowledge/use-document'
 
 type StepThreeProps = {
   datasetId?: string
@@ -21,6 +25,14 @@ const StepThree = ({ datasetId, datasetName, indexingType, creationCache, retrie
 
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
+
+  const router = useRouter()
+  const invalidDocumentList = useInvalidDocumentList()
+  const navToDocumentList = () => {
+    invalidDocumentList()
+    router.push(`/datasets`)
+  }
+  
 
   return (
     <div className="flex h-full max-h-full w-full justify-center overflow-y-auto">
@@ -48,16 +60,20 @@ const StepThree = ({ datasetId, datasetName, indexingType, creationCache, retrie
               <div className="mb-7 text-[13px] leading-4 text-text-tertiary">{`${t('datasetCreation.stepThree.additionP1')} ${datasetName || creationCache?.dataset?.name} ${t('datasetCreation.stepThree.additionP2')}`}</div>
             </div>
           )}
-          <EmbeddingProcess
+          {/* <EmbeddingProcess
             datasetId={datasetId || creationCache?.dataset?.id || ''}
             batchId={creationCache?.batch || ''}
             documents={creationCache?.documents as FullDocumentDetail[]}
             indexingType={indexingType || creationCache?.dataset?.indexing_technique}
             retrievalMethod={retrievalMethod || creationCache?.dataset?.retrieval_model?.search_method}
-          />
+          /> */}
+
+          <Button className='min-w-24' variant='primary' onClick={navToDocumentList}>
+            {t('datasetCreation.stepThree.back')}
+          </Button>
         </div>
       </div>
-      {!isMobile && (
+      {/* {!isMobile && (
         <div className="shrink-0 pr-8 pt-[88px] text-xs">
           <div className="flex w-[328px] flex-col gap-3 rounded-xl bg-background-section p-6 text-text-tertiary">
             <div className="flex size-10 items-center justify-center rounded-[10px] bg-components-card-bg shadow-lg">
@@ -67,7 +83,7 @@ const StepThree = ({ datasetId, datasetName, indexingType, creationCache, retrie
             <div className="text-text-tertiary">{t('datasetCreation.stepThree.sideTipContent')}</div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

@@ -37,11 +37,86 @@ const RetrievalMethodConfig: FC<Props> = ({
     currentModel: isRerankDefaultModelValid,
   } = useModelListAndDefaultModelAndCurrentProviderAndModel(ModelTypeEnum.rerank)
 
-  const onSwitch = useCallback((retrieveMethod: RETRIEVE_METHOD) => {
-    if ([RETRIEVE_METHOD.semantic, RETRIEVE_METHOD.fullText].includes(retrieveMethod)) {
+  // 获取当前选中的检索方法列表
+  const getSelectedMethods = useCallback(() => {
+    const methods: string[] = []
+    if (value.search_method === RETRIEVE_METHOD.semantic) {
+      methods.push(RETRIEVE_METHOD.semantic)
+    }
+    if (value.search_method === RETRIEVE_METHOD.fullText) {
+      methods.push(RETRIEVE_METHOD.fullText)
+    }
+    if (value.search_method === RETRIEVE_METHOD.pprSearch) {
+      methods.push(RETRIEVE_METHOD.pprSearch)
+    }
+    if (value.search_method === RETRIEVE_METHOD.semanticAndFullText) {
+      methods.push(RETRIEVE_METHOD.semantic)
+      methods.push(RETRIEVE_METHOD.fullText)
+    }
+    if (value.search_method === RETRIEVE_METHOD.semanticAndPprSearch) {
+      methods.push(RETRIEVE_METHOD.semantic)
+      methods.push(RETRIEVE_METHOD.pprSearch)
+    }
+    if (value.search_method === RETRIEVE_METHOD.fullTextAndPprSearch) {
+      methods.push(RETRIEVE_METHOD.fullText)
+      methods.push(RETRIEVE_METHOD.pprSearch)
+    }
+    if (value.search_method === RETRIEVE_METHOD.allHybrid) {
+      methods.push(RETRIEVE_METHOD.semantic)
+      methods.push(RETRIEVE_METHOD.fullText)
+      methods.push(RETRIEVE_METHOD.pprSearch)
+    }
+    return methods
+  }, [value.search_method, value.selected_methods])
+
+  const selectedMethods = getSelectedMethods()
+
+  const onToggleMethod = useCallback((retrieveMethod: RETRIEVE_METHOD) => {
+    const currentMethods = getSelectedMethods()
+    let newMethods: string[] = []
+    
+    if (currentMethods.includes(retrieveMethod)) {
+      newMethods = currentMethods.filter(method => method !== retrieveMethod)
+    } else {
+      newMethods = [...currentMethods, retrieveMethod]
+    }
+
+    // 如果没有选中任何方法，默认选择第一个支持的方法
+    if (newMethods.length === 0) {
+      if (supportRetrievalMethods.includes(RETRIEVE_METHOD.semantic)) {
+        newMethods = [RETRIEVE_METHOD.semantic]
+      } else if (supportRetrievalMethods.includes(RETRIEVE_METHOD.fullText)) {
+        newMethods = [RETRIEVE_METHOD.fullText]
+      } else if (supportRetrievalMethods.includes(RETRIEVE_METHOD.pprSearch)) {
+        newMethods = [RETRIEVE_METHOD.pprSearch]
+      }
+    }
+
+    // 根据选中的方法更新配置
+    const primaryMethod = newMethods[0] // 使用第一个方法作为主要方法
+    const isMultiSelect = newMethods.length > 1
+
+    let searchMethod: string = ''
+    if(newMethods.length > 1) { //多选
+      if(newMethods.includes(RETRIEVE_METHOD.semantic) && newMethods.includes(RETRIEVE_METHOD.fullText) && newMethods.includes(RETRIEVE_METHOD.pprSearch)) {
+        searchMethod = RETRIEVE_METHOD.allHybrid
+      } else if(newMethods.includes(RETRIEVE_METHOD.semantic) && newMethods.includes(RETRIEVE_METHOD.fullText)){
+        searchMethod = RETRIEVE_METHOD.semanticAndFullText
+      } else if(newMethods.includes(RETRIEVE_METHOD.semantic) && newMethods.includes(RETRIEVE_METHOD.pprSearch)){
+        searchMethod = RETRIEVE_METHOD.semanticAndPprSearch
+      } else if(newMethods.includes(RETRIEVE_METHOD.fullText) && newMethods.includes(RETRIEVE_METHOD.pprSearch)){
+        searchMethod = RETRIEVE_METHOD.fullTextAndPprSearch
+      }
+    } else {
+      searchMethod = primaryMethod
+    }
+
+    if ([RETRIEVE_METHOD.semantic, RETRIEVE_METHOD.fullText, RETRIEVE_METHOD.pprSearch].includes(primaryMethod as RETRIEVE_METHOD)) {
       onChange({
         ...value,
-        search_method: retrieveMethod,
+        // hybrid_search_with_graph: false,
+        search_method: searchMethod as RETRIEVE_METHOD,
+        selected_methods: isMultiSelect ? newMethods : undefined,
         ...(!value.reranking_model.reranking_model_name
           ? {
             reranking_model: {
@@ -55,102 +130,101 @@ const RetrievalMethodConfig: FC<Props> = ({
           }),
       })
     }
-    if (retrieveMethod === RETRIEVE_METHOD.hybrid) {
-      onChange({
-        ...value,
-        search_method: retrieveMethod,
-        ...(!value.reranking_model.reranking_model_name
-          ? {
-            reranking_model: {
-              reranking_provider_name: isRerankDefaultModelValid ? rerankDefaultModel?.provider?.provider ?? '' : '',
-              reranking_model_name: isRerankDefaultModelValid ? rerankDefaultModel?.model ?? '' : '',
-            },
-            reranking_enable: !!isRerankDefaultModelValid,
-            reranking_mode: isRerankDefaultModelValid ? RerankingModeEnum.RerankingModel : RerankingModeEnum.WeightedScore,
-          }
-          : {
-            reranking_enable: true,
-            reranking_mode: RerankingModeEnum.RerankingModel,
-          }),
-        ...(!value.weights
-          ? {
-            weights: {
-              weight_type: WeightedScoreEnum.Customized,
-              vector_setting: {
-                vector_weight: DEFAULT_WEIGHTED_SCORE.other.semantic,
-                embedding_provider_name: '',
-                embedding_model_name: '',
-              },
-              keyword_setting: {
-                keyword_weight: DEFAULT_WEIGHTED_SCORE.other.keyword,
-              },
-            },
-          }
-          : {}),
-      })
-    }
-  }, [value, rerankDefaultModel, isRerankDefaultModelValid, onChange])
+  }, [value, rerankDefaultModel, isRerankDefaultModelValid, onChange, supportRetrievalMethods, getSelectedMethods])
+
 
   return (
     <div className='space-y-2'>
       {supportRetrievalMethods.includes(RETRIEVE_METHOD.semantic) && (
-        <OptionCard disabled={disabled} icon={<Image className='h-4 w-4' src={retrievalIcon.vector} alt='' />}
+        <OptionCard 
+          disabled={disabled} 
+          icon={<Image className='h-4 w-4' src={retrievalIcon.vector} alt='' />}
           title={t('dataset.retrieval.semantic_search.title')}
           description={t('dataset.retrieval.semantic_search.description')}
-          isActive={
-            value.search_method === RETRIEVE_METHOD.semantic
-          }
-          onSwitched={() => onSwitch(RETRIEVE_METHOD.semantic)}
+          isActive={selectedMethods.includes(RETRIEVE_METHOD.semantic)}
+          onSwitched={() => onToggleMethod(RETRIEVE_METHOD.semantic)}
           effectImg={Effect.src}
           activeHeaderClassName='bg-dataset-option-card-purple-gradient'
+          showCheckbox={true}
+          isCheckboxChecked={selectedMethods.includes(RETRIEVE_METHOD.semantic)}
         >
-          <RetrievalParamConfig
+          {/* <RetrievalParamConfig
             type={RETRIEVE_METHOD.semantic}
             value={value}
             onChange={onChange}
-          />
+          /> */}
         </OptionCard>
       )}
       {supportRetrievalMethods.includes(RETRIEVE_METHOD.fullText) && (
-        <OptionCard disabled={disabled} icon={<Image className='h-4 w-4' src={retrievalIcon.fullText} alt='' />}
+        <OptionCard 
+          disabled={disabled} 
+          icon={<Image className='h-4 w-4' src={retrievalIcon.fullText} alt='' />}
           title={t('dataset.retrieval.full_text_search.title')}
           description={t('dataset.retrieval.full_text_search.description')}
-          isActive={
-            value.search_method === RETRIEVE_METHOD.fullText
-          }
-          onSwitched={() => onSwitch(RETRIEVE_METHOD.fullText)}
+          isActive={selectedMethods.includes(RETRIEVE_METHOD.fullText)}
+          onSwitched={() => onToggleMethod(RETRIEVE_METHOD.fullText)}
           effectImg={Effect.src}
           activeHeaderClassName='bg-dataset-option-card-purple-gradient'
+          showCheckbox={true}
+          isCheckboxChecked={selectedMethods.includes(RETRIEVE_METHOD.fullText)}
         >
-          <RetrievalParamConfig
+          {/* <RetrievalParamConfig
             type={RETRIEVE_METHOD.fullText}
             value={value}
             onChange={onChange}
-          />
+          /> */}
         </OptionCard>
       )}
-      {supportRetrievalMethods.includes(RETRIEVE_METHOD.hybrid) && (
-        <OptionCard disabled={disabled} icon={<Image className='h-4 w-4' src={retrievalIcon.hybrid} alt='' />}
+      {supportRetrievalMethods.includes(RETRIEVE_METHOD.pprSearch) && (
+        <OptionCard 
+          disabled={disabled} 
+          icon={<Image className='h-4 w-4' src={retrievalIcon.pprSearch} alt='' />}
+          title={t('dataset.retrieval.ppr_search.title')}
+          description={t('dataset.retrieval.ppr_search.description')}
+          isActive={selectedMethods.includes(RETRIEVE_METHOD.pprSearch)}
+          onSwitched={() => onToggleMethod(RETRIEVE_METHOD.pprSearch)}
+          effectImg={Effect.src}
+          activeHeaderClassName='bg-dataset-option-card-purple-gradient'
+          showCheckbox={true}
+          isCheckboxChecked={selectedMethods.includes(RETRIEVE_METHOD.pprSearch)}
+        >
+          {/* <RetrievalParamConfig
+            type={RETRIEVE_METHOD.pprSearch}
+            value={value}
+            onChange={onChange}
+          /> */}
+        </OptionCard>
+      )}
+      <RetrievalParamConfig
+        type={RETRIEVE_METHOD.pprSearch}
+        value={value}
+        onChange={onChange}
+      />
+      {/* {(supportRetrievalMethods.includes(RETRIEVE_METHOD.hybrid) || supportRetrievalMethods.includes(RETRIEVE_METHOD.hybridAndGraph)) && (
+        <OptionCard 
+          disabled={disabled} 
+          icon={<Image className='h-4 w-4' src={retrievalIcon.hybrid} alt='' />}
           title={
             <div className='flex items-center space-x-1'>
               <div>{t('dataset.retrieval.hybrid_search.title')}</div>
               <Badge text={t('dataset.retrieval.hybrid_search.recommend')!} className='ml-1 h-[18px] border-text-accent-secondary text-text-accent-secondary' uppercase />
             </div>
           }
-          description={t('dataset.retrieval.hybrid_search.description')} isActive={
-            value.search_method === RETRIEVE_METHOD.hybrid
-          }
-          onSwitched={() => onSwitch(RETRIEVE_METHOD.hybrid)}
+          description={t('dataset.retrieval.hybrid_search.description')} 
+          isActive={selectedMethods.includes(RETRIEVE_METHOD.hybrid)}
+          onSwitched={() => onToggleMethod(RETRIEVE_METHOD.hybrid)}
           effectImg={Effect.src}
           activeHeaderClassName='bg-dataset-option-card-purple-gradient'
+          showCheckbox={true}
+          isCheckboxChecked={selectedMethods.includes(RETRIEVE_METHOD.hybrid)}
         >
           <RetrievalParamConfig
-            type={RETRIEVE_METHOD.hybrid}
+            type={value.search_method}
             value={value}
             onChange={onChange}
           />
         </OptionCard>
-      )}
+      )} */}
     </div>
   )
 }

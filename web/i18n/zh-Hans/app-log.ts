@@ -28,8 +28,8 @@ const translation = {
       noChat: '未开始的对话',
       noOutput: '无输出',
       element: {
-        title: '这里有人吗',
-        content: '在这里观测和标注最终用户和 AI 应用程序之间的交互，以不断提高 AI 的准确性。您可以<testLink>试试</testLink> WebApp 或<shareLink>分享</shareLink>出去，然后返回此页面。',
+        title: '尚无交互记录',
+        content: '当前无最终用户与 AI 应用程序的交互数据。日志界面用于观测和标注最终用户和 AI 应用程序之间的交互，所有交互数据都将在此处记录。',
       },
     },
   },

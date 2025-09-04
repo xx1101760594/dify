@@ -25,10 +25,14 @@ const EconomicalRetrievalMethodConfig: FC<Props> = ({
   return (
     <div className='space-y-2'>
       <OptionCard
-        disabled={disabled} icon={<Image className='h-4 w-4' src={retrievalIcon.vector} alt='' />}
+        disabled={disabled} 
+        icon={<Image className='h-4 w-4' src={retrievalIcon.vector} alt='' />}
         title={t('dataset.retrieval.invertedIndex.title')}
-        description={t('dataset.retrieval.invertedIndex.description')} isActive
+        description={t('dataset.retrieval.invertedIndex.description')} 
+        isActive={true}
         activeHeaderClassName='bg-dataset-option-card-purple-gradient'
+        showCheckbox={true}
+        isCheckboxChecked={true}
       >
         <RetrievalParamConfig
           type={RETRIEVE_METHOD.invertedIndex}

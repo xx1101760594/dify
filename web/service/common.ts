@@ -21,6 +21,7 @@ import type {
   ProviderAzureToken,
   SetupStatusResponse,
   UserProfileOriginResponse,
+  WorkspaceReq
 } from '@/models/common'
 import type {
   UpdateOpenAIKeyResponse,
@@ -48,9 +49,25 @@ type LoginFail = {
   code: string
   message: string
 }
+type SsoLoginSuccess = {
+  result: 'success'
+  data: { sso_enabled: boolean; sso_login_url: string; redirect_immediately: boolean; }
+}
 type LoginResponse = LoginSuccess | LoginFail
 export const login: Fetcher<LoginResponse, { url: string; body: Record<string, any> }> = ({ url, body }) => {
   return post(url, { body }) as Promise<LoginResponse>
+}
+
+// export const getSsoUrl: Fetcher<SsoLoginSuccess, { body: Record<string, any> }> = ({ body }) => {
+//   return get<SsoLoginSuccess>('/sso-url', { body })
+// }
+
+export const getSsoUrl: Fetcher<SsoLoginSuccess, { params: Record<string, any> }> = ({params }) => {
+  return get<SsoLoginSuccess>('/sso-url', { params })
+}
+
+export const ssoCallback: Fetcher<LoginResponse, { params: Record<string, any> }> = ({ params }) => {
+  return get<LoginResponse>('/cloudwalk-sso-callback', { params })
 }
 
 export const fetchNewToken: Fetcher<CommonResponse & { data: { access_token: string; refresh_token: string } }, { body: Record<string, any> }> = ({ body }) => {
@@ -205,8 +222,8 @@ export const fetchModelLoadBalancingConfig: Fetcher<{
   }>(url)
 }
 
-export const fetchModelProviderModelList: Fetcher<{ data: ModelItem[] }, string> = (url) => {
-  return get<{ data: ModelItem[] }>(url)
+export const fetchModelProviderModelList: Fetcher<{ data: ModelItem[] }, { url: string; params?: Record<string, any> }> = ({url,params}) => {
+  return get<{ data: ModelItem[] }>(url, { params })
 }
 
 export const fetchModelList: Fetcher<{ data: Model[] }, string> = (url) => {
@@ -351,3 +368,12 @@ export const submitDeleteAccountFeedback = (body: { feedback: string; email: str
 
 export const getDocDownloadUrl = (doc_name: string) =>
   get<{ url: string }>('/compliance/download', { params: { doc_name } }, { silent: true })
+
+
+export const getAllWorkspace: Fetcher<any, string> = (url) => {
+  return get(url) as Promise<any>
+}
+
+export const workspaceSwitch: Fetcher<any, { url: string; body: Record<string, any> }> = ({ url, body }) => {
+  return post<any>(url, { body })
+}

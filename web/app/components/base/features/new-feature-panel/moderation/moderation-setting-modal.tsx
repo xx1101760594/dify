@@ -130,7 +130,7 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
       ...localeData,
       config: {
         ...localeData.config,
-        keywords: arr.slice(0, 100).join('\n'),
+        keywords: arr.slice(0, 1000000).join('\n'),
       },
     })
   }
@@ -304,7 +304,7 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
                 placeholder={t('appDebug.feature.moderation.modal.keywords.placeholder') || ''}
               />
               <div className='absolute bottom-2 right-2 flex h-5 items-center rounded-md bg-background-section px-1 text-xs font-medium text-text-quaternary'>
-                <span>{(localeData.config?.keywords || '').split('\n').filter(Boolean).length}</span>/<span className='text-text-tertiary'>100 {t('appDebug.feature.moderation.modal.keywords.line')}</span>
+                <span>{(localeData.config?.keywords || '').split('\n').filter(Boolean).length}</span>/<span className='text-text-tertiary'>1000000 {t('appDebug.feature.moderation.modal.keywords.line')}</span>
               </div>
             </div>
           </div>

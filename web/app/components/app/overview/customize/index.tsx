@@ -87,7 +87,7 @@ const CustomizeModal: FC<IShareLinkProps> = ({
           <div className='mb-2 mt-1 text-xs text-text-tertiary'>{t(`${prefixCustomize}.way1.step3Tip`)}</div>
           <pre className='box-border select-text overflow-x-scroll rounded-lg border-[0.5px] border-components-panel-border bg-background-section px-4 py-3 text-xs font-medium text-text-secondary'>
             NEXT_PUBLIC_APP_ID={`'${appId}'`} <br />
-            NEXT_PUBLIC_APP_KEY={'\'<Web API Key From Dify>\''} <br />
+            NEXT_PUBLIC_APP_KEY={'\'<Web API Key From CloudWalk Cubix>\''} <br />
             NEXT_PUBLIC_API_URL={`'${api_base_url}'`}
           </pre>
         </div>
@@ -97,13 +97,13 @@ const CustomizeModal: FC<IShareLinkProps> = ({
     <div className='mt-4 w-full rounded-lg border-[0.5px] border-components-panel-border px-6 py-5'>
       <Tag bordered={true} hideBg={true} className='border-text-accent-secondary uppercase text-text-accent-secondary'>{t(`${prefixCustomize}.way`)} 2</Tag>
       <p className='system-sm-medium my-2 text-text-secondary'>{t(`${prefixCustomize}.way2.name`)}</p>
-      <Button
+      {/* <Button
         className='mt-2'
         onClick={() =>
           window.open(
-            `https://docs.dify.ai/${locale !== LanguagesSupported[1]
+            `https://docs.cubix.ai/${locale !== LanguagesSupported[1]
               ? 'user-guide/launching-dify-apps/developing-with-apis'
-              : `v/${locale.toLowerCase()}/guides/application-publishing/developing-with-apis`
+              : `${locale.toLowerCase()}/guides/application-publishing/developing-with-apis`
             }`,
             '_blank',
           )
@@ -111,7 +111,7 @@ const CustomizeModal: FC<IShareLinkProps> = ({
       >
         <span className='text-sm text-text-secondary'>{t(`${prefixCustomize}.way2.operation`)}</span>
         <ArrowTopRightOnSquareIcon className='ml-1 h-4 w-4 shrink-0 text-text-secondary' />
-      </Button>
+      </Button> */}
     </div>
   </Modal>
 }

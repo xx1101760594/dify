@@ -32,6 +32,7 @@ import { hasRetryNode } from '@/app/components/workflow/utils'
 type Props = {
   className?: string
   nodeInfo: NodeTracing
+  allExecutions?: NodeTracing[]
   inMessage?: boolean
   hideInfo?: boolean
   hideProcessDetail?: boolean
@@ -46,6 +47,7 @@ type Props = {
 const NodePanel: FC<Props> = ({
   className,
   nodeInfo,
+  allExecutions,
   inMessage = false,
   hideInfo = false,
   hideProcessDetail,
@@ -157,6 +159,7 @@ const NodePanel: FC<Props> = ({
             {isIterationNode && !notShowIterationNav && onShowIterationDetail && (
               <IterationLogTrigger
                 nodeInfo={nodeInfo}
+                allExecutions={allExecutions}
                 onShowIterationResultList={onShowIterationDetail}
               />
             )}
@@ -164,6 +167,7 @@ const NodePanel: FC<Props> = ({
             {isLoopNode && !notShowLoopNav && onShowLoopDetail && (
               <LoopLogTrigger
                 nodeInfo={nodeInfo}
+                allExecutions={allExecutions}
                 onShowLoopResultList={onShowLoopDetail}
               />
             )}
@@ -190,13 +194,13 @@ const NodePanel: FC<Props> = ({
               {(nodeInfo.status === 'exception') && (
                 <StatusContainer status='stopped'>
                   {nodeInfo.error}
-                  <a
+                  {/* <a
                     href='https://docs.dify.ai/guides/workflow/error-handling/error-type'
                     target='_blank'
                     className='text-text-accent'
                   >
                     {t('workflow.common.learnMore')}
-                  </a>
+                  </a> */}
                 </StatusContainer>
               )}
               {nodeInfo.status === 'failed' && (

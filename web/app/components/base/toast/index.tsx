@@ -50,7 +50,8 @@ const Toast = ({
     size === 'md' ? 'p-3' : 'p-2',
     'border border-components-panel-border-subtle bg-components-panel-bg-blur shadow-sm',
     'top-0',
-    'right-0',
+    'left-1/2',
+    '-translate-x-1/2',
   )}>
     <div className={`absolute inset-0 -z-10 opacity-40 ${
       (type === 'success' && 'bg-toast-success-bg')

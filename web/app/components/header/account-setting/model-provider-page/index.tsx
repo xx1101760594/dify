@@ -1,3 +1,4 @@
+'use client'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'ahooks'
@@ -87,7 +88,7 @@ const ModelProviderPage = ({ searchText }: Props) => {
   const handleOpenModal = useModelModalHandler()
 
   return (
-    <div className='relative -mt-2 pt-1'>
+    <div className='relative -mt-2 pt-1 mb-5'>
       <div className={cn('mb-2 flex items-center')}>
         <div className='system-md-semibold grow text-text-primary'>{t('common.modelProvider.models')}</div>
         <div className={cn(
@@ -121,7 +122,7 @@ const ModelProviderPage = ({ searchText }: Props) => {
         </div>
       )}
       {!!filteredConfiguredProviders?.length && (
-        <div className='relative'>
+        <div className='relative grid grow content-start gap-4 px-2 pt-2 grid-cols-2'>
           {filteredConfiguredProviders?.map(provider => (
             <ProviderAddedCard
               key={provider.provider}
@@ -134,7 +135,7 @@ const ModelProviderPage = ({ searchText }: Props) => {
       {!!filteredNotConfiguredProviders?.length && (
         <>
           <div className='system-md-semibold mb-2 flex items-center pt-2 text-text-primary'>{t('common.modelProvider.toBeConfigured')}</div>
-          <div className='relative'>
+          <div className='relative grid grow content-start gap-4 px-2 pt-2 grid-cols-2'>
             {filteredNotConfiguredProviders?.map(provider => (
               <ProviderAddedCard
                 notConfigured
@@ -146,14 +147,14 @@ const ModelProviderPage = ({ searchText }: Props) => {
           </div>
         </>
       )}
-      {
+      {/* {
         enable_marketplace && (
           <InstallFromMarketplace
             providers={providers}
             searchText={searchText}
           />
         )
-      }
+      } */}
     </div>
   )
 }

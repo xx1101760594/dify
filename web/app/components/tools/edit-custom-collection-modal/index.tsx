@@ -54,8 +54,8 @@ const EditCustomCollectionModal: FC<Props> = ({
         api_key_header_prefix: AuthHeaderPrefix.basic,
       },
       icon: {
-        content: '🕵️',
-        background: '#FEF7C3',
+        content: 'wrench',
+        background: '#FFEAD5',
       },
       schema_type: '',
       schema: '',
@@ -183,7 +183,7 @@ const EditCustomCollectionModal: FC<Props> = ({
     <>
       <Drawer
         isShow
-        positionCenter={isAdd && !positionLeft}
+        positionCenter // ={isAdd && !positionLeft}
         onHide={onHide}
         title={t(`tools.createTool.${isAdd ? 'title' : 'editTitle'}`)!}
         panelClassName='mt-2 !w-[640px]'
@@ -196,7 +196,9 @@ const EditCustomCollectionModal: FC<Props> = ({
               <div>
                 <div className='system-sm-medium py-2 text-text-primary'>{t('tools.createTool.name')} <span className='ml-1 text-red-500'>*</span></div>
                 <div className='flex items-center justify-between gap-3'>
-                  <AppIcon size='large' onClick={() => { setShowEmojiPicker(true) }} className='cursor-pointer' icon={emoji.content} background={emoji.background} />
+                  <AppIcon size='large'
+                  //  onClick={() => { setShowEmojiPicker(true) }} 
+                   className='cursor-pointer' icon={emoji.content} background={emoji.background} />
                   <Input
                     className='h-10 grow' placeholder={t('tools.createTool.toolNamePlaceHolder')!}
                     value={customCollection.provider}

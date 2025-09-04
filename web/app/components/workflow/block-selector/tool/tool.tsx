@@ -107,9 +107,9 @@ const Tool: FC<Props> = ({
           </div>
 
           <div className='flex items-center'>
-            {isFlatView && (
+            {/* {isFlatView && (
               <div className='system-xs-regular text-text-tertiary'>{groupName}</div>
-            )}
+            )} */}
             {hasAction && (
               <FoldIcon className={cn('h-4 w-4 shrink-0 text-text-quaternary', isFold && 'text-text-tertiary')} />
             )}

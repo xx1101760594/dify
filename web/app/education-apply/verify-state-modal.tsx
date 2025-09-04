@@ -35,11 +35,12 @@ function Confirm({
   const [isVisible, setIsVisible] = useState(isShow)
 
   const docLink = useMemo(() => {
-    if (locale === 'zh-Hans')
-      return 'https://docs.dify.ai/zh-hans/getting-started/dify-for-education'
-    if (locale === 'ja-JP')
-      return 'https://docs.dify.ai/ja-jp/getting-started/dify-for-education'
-    return 'https://docs.dify.ai/getting-started/dify-for-education'
+    // if (locale === 'zh-Hans')
+    //   return 'https://docs.dify.ai/zh-hans/getting-started/dify-for-education'
+    // if (locale === 'ja-JP')
+    //   return 'https://docs.dify.ai/ja-jp/getting-started/dify-for-education'
+    // return 'https://docs.dify.ai/getting-started/dify-for-education'
+    return ''
   }, [locale])
 
   const handleClick = () => {

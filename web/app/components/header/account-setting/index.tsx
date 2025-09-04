@@ -20,6 +20,7 @@ import {
 import Button from '../../base/button'
 import MembersPage from './members-page'
 import LanguagePage from './language-page'
+import AccountPage from '@/app/account/account-page/index'
 import ApiBasedExtensionPage from './api-based-extension-page'
 import DataSourcePage from './data-source-page'
 import ModelProviderPage from './model-provider-page'
@@ -51,7 +52,7 @@ type GroupItem = {
 
 export default function AccountSetting({
   onCancel,
-  activeTab = 'members',
+  activeTab = 'account',
 }: IAccountSettingProps) {
   const [activeMenu, setActiveMenu] = useState(activeTab)
   const { t } = useTranslation()
@@ -62,9 +63,15 @@ export default function AccountSetting({
     if (isCurrentWorkspaceDatasetOperator)
       return []
     return [
+      // {
+      //   key: 'provider',
+      //   name: t('common.settings.provider'),
+      //   icon: <RiBrain2Line className={iconClassName} />,
+      //   activeIcon: <RiBrain2Fill className={iconClassName} />,
+      // },
       {
-        key: 'provider',
-        name: t('common.settings.provider'),
+        key: 'account',
+        name: t('common.settings.account'),
         icon: <RiBrain2Line className={iconClassName} />,
         activeIcon: <RiBrain2Fill className={iconClassName} />,
       },
@@ -74,26 +81,26 @@ export default function AccountSetting({
         icon: <RiGroup2Line className={iconClassName} />,
         activeIcon: <RiGroup2Fill className={iconClassName} />,
       },
-      {
-        // Use key false to hide this item
-        key: enableBilling ? 'billing' : false,
-        name: t('common.settings.billing'),
-        description: t('billing.plansCommon.receiptInfo'),
-        icon: <RiMoneyDollarCircleLine className={iconClassName} />,
-        activeIcon: <RiMoneyDollarCircleFill className={iconClassName} />,
-      },
-      {
-        key: 'data-source',
-        name: t('common.settings.dataSource'),
-        icon: <RiDatabase2Line className={iconClassName} />,
-        activeIcon: <RiDatabase2Fill className={iconClassName} />,
-      },
-      {
-        key: 'api-based-extension',
-        name: t('common.settings.apiBasedExtension'),
-        icon: <RiPuzzle2Line className={iconClassName} />,
-        activeIcon: <RiPuzzle2Fill className={iconClassName} />,
-      },
+      // {
+      //   // Use key false to hide this item
+      //   key: enableBilling ? 'billing' : false,
+      //   name: t('common.settings.billing'),
+      //   description: t('billing.plansCommon.receiptInfo'),
+      //   icon: <RiMoneyDollarCircleLine className={iconClassName} />,
+      //   activeIcon: <RiMoneyDollarCircleFill className={iconClassName} />,
+      // },
+      // {
+      //   key: 'data-source',
+      //   name: t('common.settings.dataSource'),
+      //   icon: <RiDatabase2Line className={iconClassName} />,
+      //   activeIcon: <RiDatabase2Fill className={iconClassName} />,
+      // },
+      // {
+      //   key: 'api-based-extension',
+      //   name: t('common.settings.apiBasedExtension'),
+      //   icon: <RiPuzzle2Line className={iconClassName} />,
+      //   activeIcon: <RiPuzzle2Fill className={iconClassName} />,
+      // },
       {
         key: (enableReplaceWebAppLogo || enableBilling) ? 'custom' : false,
         name: t('custom.custom'),
@@ -112,18 +119,18 @@ export default function AccountSetting({
       name: t('common.settings.workplaceGroup'),
       items: workplaceGroupItems,
     },
-    {
-      key: 'account-group',
-      name: t('common.settings.generalGroup'),
-      items: [
-        {
-          key: 'language',
-          name: t('common.settings.language'),
-          icon: <RiTranslate2 className={iconClassName} />,
-          activeIcon: <RiTranslate2 className={iconClassName} />,
-        },
-      ],
-    },
+    // {
+    //   key: 'account-group',
+    //   name: t('common.settings.generalGroup'),
+    //   items: [
+    //     {
+    //       key: 'language',
+    //       name: t('common.settings.language'),
+    //       icon: <RiTranslate2 className={iconClassName} />,
+    //       activeIcon: <RiTranslate2 className={iconClassName} />,
+    //     },
+    //   ],
+    // },
   ]
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
@@ -139,7 +146,7 @@ export default function AccountSetting({
     }
   }, [])
 
-  const activeItem = [...menuItems[0].items, ...menuItems[1].items].find(item => item.key === activeMenu)
+  const activeItem = [...menuItems[0].items].find(item => item.key === activeMenu)
 
   const [searchValue, setSearchValue] = useState<string>('')
 
@@ -190,7 +197,7 @@ export default function AccountSetting({
             >
               <RiCloseLine className='h-5 w-5' />
             </Button>
-            <div className='system-2xs-medium-uppercase mt-1 text-text-tertiary'>ESC</div>
+            {/* <div className='system-2xs-medium-uppercase mt-1 text-text-tertiary'>ESC</div> */}
           </div>
           <div ref={scrollRef} className='w-full overflow-y-auto bg-components-panel-bg pb-4'>
             <div className={cn('sticky top-0 z-20 mx-8 mb-[18px] flex items-center bg-components-panel-bg pb-2 pt-[27px]', scrolled && 'border-b border-divider-regular')}>
@@ -213,7 +220,8 @@ export default function AccountSetting({
               )}
             </div>
             <div className='px-4 pt-2 sm:px-8'>
-              {activeMenu === 'provider' && <ModelProviderPage searchText={searchValue} />}
+              {/* {activeMenu === 'provider' && <ModelProviderPage searchText={searchValue} />} */}
+              {activeMenu === 'account' && <AccountPage />}
               {activeMenu === 'members' && <MembersPage />}
               {activeMenu === 'billing' && <BillingPage />}
               {activeMenu === 'data-source' && <DataSourcePage />}

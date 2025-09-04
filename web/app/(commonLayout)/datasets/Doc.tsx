@@ -84,10 +84,10 @@ const Doc = ({ apiBaseUrl }: DocProps) => {
 
   return (
     <div className="flex">
-      <div className={`fixed right-20 top-32 z-10 transition-all ${isTocExpanded ? 'w-64' : 'w-10'}`}>
+      <div className={`fixed left-[50px] top-43 z-10 transition-all ${isTocExpanded ? 'w-56' : 'w-10'}`}>
         {isTocExpanded
           ? (
-            <nav className="toc max-h-[calc(100vh-150px)] w-full overflow-y-auto rounded-lg bg-components-panel-bg p-4 shadow-md">
+            <nav className="toc max-h-[calc(100vh-200px)] w-full overflow-y-auto rounded-lg bg-components-panel-bg p-4 shadow-md text-sm">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-text-primary">{t('appApi.develop.toc')}</h3>
                 <button
@@ -121,7 +121,7 @@ const Doc = ({ apiBaseUrl }: DocProps) => {
             </button>
           )}
       </div>
-      <article className={cn('prose-xl prose mx-1 rounded-t-xl bg-background-default px-4 pt-16 sm:mx-12', theme === Theme.dark && 'dark:prose-invert')}>
+      <article className={cn('prose-xl prose mx-1 rounded-t-xl bg-background-default pr-4 pt-16 sm:mx-12 pl-[16rem]', theme === Theme.dark && 'prose-invert')}>
         {Template}
       </article>
     </div>

@@ -31,6 +31,7 @@ export type SystemFeatures = {
   is_allow_create_workspace: boolean
   is_allow_register: boolean
   is_email_setup: boolean
+  cloudwalk_sso_enabled: boolean
   license: License
 }
 
@@ -47,6 +48,7 @@ export const defaultSystemFeatures: SystemFeatures = {
   is_allow_create_workspace: false,
   is_allow_register: false,
   is_email_setup: false,
+  cloudwalk_sso_enabled: false,
   license: {
     status: LicenseStatus.NONE,
     expired_at: '',

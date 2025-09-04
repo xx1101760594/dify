@@ -235,7 +235,7 @@ const GenerationItem: FC<IGenerationItemProps> = ({
                         expand={workflowProcessData.expand}
                         hideProcessDetail={hideProcessDetail}
                         hideInfo={hideProcessDetail}
-                        readonly={!siteInfo.show_workflow_steps}
+                        readonly={false} //!siteInfo.show_workflow_steps
                       />
                     )}
                     {showResultTabs && (
@@ -301,12 +301,12 @@ const GenerationItem: FC<IGenerationItemProps> = ({
                       <RiSparklingLine className='h-4 w-4' />
                     </ActionButton>
                   )}
-                  {isShowTextToSpeech && (
+                  {/* {isShowTextToSpeech && (
                     <NewAudioButton
                       id={messageId!}
                       voice={config?.text_to_speech?.voice}
                     />
-                  )}
+                  )} */}
                   {((currentTab === 'RESULT' && workflowProcessData?.resultText) || !isWorkflow) && (
                     <ActionButton disabled={isError || !messageId} onClick={() => {
                       const copyContent = isWorkflow ? workflowProcessData?.resultText : content

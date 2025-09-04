@@ -45,10 +45,10 @@ const AppIconPicker: FC<AppIconPickerProps> = ({
   const { t } = useTranslation()
 
   const tabs = [
-    { key: 'emoji', label: t('app.iconPicker.emoji'), icon: <span className="text-lg">🤖</span> },
+    // { key: 'emoji', label: t('app.iconPicker.emoji'), icon: <span className="text-lg">🤖</span> },
     { key: 'image', label: t('app.iconPicker.image'), icon: <ImagePlus /> },
   ]
-  const [activeTab, setActiveTab] = useState<AppIconType>('emoji')
+  const [activeTab, setActiveTab] = useState<AppIconType>('image')
 
   const [emoji, setEmoji] = useState<{ emoji: string; background: string }>()
   const handleSelectEmoji = useCallback((emoji: string, background: string) => {

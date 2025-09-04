@@ -53,13 +53,21 @@ const ProviderList = () => {
     })
   }, [activeTab, tagFilterValue, keywords, collectionList])
 
-  const [currentProvider, setCurrentProvider] = useState<Collection | undefined>()
+  const [currentProviderId, setCurrentProviderId] = useState<string | undefined>()
+  const currentProvider = useMemo<Collection | undefined>(() => {
+    return filteredCollectionList.find(collection => collection.id === currentProviderId)
+  }, [currentProviderId, filteredCollectionList])
   const { data: pluginList } = useInstalledPluginList()
   const invalidateInstalledPluginList = useInvalidateInstalledPluginList()
   const currentPluginDetail = useMemo(() => {
     const detail = pluginList?.plugins.find(plugin => plugin.plugin_id === currentProvider?.plugin_id)
     return detail
   }, [currentProvider?.plugin_id, pluginList?.plugins])
+
+
+  const viewClick = (id: string)=> {
+   activeTab === 'builtin' &&  setCurrentProviderId(id)
+  }
 
   return (
     <>
@@ -69,45 +77,49 @@ const ProviderList = () => {
           className='relative flex grow flex-col overflow-y-auto bg-background-body'
         >
           <div className={cn(
-            'sticky top-0 z-20 flex flex-wrap items-center justify-between gap-y-2 bg-background-body px-12 pb-2 pt-4 leading-[56px]',
-            currentProvider && 'pr-6',
+            'sticky top-0 z-20 bg-background-body px-12 pt-4 leading-[56px]',
+            currentProviderId && 'pr-6',
           )}>
-            <TabSliderNew
-              value={activeTab}
-              onChange={(state) => {
-                setActiveTab(state)
-                if (state !== activeTab)
-                  setCurrentProvider(undefined)
-              }}
-              options={options}
-            />
-            <div className='flex items-center gap-2'>
-              <LabelFilter value={tagFilterValue} onChange={handleTagsChange} />
-              <Input
-                showLeftIcon
-                showClearIcon
-                wrapperClassName='w-[200px]'
-                value={keywords}
-                onChange={e => handleKeywordsChange(e.target.value)}
-                onClear={() => handleKeywordsChange('')}
+            <div className="border-b border-divider-regular pb-[8px]">
+              <TabSliderNew
+                value={activeTab}
+                onChange={(state) => {
+                  setActiveTab(state)
+                  if (state !== activeTab)
+                    setCurrentProviderId(undefined)
+                }}
+                options={options}
               />
             </div>
+            <div className='flex justify-between items-center gap-2'>
+                {/* <LabelFilter value={tagFilterValue} onChange={handleTagsChange} /> */}
+                {activeTab === 'api' && <CustomCreateCard onRefreshData={refetch} />}
+                <Input
+                  showLeftIcon
+                  showClearIcon
+                  wrapperClassName='w-[200px]'
+                  value={keywords}
+                  onChange={e => handleKeywordsChange(e.target.value)}
+                  onClear={() => handleKeywordsChange('')}
+                />
+              </div>
           </div>
           {(filteredCollectionList.length > 0 || activeTab !== 'builtin') && (
             <div className={cn(
-              'relative grid shrink-0 grid-cols-1 content-start gap-4 px-12 pb-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+              'relative grid shrink-0 grid-cols-1 content-start gap-8 px-12 pb-5 pt-2 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 2k:grid-cols-6',
               !filteredCollectionList.length && activeTab === 'workflow' && 'grow',
             )}>
-              {activeTab === 'api' && <CustomCreateCard onRefreshData={refetch} />}
+              {/* {activeTab === 'api' && <CustomCreateCard onRefreshData={refetch} />} */}
               {filteredCollectionList.map(collection => (
                 <div
                   key={collection.id}
-                  onClick={() => setCurrentProvider(collection)}
+                  onClick={() => viewClick(collection.id)}
                 >
                   <Card
                     className={cn(
-                      'cursor-pointer border-[1.5px] border-transparent',
-                      currentProvider?.id === collection.id && 'border-components-option-card-option-selected-border',
+                      'border-[1.5px] border-transparent',
+                      currentProviderId === collection.id && 'border-components-option-card-option-selected-border',
+                      activeTab === 'builtin' && 'cursor-pointer hover:border-components-option-card-option-selected-border'
                     )}
                     hideCornerMark
                     payload={{
@@ -121,16 +133,17 @@ const ProviderList = () => {
                         tags={collection.labels}
                       />
                     }
+                    onRefreshData={refetch}
                   />
                 </div>
               ))}
               {!filteredCollectionList.length && activeTab === 'workflow' && <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><WorkflowToolEmpty /></div>}
             </div>
           )}
-          {!filteredCollectionList.length && activeTab === 'builtin' && (
+          {!filteredCollectionList.length &&( activeTab === 'builtin' || activeTab === 'api') && (
             <Empty lightCard text={t('tools.noTools')} className='h-[224px] px-12' />
           )}
-          {
+          {/* {
             enable_marketplace && activeTab === 'builtin' && (
               <Marketplace
                 onMarketplaceScroll={() => {
@@ -140,20 +153,20 @@ const ProviderList = () => {
                 filterPluginTags={tagFilterValue}
               />
             )
-          }
+          } */}
         </div>
       </div>
       {currentProvider && !currentProvider.plugin_id && (
         <ProviderDetail
           collection={currentProvider}
-          onHide={() => setCurrentProvider(undefined)}
+          onHide={() => setCurrentProviderId(undefined)}
           onRefreshData={refetch}
         />
       )}
       <PluginDetailPanel
         detail={currentPluginDetail}
         onUpdate={() => invalidateInstalledPluginList()}
-        onHide={() => setCurrentProvider(undefined)}
+        onHide={() => setCurrentProviderId(undefined)}
       />
     </>
   )

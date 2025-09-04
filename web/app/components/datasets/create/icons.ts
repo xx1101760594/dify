@@ -13,4 +13,5 @@ export const retrievalIcon = {
   vector: Selection,
   fullText: Research,
   hybrid: PatternRecognition,
+  pprSearch: PatternRecognition,
 }

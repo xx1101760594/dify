@@ -238,7 +238,7 @@ const ModelModal: FC<ModelModalProps> = ({
       )
       if (res.result === 'success') {
         notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
-        mutate()
+        // mutate()
         onSave()
         onCancel()
       }
@@ -259,7 +259,7 @@ const ModelModal: FC<ModelModalProps> = ({
       )
       if (res.result === 'success') {
         notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
-        mutate()
+        // mutate()
         onSave()
         onCancel()
       }
@@ -271,6 +271,7 @@ const ModelModal: FC<ModelModalProps> = ({
 
   const renderTitlePrefix = () => {
     const prefix = isEditMode ? t('common.operation.setup') : t('common.operation.add')
+    // return `${prefix}${t('common.modelProvider.model')}`
     return `${prefix} ${provider.label[language] || provider.label.en_US}`
   }
 
@@ -280,7 +281,7 @@ const ModelModal: FC<ModelModalProps> = ({
         <div className='fixed inset-0 flex items-center justify-center bg-black/[.25]'>
           <div className='mx-2 w-[640px] overflow-auto rounded-2xl bg-components-panel-bg shadow-xl'>
             <div className='px-8 pt-8'>
-              <div className='mb-2 flex items-center'>
+              <div className='flex items-center mb-2'>
                 <div className='text-xl font-semibold text-text-primary'>{renderTitlePrefix()}</div>
               </div>
 
@@ -304,7 +305,7 @@ const ModelModal: FC<ModelModalProps> = ({
                 }} />
               </div>
 
-              <div className='sticky bottom-0 -mx-2 mt-2 flex flex-wrap items-center justify-between gap-y-2 bg-components-panel-bg px-2 pb-6 pt-4'>
+              <div className='flex sticky bottom-0 flex-wrap gap-y-2 justify-between items-center px-2 pt-4 pb-6 -mx-2 mt-2 bg-components-panel-bg'>
                 {
                   (provider.help && (provider.help.title || provider.help.url))
                     ? (
@@ -315,13 +316,13 @@ const ModelModal: FC<ModelModalProps> = ({
                         onClick={e => !provider.help.url && e.preventDefault()}
                       >
                         {provider.help.title?.[language] || provider.help.url[language] || provider.help.title?.en_US || provider.help.url.en_US}
-                        <LinkExternal02 className='ml-1 h-3 w-3' />
+                        <LinkExternal02 className='ml-1 w-3 h-3' />
                       </a>
                     )
                     : <div />
                 }
                 <div>
-                  {
+                  {/* {
                     isEditMode && (
                       <Button
                         variant='warning'
@@ -332,7 +333,7 @@ const ModelModal: FC<ModelModalProps> = ({
                         {t('common.operation.remove')}
                       </Button>
                     )
-                  }
+                  } */}
                   <Button
                     size='large'
                     className='mr-2'
@@ -356,7 +357,7 @@ const ModelModal: FC<ModelModalProps> = ({
                 </div>
               </div>
             </div>
-            <div className='border-t-[0.5px] border-t-divider-regular'>
+            {/* <div className='border-t-[0.5px] border-t-divider-regular'>
               {
                 (validatedStatusState.status === ValidatedStatus.Error && validatedStatusState.message)
                   ? (
@@ -366,8 +367,8 @@ const ModelModal: FC<ModelModalProps> = ({
                     </div>
                   )
                   : (
-                    <div className='flex items-center justify-center bg-background-section-burn py-3 text-xs text-text-tertiary'>
-                      <Lock01 className='mr-1 h-3 w-3 text-text-tertiary' />
+                    <div className='flex justify-center items-center py-3 text-xs bg-background-section-burn text-text-tertiary'>
+                      <Lock01 className='mr-1 w-3 h-3 text-text-tertiary' />
                       {t('common.modelProvider.encrypted.front')}
                       <a
                         className='mx-1 text-text-accent'
@@ -380,7 +381,7 @@ const ModelModal: FC<ModelModalProps> = ({
                     </div>
                   )
               }
-            </div>
+            </div> */}
           </div>
           {
             showConfirm && (

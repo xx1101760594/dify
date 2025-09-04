@@ -40,7 +40,7 @@ type IColorType = 'green' | 'orange' | 'blue'
 type IChartType = 'messages' | 'conversations' | 'endUsers' | 'costs' | 'workflowCosts'
 type IChartConfigType = { colorType: IColorType; showTokens?: boolean }
 
-const commonDateFormat = 'MMM D, YYYY'
+const commonDateFormat = 'YYYY-MM-DD'
 
 const CHART_TYPE_CONFIG: Record<string, IChartConfigType> = {
   messages: {
@@ -216,12 +216,11 @@ const Chart: React.FC<IChartProps> = ({
                           <div style='font-size:14px;color:#1F2A37'>${valueFormatter((params.data as any)[yField])}
                               ${!CHART_TYPE_CONFIG[chartType].showTokens
                                 ? ''
-                                : `<span style='font-size:12px'>
-                                  <span style='margin-left:4px;color:#6B7280'>(</span>
-                                  <span style='color:#FF8A4C'>~$${get(params.data, 'total_price', 0)}</span>
-                                  <span style='color:#6B7280'>)</span>
-                              </span>`}
+                                : `<span style='font-size:12px'></span>`}
                           </div>`
+                          // <span style='margin-left:4px;color:#6B7280'>(</span>
+                          // <span style='color:#FF8A4C'>~$${get(params.data, 'total_price', 0)}</span>
+                          // <span style='color:#6B7280'>)</span>
           },
         },
       },
@@ -241,9 +240,9 @@ const Chart: React.FC<IChartProps> = ({
           type={!CHART_TYPE_CONFIG[chartType].showTokens
             ? ''
             : <span>{t('appOverview.analysis.tokenUsage.consumed')} Tokens<span className='text-sm'>
-              <span className='ml-1 text-text-tertiary'>(</span>
+              {/* <span className='ml-1 text-text-tertiary'>(</span>
               <span className='text-orange-400'>~{sum(statistics.map(item => Number.parseFloat(get(item, 'total_price', '0')))).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 4 })}</span>
-              <span className='text-text-tertiary'>)</span>
+              <span className='text-text-tertiary'>)</span> */}
             </span></span>}
           textStyle={{ main: `!text-3xl !font-normal ${sumData === 0 ? '!text-text-quaternary' : ''}` }} />
       </div>

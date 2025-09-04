@@ -14,14 +14,13 @@ import {
 } from '@/app/components/base/portal-to-follow-elem'
 import { useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/components/header/account-setting/model-provider-page/hooks'
 import cn from '@/utils/classnames'
-
 const PARAM_MAP = {
-  temperature: 'Temperature',
-  top_p: 'Top P',
-  presence_penalty: 'Presence Penalty',
-  max_tokens: 'Max Token',
-  stop: 'Stop',
-  frequency_penalty: 'Frequency Penalty',
+  temperature: '温度', // Temperature
+  top_p: 'Top P', // Top P
+  presence_penalty: '存在惩罚', // Presence Penalty
+  max_tokens: '最大标记', // Max Token
+  stop: '停止', // Stop
+  frequency_penalty: '频率惩罚', // Frequency Penalty
 }
 
 type Props = {

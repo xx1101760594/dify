@@ -108,8 +108,8 @@ const Answer: FC<AnswerProps> = ({
   }, [switchSibling, item.prevSibling, item.nextSibling])
 
   return (
-    <div className='mb-2 flex last:mb-0'>
-      <div className='relative h-10 w-10 shrink-0'>
+    <div className='flex mb-2 last:mb-0'>
+      <div className='relative h-8 w-8.5 shrink-0'>
         {answerIcon || <AnswerIcon />}
         {responding && (
           <div className='absolute left-[-3px] top-[-3px] flex h-4 w-4 items-center rounded-full border-[0.5px] border-divider-subtle bg-background-section-burn pl-[6px] shadow-xs'>
@@ -117,8 +117,8 @@ const Answer: FC<AnswerProps> = ({
           </div>
         )}
       </div>
-      <div className='chat-answer-container group ml-4 w-0 grow pb-4' ref={containerRef}>
-        <div className={cn('group relative pr-10', chatAnswerContainerInner)}>
+      <div className='pb-4 ml-4 w-0 chat-answer-container group grow' ref={containerRef}>
+        <div className={cn('relative pr-10 group', chatAnswerContainerInner)}>
           <div
             ref={contentRef}
             className={cn('body-lg-regular relative inline-block max-w-full rounded-2xl bg-chat-bubble-bg px-4 py-3 text-text-primary', workflowProcess && 'w-full')}
@@ -160,7 +160,7 @@ const Answer: FC<AnswerProps> = ({
             }
             {
               responding && !content && !hasAgentThoughts && (
-                <div className='flex h-5 w-6 items-center justify-center'>
+                <div className='flex justify-center items-center w-6 h-5'>
                   <LoadingAnim type='text' />
                 </div>
               )

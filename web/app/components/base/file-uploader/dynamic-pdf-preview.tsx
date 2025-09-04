@@ -1,11 +1,14 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { HighlightsData } from './pdf-preview';
 
 type DynamicPdfPreviewProps = {
-  url: string
-  onCancel: () => void
-}
+  url: string;
+  onCancel: () => void;
+  highlightsData?: HighlightsData[];
+  onHighlightsChange?: (highlights: HighlightsData[]) => void;
+};
 const DynamicPdfPreview = dynamic<DynamicPdfPreviewProps>(
   (() => {
     if (typeof window !== 'undefined')

@@ -1,13 +1,15 @@
 const translation = {
   list: {
     title: '文档',
-    desc: '知识库的所有文件都在这里显示，整个知识库都可以链接到 Dify 引用或通过 Chat 插件进行索引。',
+    showDocLength: '（共{{length}}个文档）',
+    desc: '',
     learnMore: '了解更多',
     addFile: '添加文件',
     addPages: '添加页面',
     addUrl: '添加 URL',
     table: {
       header: {
+        fileId: 'ID',
         fileName: '名称',
         chunkingMode: '分段模式',
         words: '字符数',
@@ -54,12 +56,17 @@ const translation = {
         tip: '您可以上传文件，从网站同步，或者从网络应用程序（如概念、GitHub 等）同步。',
       },
       sync: {
-        tip: 'Dify 会定期从您的 Notion 中下载文件并完成处理。',
+        tip: '', //CloudWalk Cubix 会定期从您的 Notion 中下载文件并完成处理。
       },
     },
     delete: {
       title: '确定删除吗？',
       content: '如果您需要稍后恢复处理，您将从您离开的地方继续',
+    },
+    preview: {
+      unsupportedFileType: '不支持的文件类型预览',
+      fetchError: '获取预览失败',
+      noPreview: '暂无预览',
     },
     batchModal: {
       title: '批量添加分段',
@@ -81,12 +88,12 @@ const translation = {
     },
   },
   metadata: {
-    title: '元数据',
-    desc: '标记文档的元数据允许 AI 及时访问它们并为用户公开参考来源。',
+    title: '标签',
+    desc: '标记文档的标签允许 AI 及时访问它们并为用户公开参考来源。',
     dateTimeFormat: 'YYYY-MM-DD HH:mm',
     docTypeSelectTitle: '请选择一种文档类型',
     docTypeChangeTitle: '更换文档类型',
-    docTypeSelectWarning: '如果更改文档类型，将不再保留现在填充的元数据',
+    docTypeSelectWarning: '如果更改文档类型，将不再保留现在填充的标签',
     firstMetaAction: '开始',
     placeholder: {
       add: '输入',

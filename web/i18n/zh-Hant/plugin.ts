@@ -178,8 +178,10 @@ const translation = {
     and: '和',
     sortBy: '黑城',
     viewMore: '查看更多',
-    difyMarketplace: 'Dify 市場',
+    cubixMarketplace: 'Cubix 市場',
     pluginsResult: '{{num}} 個結果',
+    verifiedTip: '由Cubix驗證',
+    partnerTip: '由 Cubix 合作夥伴驗證',
   },
   task: {
     installingWithError: '安裝 {{installingLength}} 個插件，{{successLength}} 成功，{{errorLength}} 失敗',
@@ -204,6 +206,10 @@ const translation = {
   endpointsEnabled: '{{num}} 組已啟用端點',
   fromMarketplace: '從 Marketplace',
   searchCategories: '搜索類別',
+  metadata: {
+    title: '插件',
+  },
+  cubixVersionNotCompatible: '當前的 Cubix 版本與此插件不兼容，請升級至所需的最低版本：{{minimalCubixVersion}}',
 }
 
 export default translation

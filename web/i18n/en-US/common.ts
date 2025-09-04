@@ -1,4 +1,10 @@
 const translation = {
+  theme: {
+    theme: 'Theme',
+    light: 'light',
+    dark: 'dark',
+    auto: 'system',
+  },
   api: {
     success: 'Success',
     actionSuccess: 'Action succeeded',
@@ -57,6 +63,7 @@ const translation = {
     submit: 'Submit',
     skip: 'Skip',
     format: 'Format',
+    more: 'More',
   },
   errorMsg: {
     fieldRequired: '{{field}} is required',
@@ -148,6 +155,7 @@ const translation = {
     newApp: 'New App',
     newDataset: 'Create Knowledge',
     tools: 'Tools',
+    database: 'Database',
   },
   userProfile: {
     settings: 'Settings',
@@ -475,7 +483,7 @@ const translation = {
   apiBasedExtension: {
     title: 'API extensions provide centralized API management, simplifying configuration for easy use across Dify\'s applications.',
     link: 'Learn how to develop your own API Extension.',
-    linkUrl: 'https://docs.dify.ai/features/extension/api_based_extension',
+    linkUrl: 'https://docs.dify.ai/en/guides/extension/api-based-extension/README',
     add: 'Add API Extension',
     selector: {
       title: 'API Extension',
@@ -559,6 +567,14 @@ const translation = {
       hitCount: 'Retrieval count:',
       vectorHash: 'Vector hash:',
       hitScore: 'Retrieval Score:',
+      preview: 'Preview',
+      previewDocument: 'Preview Document',
+      documentPreview: 'Document Preview',
+      openInDocument: 'Open in Document',
+      referencedContent: 'Referenced Content',
+      documentContent: 'Document Content',
+      documentOriginal: 'Original Document',
+      noContentAvailable: 'No content available for preview',
     },
     inputPlaceholder: 'Talk to Bot',
     thinking: 'Thinking...',

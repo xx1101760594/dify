@@ -185,7 +185,7 @@ const translation = {
     empower: '助力您的 AI 开发',
     discover: '探索',
     and: '和',
-    difyMarketplace: 'Dify 市场',
+    difyMarketplace: 'CloudWalk Cubix 市场',
     moreFrom: '更多来自市场',
     noPluginFound: '未找到插件',
     pluginsResult: '{{num}} 个插件结果',
@@ -197,8 +197,8 @@ const translation = {
       firstReleased: '首次发布',
     },
     viewMore: '查看更多',
-    verifiedTip: '此插件由 Dify 认证',
-    partnerTip: '此插件由 Dify 合作伙伴认证',
+    verifiedTip: '此插件认证',
+    partnerTip: '此插件由合作伙伴认证',
   },
   task: {
     installing: '{{installingLength}} 个插件安装中，0 已完成',
@@ -209,7 +209,7 @@ const translation = {
     clearAll: '清除所有',
   },
   submitPlugin: '上传插件',
-  difyVersionNotCompatible: '当前 Dify 版本不兼容该插件，其最低版本要求为 {{minimalDifyVersion}}',
+  difyVersionNotCompatible: '当前版本不兼容该插件，其最低版本要求为 {{minimalDifyVersion}}',
 }
 
 export default translation

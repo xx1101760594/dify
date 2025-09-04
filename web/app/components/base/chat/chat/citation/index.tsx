@@ -76,12 +76,12 @@ const Citation: FC<CitationProps> = ({
   const resourcesLength = resources.length
 
   return (
-    <div className='-mb-1 mt-3'>
-      <div className='system-xs-medium mb-2 flex items-center text-text-tertiary'>
+    <div className='mt-3 -mb-1'>
+      <div className='flex items-center mb-2 system-xs-medium text-text-tertiary'>
         {t('common.chat.citation.title')}
         <div className='ml-2 h-[1px] grow bg-divider-regular' />
       </div>
-      <div className='relative flex flex-wrap'>
+      <div className='flex relative flex-wrap'>
         {
           resources.map((res, index) => (
             <div
@@ -95,7 +95,7 @@ const Citation: FC<CitationProps> = ({
         }
         {
           resources.slice(0, showMore ? resourcesLength : limitNumberInOneLine).map((res, index) => (
-            <div key={index} className='mb-1 mr-1 cursor-pointer'>
+            <div key={index} className='mr-1 mb-1 cursor-pointer'>
               <Popup
                 data={res}
                 showHitInfo={showHitInfo}
@@ -106,13 +106,13 @@ const Citation: FC<CitationProps> = ({
         {
           limitNumberInOneLine < resourcesLength && (
             <div
-              className='system-xs-medium flex h-7 cursor-pointer items-center rounded-lg bg-components-panel-bg px-2 text-text-tertiary'
+              className='flex items-center px-2 h-7 rounded-lg cursor-pointer system-xs-medium bg-components-panel-bg text-text-tertiary'
               onClick={() => setShowMore(v => !v)}
             >
               {
                 !showMore
                   ? `+ ${resourcesLength - limitNumberInOneLine}`
-                  : <RiArrowDownSLine className='h-4 w-4 rotate-180 text-text-tertiary' />
+                  : <RiArrowDownSLine className='w-4 h-4 rotate-180 text-text-tertiary' />
               }
             </div>
           )

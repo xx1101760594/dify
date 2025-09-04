@@ -3,10 +3,12 @@ const translation = {
   upgradeTip: {
     prefix: '升級您的計劃以',
     suffix: '定製您的品牌。',
+    des: '升級您的計劃以自訂您的品牌',
+    title: '升級您的計劃',
   },
   webapp: {
     title: '定製 WebApp 品牌',
-    removeBrand: '移除 Powered by Dify',
+    removeBrand: '移除 Powered by Cubix',
     changeLogo: '更改 Powered by Brand 圖片',
     changeLogoTip: 'SVG 或 PNG 格式，最小尺寸為 40x40px',
   },
@@ -22,7 +24,7 @@ const translation = {
   restore: '恢復預設',
   customize: {
     contactUs: '聯絡我們',
-    prefix: '如需在 Dify 內自定義品牌圖示，請',
+    prefix: '如需在 Cubix 內自定義品牌圖示，請',
     suffix: '升級至企業版。',
   },
 }

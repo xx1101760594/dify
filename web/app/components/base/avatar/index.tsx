@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import cn from '@/utils/classnames'
+import { basePath } from '@/utils/var'
 
 export type AvatarProps = {
   name: string
@@ -24,31 +25,31 @@ const Avatar = ({
     setImgError(true)
   }
 
-  if (avatar && !imgError) {
+  // if (avatar && !imgError) {
     return (
       <img
         className={cn(avatarClassName, className)}
         style={style}
         alt={name}
-        src={avatar}
+        src={`${basePath}/icon/user.png`}
         onError={handleError}
       />
     )
-  }
+  // }
 
-  return (
-    <div
-      className={cn(avatarClassName, className)}
-      style={style}
-    >
-      <div
-        className={cn(textClassName, 'scale-[0.4] text-center text-white')}
-        style={style}
-      >
-        {name[0].toLocaleUpperCase()}
-      </div>
-    </div>
-  )
+  // return (
+  //   <div
+  //     className={cn(avatarClassName, className)}
+  //     style={style}
+  //   >
+  //     <div
+  //       className={cn(textClassName, 'scale-[0.4] text-center text-white')}
+  //       style={style}
+  //     >
+  //       {name[0].toLocaleUpperCase()}
+  //     </div>
+  //   </div>
+  // )
 }
 
 export default Avatar

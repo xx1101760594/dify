@@ -55,11 +55,11 @@ const Blocks = ({
     return (
       <div
         key={classification}
-        className='mb-1 last-of-type:mb-0'
+        className='flex flex-wrap mb-1 last-of-type:mb-0'
       >
         {
           classification !== '-' && !!list.length && (
-            <div className='flex h-[22px] items-start px-3 text-xs font-medium text-text-tertiary'>
+            <div className='flex w-full h-[22px] items-center px-3 text-xs font-medium text-text-tertiary'>
               {t(`workflow.tabs.${classification}`)}
             </div>
           )
@@ -84,11 +84,11 @@ const Blocks = ({
             >
               <div
                 key={block.type}
-                className='flex h-8 w-full cursor-pointer items-center rounded-lg px-3 hover:bg-state-base-hover'
+                className='flex h-8 w-1/2 cursor-pointer items-center rounded-lg px-3 hover:bg-state-base-hover'
                 onClick={() => onSelect(block.type)}
               >
                 <BlockIcon
-                  className='mr-2 shrink-0'
+                  className='mr-1 shrink-0'
                   type={block.type}
                 />
                 <div className='grow text-sm text-text-secondary'>{block.title}</div>
@@ -109,7 +109,7 @@ const Blocks = ({
   }, [groups, nodesExtraData, onSelect, t])
 
   return (
-    <div className='p-1'>
+    <div className='p-1 w-[315px]'>
       {
         isEmpty && (
           <div className='flex h-[22px] items-center px-3 text-xs font-medium text-text-tertiary'>{t('workflow.tabs.noResult')}</div>

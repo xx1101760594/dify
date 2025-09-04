@@ -54,6 +54,10 @@ const translation = {
     viewDetails: '查看詳情',
     in: '在',
     copied: '複製',
+    more: '更多',
+    downloadSuccess: '下載完成。',
+    downloadFailed: '下載失敗。請稍後再試。',
+    format: '格式',
   },
   placeholder: {
     input: '請輸入',
@@ -153,6 +157,9 @@ const translation = {
     community: '社群',
     about: '關於',
     logout: '登出',
+    support: '支持',
+    github: 'GitHub',
+    compliance: '合規',
   },
   settings: {
     accountGroup: '賬戶',
@@ -180,8 +187,8 @@ const translation = {
     newPassword: '新密碼',
     notEqual: '兩個密碼不相同',
     confirmPassword: '確認密碼',
-    langGeniusAccount: 'Dify 賬號',
-    langGeniusAccountTip: '您的 Dify 賬號和相關的使用者資料。',
+    langGeniusAccount: 'Cubix 賬號',
+    langGeniusAccountTip: '您的 Cubix 賬號和相關的使用者資料。',
     editName: '編輯名字',
     showAppLength: '顯示 {{length}} 個應用',
     delete: '刪除帳戶',
@@ -189,7 +196,7 @@ const translation = {
     deleteConfirmTip: '請將以下內容從您的註冊電子郵件發送至 ',
     account: '帳戶',
     myAccount: '我的帳戶',
-    studio: 'Dify 工作室',
+    studio: 'Cubix 工作室',
     deletePrivacyLinkTip: '有關我們如何處理您的數據的更多資訊，請參閱我們的',
     deletePrivacyLink: '隱私策略。',
     deleteSuccessTip: '您的帳戶需要時間才能完成刪除。完成後，我們會給您發送電子郵件。',
@@ -202,6 +209,9 @@ const translation = {
     feedbackLabel: '告訴我們您刪除帳戶的原因？',
     feedbackPlaceholder: '自選',
     sendVerificationButton: '發送驗證碼',
+    workspaceName: '工作區名稱',
+    workspaceIcon: '工作區域圖示',
+    editWorkspaceInfo: '編輯工作區資訊',
   },
   members: {
     team: '團隊',
@@ -226,7 +236,7 @@ const translation = {
     sendInvite: '傳送邀請',
     invitedAsRole: '邀請為{{role}}使用者',
     invitationSent: '邀請已傳送',
-    invitationSentTip: '邀請已傳送，對方登入 Dify 後即可訪問你的團隊資料。',
+    invitationSentTip: '邀請已傳送，對方登入 Cubix 後即可訪問你的團隊資料。',
     invitationLink: '邀請連結',
     failedInvitationEmails: '邀請以下郵箱失敗',
     ok: '好的',
@@ -279,7 +289,7 @@ const translation = {
       openaiHosted: '託管 OpenAI',
       onTrial: '體驗',
       exhausted: '超出限額',
-      desc: '託管 OpenAI 由 Dify 提供的託管 OpenAI 服務，你可以使用 GPT-3.5 等模型，在體驗額度消耗完畢前你需要設定其它模型供應商。',
+      desc: '託管 OpenAI 由 Cubix 提供的託管 OpenAI 服務，你可以使用 GPT-3.5 等模型，在體驗額度消耗完畢前你需要設定其它模型供應商。',
       callTimes: '呼叫次數',
       usedUp: '試用額度已用完，請在下方新增自己的模型供應商',
       useYourModel: '當前正在使用你自己的模型供應商。',
@@ -453,9 +463,9 @@ const translation = {
     },
   },
   apiBasedExtension: {
-    title: 'API 擴充套件提供了一個集中式的 API 管理，在此統一新增 API 配置後，方便在 Dify 上的各類應用中直接使用。',
+    title: 'API 擴充套件提供了一個集中式的 API 管理，在此統一新增 API 配置後，方便在 Cubix 上的各類應用中直接使用。',
     link: '瞭解如何開發您自己的 API 擴充套件。',
-    linkUrl: 'https://docs.dify.ai/v/zh-hans/guides/extension/api-based-extension',
+    linkUrl: 'https://docs.cubix.ai/zh-hans/guides/tools/extensions/api-based/api-based-extension',
     add: '新增 API 擴充套件',
     selector: {
       title: 'API 擴充套件',
@@ -484,8 +494,8 @@ const translation = {
   about: {
     changeLog: '更新日誌',
     updateNow: '現在更新',
-    nowAvailable: 'Dify {{version}} 現已可用。',
-    latestAvailable: 'Dify {{version}} 已是最新版本。',
+    nowAvailable: 'Cubix {{version}} 現已可用。',
+    latestAvailable: 'Cubix {{version}} 已是最新版本。',
   },
   appMenus: {
     overview: '監控',
@@ -543,6 +553,7 @@ const translation = {
     inputPlaceholder: '與 Bot 對話',
     thinking: '思維。。。',
     thought: '思想',
+    resend: '重新發送',
   },
   promptEditor: {
     placeholder: '在這裡寫你的提示詞，輸入\'{\' 插入變數、輸入\'/\' 插入提示內容塊',
@@ -636,6 +647,25 @@ const translation = {
   },
   pagination: {
     perPage: '每頁項目數',
+  },
+  theme: {
+    light: '光',
+    auto: '系統',
+    dark: '黑暗',
+    theme: '主題',
+  },
+  compliance: {
+    sandboxUpgradeTooltip: '僅可用於專業或團隊計劃。',
+    soc2Type1: 'SOC 2 類型 I 報告',
+    professionalUpgradeTooltip: '僅可用於團隊計劃或更高版本。',
+    gdpr: 'GDPR DPA',
+    soc2Type2: 'SOC 2 類型 II 報告',
+    iso27001: 'ISO 27001:2022 認證',
+  },
+  imageInput: {
+    supportedFormats: '支援PNG、JPG、JPEG、WEBP和GIF',
+    browse: '瀏覽',
+    dropImageHere: '將您的圖片放在這裡，或',
   },
 }
 

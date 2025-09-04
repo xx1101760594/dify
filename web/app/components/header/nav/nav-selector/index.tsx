@@ -6,7 +6,7 @@ import {
   RiArrowDownSLine,
   RiArrowRightSLine,
 } from '@remixicon/react'
-import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'lodash-es'
 import cn from '@/utils/classnames'
@@ -58,8 +58,8 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
         {({ open }) => (
           <>
             <MenuButton className={cn(
-              'hover:hover:bg-components-main-nav-nav-button-bg-active-hover group inline-flex h-7 w-full items-center justify-center rounded-[10px] pl-2 pr-2.5 text-[14px] font-semibold text-components-main-nav-nav-button-text-active',
-              open && 'bg-components-main-nav-nav-button-bg-active',
+              'hover:hover:bg-components-main-nav-nav-button-bg-active-hover group inline-flex h-7 w-full items-center justify-center rounded-[10px] pl-2 pr-2.5 text-[14px] font-semibold ',
+              open && 'bg-components-main-nav-nav-button-bg-active text-components-main-nav-nav-button-text-active',
             )}>
               <div className='max-w-[180px] truncate' title={curNav?.name}>{curNav?.name}</div>
               <RiArrowDownSLine
@@ -77,7 +77,7 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
               <div className="overflow-auto px-1 py-1" style={{ maxHeight: '50vh' }} onScroll={handleScroll}>
                 {
                   navs.map(nav => (
-                    <MenuItems key={nav.id}>
+                    <MenuItem key={nav.id}>
                       <div className='flex w-full cursor-pointer items-center truncate rounded-lg px-3 py-[6px] text-[14px] font-normal text-gray-700 hover:bg-gray-100' onClick={() => {
                         if (curNav?.id === nav.id)
                           return
@@ -112,12 +112,12 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                           {nav.name}
                         </div>
                       </div>
-                    </MenuItems>
+                    </MenuItem>
                   ))
                 }
               </div>
               {!isApp && isCurrentWorkspaceEditor && (
-                <MenuButton className='w-full p-1'>
+                <MenuItem as="div" className='w-full p-1'>
                   <div onClick={() => onCreate('')} className={cn(
                     'flex cursor-pointer items-center gap-2 rounded-lg px-3 py-[6px] hover:bg-gray-100',
                   )}>
@@ -126,7 +126,7 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                     </div>
                     <div className='grow text-left text-[14px] font-normal text-gray-700'>{createText}</div>
                   </div>
-                </MenuButton>
+                </MenuItem>
               )}
               {isApp && isCurrentWorkspaceEditor && (
                 <Menu as="div" className="relative h-full w-full">

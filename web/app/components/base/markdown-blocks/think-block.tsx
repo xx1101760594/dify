@@ -41,9 +41,10 @@ const useThinkTimer = (children: any) => {
   const timerRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
+    if (isComplete) return
+
     timerRef.current = setInterval(() => {
-      if (!isComplete)
-        setElapsedTime(Math.floor((Date.now() - startTime) / 100) / 10)
+      setElapsedTime(Math.floor((Date.now() - startTime) / 100) / 10)
     }, 100)
 
     return () => {
@@ -53,11 +54,8 @@ const useThinkTimer = (children: any) => {
   }, [startTime, isComplete])
 
   useEffect(() => {
-    if (hasEndThink(children)) {
+    if (hasEndThink(children))
       setIsComplete(true)
-      if (timerRef.current)
-        clearInterval(timerRef.current)
-    }
   }, [children])
 
   return { elapsedTime, isComplete }
@@ -88,7 +86,7 @@ export const ThinkBlock = ({ children, ...props }: any) => {
               d="M9 5l7 7-7 7"
             />
           </svg>
-          {isComplete ? `${t('common.chat.thought')}(${elapsedTime.toFixed(1)}s)` : `${t('common.chat.thinking')}(${elapsedTime.toFixed(1)}s)`}
+          {isComplete ? `${t('common.chat.thought')}(${elapsedTime.toFixed(1)}s)` : `${t('common.chat.thinking')}(${elapsedTime.toFixed(0)}s)`}
         </div>
       </summary>
       <div className="ml-2 border-l border-gray-300 bg-gray-50 p-3 text-gray-500">

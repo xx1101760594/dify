@@ -12,6 +12,8 @@ import CreateFromDSLModal, { CreateFromDSLModalTab } from '@/app/components/app/
 import { useProviderContext } from '@/context/provider-context'
 import { FileArrow01, FilePlus01, FilePlus02 } from '@/app/components/base/icons/src/vender/line/files'
 import cn from '@/utils/classnames'
+import Button from '@/app/components/base/button'
+import { RiAddLine } from '@remixicon/react'
 
 export type CreateAppCardProps = {
   className?: string
@@ -47,25 +49,30 @@ const CreateAppCard = (
   return (
     <div
       ref={ref}
-      className={cn('relative col-span-1 inline-flex h-[160px] flex-col justify-between rounded-xl border-[0.5px] border-components-card-border bg-components-card-bg', className)}
+      // className={cn('relative col-span-1 inline-flex h-[160px] flex-col justify-between rounded-xl border-[0.5px] border-components-card-border bg-components-card-bg', className)}
     >
-      <div className='grow rounded-t-xl p-2'>
-        <div className='px-6 pb-1 pt-2 text-xs font-medium leading-[18px] text-text-tertiary'>{t('app.createApp')}</div>
-        <button className='mb-1 flex w-full cursor-pointer items-center rounded-lg px-6 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary' onClick={() => setShowNewAppModal(true)}>
-          <FilePlus01 className='mr-2 h-4 w-4 shrink-0' />
-          {t('app.newApp.startFromBlank')}
-        </button>
-        <button className='flex w-full cursor-pointer items-center rounded-lg px-6 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary' onClick={() => setShowNewAppTemplateDialog(true)}>
-          <FilePlus02 className='mr-2 h-4 w-4 shrink-0' />
-          {t('app.newApp.startFromTemplate')}
-        </button>
-        <button
-          onClick={() => setShowCreateFromDSLModal(true)}
-          className='flex w-full cursor-pointer items-center rounded-lg px-6 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary'>
-          <FileArrow01 className='mr-2 h-4 w-4 shrink-0' />
-          {t('app.importDSL')}
-        </button>
-      </div>
+      {/* <div className='grow rounded-t-xl p-2'>
+        <div className='px-6 pb-2 pt-2 text-xs font-medium leading-[18px] text-text-tertiary'>{t('app.createApp')}</div>
+        <div className="flex justify-center">
+          <button className='flex flex-col w-[150px] max-w-full cursor-pointer items-center rounded-lg px-6 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary' onClick={() => setShowNewAppModal(true)}>
+            <FilePlus01 className='h-12 w-12 shrink-0 mb-3 border p-4 rounded-lg' />
+            {t('app.newApp.startFromBlank')}
+          </button>
+          <button className='flex w-full cursor-pointer items-center rounded-lg px-6 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary' onClick={() => setShowNewAppTemplateDialog(true)}>
+            <FilePlus02 className='mr-2 h-4 w-4 shrink-0' />
+            {t('app.newApp.startFromTemplate')}
+          </button>
+          <button
+            onClick={() => setShowCreateFromDSLModal(true)}
+            className='flex flex-col w-[150px] max-w-full cursor-pointer items-center rounded-lg px-6 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary'>
+            <FileArrow01 className='h-12 w-12 shrink-0 mb-3 border p-4  rounded-lg' />
+            {t('app.importDSL')}
+          </button>
+        </div>
+      </div> */}
+
+      <Button type="button" variant="primary" onClick={() => setShowNewAppModal(true)}><RiAddLine className='mr-2 h-4 w-4' />{t('common.operation.new')}</Button>
+      <Button type="button" variant="secondary-accent" className='ml-4' onClick={() => setShowCreateFromDSLModal(true)}><RiAddLine className='mr-2 h-4 w-4' />{t('app.importDSL')}</Button>
 
       <CreateAppModal
         show={showNewAppModal}

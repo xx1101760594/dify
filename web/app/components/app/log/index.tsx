@@ -39,14 +39,18 @@ const EmptyElement: FC<{ appUrl: string }> = ({ appUrl }) => {
   const pathSegments = pathname.split('/')
   pathSegments.pop()
   return <div className='flex h-full items-center justify-center'>
+    <div>
+    <img src={`${basePath}/empty/empty.png`} className='block object-contain w-80 m-auto mb-5' />
     <div className='box-border h-fit w-[560px] rounded-2xl bg-background-section-burn px-5 py-4'>
-      <span className='system-md-semibold text-text-secondary'>{t('appLog.table.empty.element.title')}<ThreeDotsIcon className='relative -left-1.5 -top-3 inline' /></span>
+      <span className='system-md-semibold text-text-secondary'>{t('appLog.table.empty.element.title')}</span>
       <div className='system-sm-regular mt-2 text-text-tertiary'>
-        <Trans
+        {t('appLog.table.empty.element.content')}
+        {/* <Trans
           i18nKey="appLog.table.empty.element.content"
           components={{ shareLink: <Link href={`${pathSegments.join('/')}/overview`} className='text-util-colors-blue-blue-600' />, testLink: <Link href={appUrl} className='text-util-colors-blue-blue-600' target='_blank' rel='noopener noreferrer' /> }}
-        />
+        /> */}
       </div>
+    </div>
     </div>
   </div>
 }

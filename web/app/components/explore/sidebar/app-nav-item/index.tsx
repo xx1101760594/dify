@@ -45,7 +45,7 @@ export default function AppNavItem({
     <div
       ref={ref}
       key={id}
-      className={cn('system-sm-medium flex h-8 items-center justify-between rounded-lg px-2 text-sm font-normal text-components-menu-item-text mobile:justify-center mobile:px-1',
+      className={cn('system-sm-medium flex h-10 items-center justify-between rounded-lg px-2 text-sm font-normal text-components-menu-item-text mobile:justify-center mobile:px-2',
         isSelected ? 'bg-state-base-active text-components-menu-item-text-active' : 'hover:bg-state-base-hover hover:text-components-menu-item-text-hover',
       )}
       onClick={() => {

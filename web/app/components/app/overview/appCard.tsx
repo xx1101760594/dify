@@ -113,9 +113,10 @@ function AppCard({
       default:
         // jump to page develop
         return () => {
-          const pathSegments = pathname.split('/')
-          pathSegments.pop()
-          router.push(`${pathSegments.join('/')}/develop`)
+          // const pathSegments = pathname.split('/')
+          // pathSegments.pop()
+          // router.push(`${pathSegments.join('/')}/develop`)
+          window.open(`${window.location.origin}/docs/zh-hans/introduction`, "_blank");
         }
     }
   }

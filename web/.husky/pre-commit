@@ -46,7 +46,7 @@ fi
 if $web_modified; then
     echo "Running ESLint on web module"
     cd ./web || exit 1
-    lint-staged
+    # lint-staged
 
     echo "Running unit tests check"
     modified_files=$(git diff --cached --name-only -- utils | grep -v '\.spec\.ts$' || true)

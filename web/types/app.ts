@@ -45,8 +45,14 @@ export enum RETRIEVE_METHOD {
   semantic = 'semantic_search',
   fullText = 'full_text_search',
   hybrid = 'hybrid_search',
+  hybridAndGraph = 'hybrid_search_with_graph',
   invertedIndex = 'invertedIndex',
   keywordSearch = 'keyword_search',
+  pprSearch = 'ppr_search',
+  semanticAndFullText = 'semantic_fulltext_hybrid', // 全文+向量
+  semanticAndPprSearch = 'semantic_ppr_hybrid', // 向量+图谱
+  fullTextAndPprSearch = 'fulltext_ppr_hybrid', // 全文+图谱
+  allHybrid = 'all_hybrid', // 全选
 }
 
 export type VariableInput = {
@@ -256,7 +262,7 @@ export type Language = typeof LanguagesSupported[number]
  * Web Application Configuration
  */
 export type SiteConfig = {
-  /** Application URL Identifier: `http://dify.app/{access_token}` */
+  /** Application URL Identifier: `http://cubix.app/{access_token}` */
   access_token: string
   /** Public Title */
   title: string
@@ -436,6 +442,8 @@ export type RetrievalConfig = {
   score_threshold_enabled: boolean
   score_threshold: number
   reranking_mode?: RerankingModeEnum
+  hybrid_search_with_graph?: boolean
+  selected_methods?: string[] // 存储多选的检索方法
   weights?: {
     weight_type: WeightedScoreEnum
     vector_setting: {

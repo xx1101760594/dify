@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useContext } from 'use-context-selector'
@@ -10,16 +10,22 @@ import { login } from '@/service/common'
 import Input from '@/app/components/base/input'
 import I18NContext from '@/context/i18n'
 import { noop } from 'lodash-es'
+import {
+  RiEyeLine,
+  RiEyeOffLine,
+} from '@remixicon/react'
+import { getSsoUrl } from '@/service/common'
 
 type MailAndPasswordAuthProps = {
   isInvite: boolean
   isEmailSetup: boolean
   allowRegistration: boolean
+  allowSsoLogin: boolean
 }
 
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
 
-export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegistration }: MailAndPasswordAuthProps) {
+export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegistration, allowSsoLogin }: MailAndPasswordAuthProps) {
   const { t } = useTranslation()
   const { locale } = useContext(I18NContext)
   const router = useRouter()
@@ -28,6 +34,7 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
   const emailFromLink = decodeURIComponent(searchParams.get('email') || '')
   const [email, setEmail] = useState(emailFromLink)
   const [password, setPassword] = useState('')
+  const [ssoUrlData, setSsoUrlData] = useState<any>({})
 
   const [isLoading, setIsLoading] = useState(false)
   const handleEmailPasswordLogin = async () => {
@@ -103,10 +110,38 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
       setIsLoading(false)
     }
   }
+  const handleSsoLogin = async () => {
+    console.log('---ssoUrlData---',ssoUrlData)
+     if (ssoUrlData.result === 'success') {
+      window.location.href = ssoUrlData.data.sso_login_url
+    }
+    else {
+      Toast.notify({
+        type: 'error',
+        message: ssoUrlData.data,
+      })
+      router.replace('/signin')
+    }
+  }
 
+  const getSsoLoginUrl = async() => {
+    const callback_url = window.location.origin+'/sso'
+    // const callback_url = 'http://10.128.172.252/sso'
+    
+    const res = await getSsoUrl({
+      params: {
+       callback_url: callback_url,
+      },
+    })
+    setSsoUrlData(res)
+  }
+
+  useEffect(() => {
+    getSsoLoginUrl()
+  },[allowSsoLogin])
   return <form onSubmit={noop}>
-    <div className='mb-3'>
-      <label htmlFor="email" className="system-md-semibold my-2 text-text-secondary">
+    <div className='mb-6'>
+      <label htmlFor="email" className="my-2 text-text-secondary">
         {t('login.email')}
       </label>
       <div className="mt-1">
@@ -123,17 +158,17 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
       </div>
     </div>
 
-    <div className='mb-3'>
+    <div className='mb-6'>
       <label htmlFor="password" className="my-2 flex items-center justify-between">
-        <span className='system-md-semibold text-text-secondary'>{t('login.password')}</span>
-        <Link
+        <span className='text-text-secondary'>{t('login.password')}</span>
+        {/* <Link
           href={`/reset-password?${searchParams.toString()}`}
           className={`system-xs-regular ${isEmailSetup ? 'text-components-button-secondary-accent-text' : 'pointer-events-none text-components-button-secondary-accent-text-disabled'}`}
           tabIndex={isEmailSetup ? 0 : -1}
           aria-disabled={!isEmailSetup}
         >
           {t('login.forget')}
-        </Link>
+        </Link> */}
       </label>
       <div className="relative mt-1">
         <Input
@@ -155,7 +190,7 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
             variant='ghost'
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? '👀' : '😝'}
+            {showPassword ? <RiEyeLine className='mr-2 h-4 w-4' /> : <RiEyeOffLine className='mr-2 h-4 w-4' />}
           </Button>
         </div>
       </div>
@@ -170,5 +205,14 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
         className="w-full"
       >{t('login.signBtn')}</Button>
     </div>
+    {allowSsoLogin && <div className='mb-2'>
+      <div className='relative mt-10 mb-4 pt-5 border-t'><span className='absolute left-1/2 -translate-x-1/2 bg-white px-2 -top-3'>其他登录方式</span></div>
+      <Button
+        tabIndex={2}
+        variant='secondary'
+        onClick={handleSsoLogin}
+        className="w-full"
+      >{t('login.ssoBtn')}</Button>
+    </div>}
   </form>
 }

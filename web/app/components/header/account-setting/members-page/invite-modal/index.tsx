@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { ReactMultiEmail } from 'react-multi-email'
 import { RiErrorWarningFill } from '@remixicon/react'
 import RoleSelector from './role-selector'
+import WorkspaceSelector from './workspace-selector'
 import s from './index.module.css'
 import cn from '@/utils/classnames'
 import Modal from '@/app/components/base/modal'
@@ -17,6 +18,7 @@ import type { InvitationResult } from '@/models/common'
 import I18n from '@/context/i18n'
 import 'react-multi-email/dist/style.css'
 import { noop } from 'lodash-es'
+import CheckboxWithLabel from '@/app/components/datasets/create/website/base/checkbox-with-label'
 
 type IInviteModalProps = {
   isEmailSetup: boolean
@@ -35,13 +37,14 @@ const InviteModal = ({
 
   const { locale } = useContext(I18n)
   const [role, setRole] = useState<string>('normal')
+  const [workspace, setWorkspace] = useState<boolean>(true)
 
   const handleSend = useCallback(async () => {
     if (emails.map((email: string) => emailRegex.test(email)).every(Boolean)) {
       try {
         const { result, invitation_results } = await inviteMember({
           url: '/workspaces/current/members/invite-email',
-          body: { emails, role, language: locale },
+          body: { emails, role, language: locale, create_workspace: workspace },
         })
 
         if (result === 'success') {
@@ -54,7 +57,13 @@ const InviteModal = ({
     else {
       notify({ type: 'error', message: t('common.members.emailInvalid') })
     }
-  }, [role, emails, notify, onCancel, onSend, t])
+  }, [role, emails, notify, onCancel, onSend, t, workspace])
+
+  function handleWorkspaceChange() {
+    const newValue = !workspace
+    setWorkspace(newValue)
+  }
+
 
   return (
     <div className={cn(s.wrap)}>
@@ -104,6 +113,16 @@ const InviteModal = ({
           </div>
           <div className='mb-6'>
             <RoleSelector value={role} onChange={setRole} />
+          </div>
+          <div className='mb-6' >
+            {/* <WorkspaceSelector value={workspace} onChange={setWorkspace} /> */}
+            <CheckboxWithLabel
+              className='mr-2'
+              labelClassName='font-medium'
+              label={t('common.members.workspaceLabel')}
+              isChecked={workspace}
+              onChange={handleWorkspaceChange}
+            />
           </div>
           <Button
             tabIndex={0}

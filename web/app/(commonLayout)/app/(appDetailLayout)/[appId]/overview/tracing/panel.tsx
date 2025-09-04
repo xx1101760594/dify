@@ -32,7 +32,7 @@ const Title = ({
 
   return (
     <div className={cn('system-xl-semibold flex items-center text-text-primary', className)}>
-      {t('common.appMenus.overview')}
+      {t('dataset.datasetsApi')}
     </div>
   )
 }
@@ -172,7 +172,7 @@ const Panel: FC = () => {
         )}
         onClick={showPopup}
       >
-        {!inUseTracingProvider && (
+        {/* {!inUseTracingProvider && (
           <>
             <TracingIcon size='md' />
             <div className='system-sm-semibold mx-2 text-text-secondary'>{t(`${I18N_PREFIX}.title`)}</div>
@@ -199,7 +199,7 @@ const Panel: FC = () => {
               <RiArrowDownDoubleLine className='h-4 w-4 text-text-tertiary' />
             </div>
           </>
-        )}
+        )} */}
         {hasConfiguredTracing && (
           <>
             <div className='ml-4 mr-1 flex items-center'>

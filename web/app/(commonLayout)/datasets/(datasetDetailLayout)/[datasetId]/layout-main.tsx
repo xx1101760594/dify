@@ -94,18 +94,18 @@ const ExtraInfo = ({ isMobile, relatedApps, expand }: IExtraInfoProps) => {
               <RiApps2AddLine className='h-4 w-4 text-text-tertiary' />
             </div>
             <div className='my-2 text-xs text-text-tertiary'>{t('common.datasetMenus.emptyTip')}</div>
-            <a
+            {/* <a
               className='mt-2 inline-flex cursor-pointer items-center text-xs text-text-accent'
               href={
                 locale === LanguagesSupported[1]
-                  ? 'https://docs.dify.ai/v/zh-hans/guides/knowledge-base/integrate-knowledge-within-application'
-                  : 'https://docs.dify.ai/guides/knowledge-base/integrate-knowledge-within-application'
+                  ? 'https://docs.cubix.ai/zh-hans/guides/knowledge-base/integrate-knowledge-within-application'
+                  : 'https://docs.cubix.ai/guides/knowledge-base/integrate-knowledge-within-application'
               }
               target='_blank' rel='noopener noreferrer'
             >
               <RiBookOpenLine className='mr-1 text-text-accent' />
               {t('common.datasetMenus.viewDoc')}
-            </a>
+            </a> */}
           </div>
         }
       >
@@ -160,7 +160,7 @@ const DatasetDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
 
   useEffect(() => {
     if (datasetRes)
-      document.title = `${datasetRes.name || 'Dataset'} - Dify`
+      document.title = `${datasetRes.name || 'Dataset'}`
   }, [datasetRes])
 
   const setAppSiderbarExpand = useStore(state => state.setAppSiderbarExpand)

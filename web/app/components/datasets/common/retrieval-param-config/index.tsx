@@ -1,6 +1,6 @@
 'use client'
 import type { FC } from 'react'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Image from 'next/image'
@@ -39,7 +39,8 @@ const RetrievalParamConfig: FC<Props> = ({
   const { t } = useTranslation()
   const canToggleRerankModalEnable = type !== RETRIEVE_METHOD.hybrid
   const isEconomical = type === RETRIEVE_METHOD.invertedIndex
-  const isHybridSearch = type === RETRIEVE_METHOD.hybrid
+  const isHybridSearch = type === RETRIEVE_METHOD.hybrid || type === RETRIEVE_METHOD.hybridAndGraph
+  const isGraph = type === RETRIEVE_METHOD.hybridAndGraph
   const {
     modelList: rerankModelList,
   } = useModelListAndDefaultModel(ModelTypeEnum.rerank)
@@ -70,6 +71,16 @@ const RetrievalParamConfig: FC<Props> = ({
       model_name: value.reranking_model.reranking_model_name,
     }
   }, [value.reranking_model])
+
+  const handleSwitchGraphClick = useCallback((enable: boolean) => {
+    onChange({
+      ...value,
+      hybrid_search_with_graph: enable,
+      search_method: enable ? RETRIEVE_METHOD.hybridAndGraph : RETRIEVE_METHOD.hybrid
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentModel, onChange, value])
+
 
   const handleChangeRerankMode = (v: RerankingModeEnum) => {
     if (v === value.reranking_mode)
@@ -112,17 +123,28 @@ const RetrievalParamConfig: FC<Props> = ({
   ]
 
   return (
-    <div>
-      {!isEconomical && !isHybridSearch && (
+    <div className='pt-4'>
+      {/* {!isEconomical && !isHybridSearch && ( */}
         <div>
+          {/* <div className="mb-2">
+            { isHybridSearch && (<div>
+              <Switch
+                size='md'
+                defaultValue={value.hybrid_search_with_graph || isGraph}
+                onChange={handleSwitchGraphClick}
+              /> 
+              <span className='system-sm-semibold ml-2 text-text-secondary'>{t('dataset.retrieval.ppr_search.title')}</span>
+              </div>
+            ) }
+          </div> */}
           <div className='mb-2 flex items-center space-x-2'>
-            {canToggleRerankModalEnable && (
+            {/* {canToggleRerankModalEnable && ( */}
               <Switch
                 size='md'
                 defaultValue={value.reranking_enable}
                 onChange={handleDisabledSwitchClick}
               />
-            )}
+            {/* )} */}
             <div className='flex items-center'>
               <span className='system-sm-semibold mr-0.5 text-text-secondary'>{t('common.modelProvider.rerankModel.key')}</span>
               <Tooltip
@@ -150,9 +172,8 @@ const RetrievalParamConfig: FC<Props> = ({
             )
           }
         </div>
-      )}
-      {
-        !isHybridSearch && (
+      {/* )} */}
+      {/* { !isHybridSearch && ( */}
           <div className={cn(!isEconomical && 'mt-4', 'space-between flex space-x-4')}>
             <TopKItem
               className='grow'
@@ -186,9 +207,8 @@ const RetrievalParamConfig: FC<Props> = ({
               />
             )}
           </div>
-        )
-      }
-      {
+        {/* )} */}
+      {/* {
         isHybridSearch && (
           <>
             <div className='mb-4 flex gap-2'>
@@ -288,7 +308,7 @@ const RetrievalParamConfig: FC<Props> = ({
             </div>
           </>
         )
-      }
+      } */}
     </div>
   )
 }

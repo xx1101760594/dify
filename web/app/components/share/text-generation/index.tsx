@@ -36,7 +36,7 @@ import Toast from '@/app/components/base/toast'
 import type { VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
 import { useAppFavicon } from '@/hooks/use-app-favicon'
-import LogoSite from '@/app/components/base/logo/logo-site'
+import DifyLogo from '@/app/components/base/logo/dify-logo'
 import cn from '@/utils/classnames'
 
 const GROUP_SIZE = 5 // to avoid RPM(Request per minute) limit. The group task finished then the next group.
@@ -302,10 +302,17 @@ const TextGeneration: FC<IMainProps> = ({
     const varLen = promptConfig?.prompt_variables.length || 0
     setIsCallBatchAPI(true)
     const allTaskList: Task[] = payloadData.map((item, i) => {
-      const inputs: Record<string, string> = {}
+      const inputs: Record<string, any> = {}
       if (varLen > 0) {
         item.slice(0, varLen).forEach((input, index) => {
-          inputs[promptConfig?.prompt_variables[index].key as string] = input
+          const varSchema = promptConfig?.prompt_variables[index]
+          inputs[varSchema?.key as string] = input
+          if (!input) {
+            if (varSchema?.type === 'string' || varSchema?.type === 'paragraph')
+              inputs[varSchema?.key as string] = ''
+            else
+              inputs[varSchema?.key as string] = undefined
+          }
         })
       }
       return {
@@ -374,6 +381,8 @@ const TextGeneration: FC<IMainProps> = ({
             copyright: '',
             icon: installedAppInfo?.app.icon,
             icon_background: installedAppInfo?.app.icon_background,
+            icon_type: installedAppInfo?.app.icon_type,
+            icon_url: installedAppInfo?.app.icon_url,
           },
           plan: 'basic',
         }
@@ -420,7 +429,7 @@ const TextGeneration: FC<IMainProps> = ({
       if (canReplaceLogo)
         document.title = `${siteInfo.title}`
       else
-        document.title = `${siteInfo.title} - Powered by Dify`
+        document.title = `${siteInfo.title} - Powered by CloudWalk`
     }
   }, [siteInfo?.title, canReplaceLogo])
 
@@ -528,6 +537,8 @@ const TextGeneration: FC<IMainProps> = ({
       </div>)
   }
 
+  console.log('-----siteInfo--',siteInfo)
+
   return (
     <div className={cn(
       'bg-background-default-burn',
@@ -552,7 +563,7 @@ const TextGeneration: FC<IMainProps> = ({
               imageUrl={siteInfo.icon_url}
             />
             <div className='system-md-semibold grow truncate text-text-secondary'>{siteInfo.title}</div>
-            <MenuDropdown data={siteInfo} />
+            {/* <MenuDropdown data={siteInfo} /> */}
           </div>
           {siteInfo.description && (
             <div className='system-xs-regular text-text-tertiary'>{siteInfo.description}</div>
@@ -617,7 +628,7 @@ const TextGeneration: FC<IMainProps> = ({
           )}
         </div>
         {/* powered by */}
-        {!customConfig?.remove_webapp_brand && (
+        {/* {!customConfig?.remove_webapp_brand && (
           <div className={cn(
             'flex shrink-0 items-center gap-1.5 bg-components-panel-bg py-3',
             isPC ? 'px-8' : 'px-4',
@@ -628,10 +639,10 @@ const TextGeneration: FC<IMainProps> = ({
               <img src={customConfig?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
             )}
             {!customConfig?.replace_webapp_logo && (
-              <LogoSite className='!h-5' />
+              <CubixLogo size='small' />
             )}
           </div>
-        )}
+        )} */}
       </div>
       {/* Result */}
       <div className={cn(
@@ -657,7 +668,7 @@ const TextGeneration: FC<IMainProps> = ({
                 showResultPanel()
             }}
           >
-            <div className='h-1 w-8 cursor-grab rounded bg-divider-solid'/>
+            <div className='h-1 w-8 cursor-grab rounded bg-divider-solid' />
           </div>
         )}
         {renderResWrap}

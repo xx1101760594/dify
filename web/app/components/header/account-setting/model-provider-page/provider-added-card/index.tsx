@@ -83,7 +83,7 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
   return (
     <div
       className={cn(
-        'mb-2 rounded-xl border-[0.5px] border-divider-regular bg-third-party-model-bg-default shadow-xs',
+        'rounded-xl border-[0.5px] border-divider-regular bg-third-party-model-bg-default shadow-xs',
         provider.provider === 'langgenius/openai/openai' && 'bg-third-party-model-bg-openai',
         provider.provider === 'langgenius/anthropic/anthropic' && 'bg-third-party-model-bg-anthropic',
       )}

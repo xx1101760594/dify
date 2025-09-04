@@ -46,6 +46,7 @@ import { useDocumentArchive, useDocumentDelete, useDocumentDisable, useDocumentE
 import { extensionToFileType } from '@/app/components/datasets/hit-testing/utils/extension-to-file-type'
 import useBatchEditDocumentMetadata from '../metadata/hooks/use-batch-edit-document-metadata'
 import EditMetadataBatchModal from '@/app/components/datasets/metadata/edit-metadata-batch/modal'
+import DocumentPreviewModal from './document-preview-modal'
 import { noop } from 'lodash-es'
 
 export const useIndexStatus = () => {
@@ -461,10 +462,22 @@ const DocumentList: FC<IDocumentListProps> = ({
     setTrue: setShowRenameModalTrue,
     setFalse: setShowRenameModalFalse,
   }] = useBoolean(false)
+  const [isShowPreviewModal, {
+    setTrue: setShowPreviewModalTrue,
+    setFalse: setShowPreviewModalFalse,
+  }] = useBoolean(false)
+  const [previewDocument, setPreviewDocument] = useState<LocalDoc | null>(null)
+  
   const handleShowRenameModal = useCallback((doc: LocalDoc) => {
     setCurrDocument(doc)
     setShowRenameModalTrue()
   }, [setShowRenameModalTrue])
+  
+  const handleShowPreviewModal = useCallback((doc: LocalDoc) => {
+    setPreviewDocument(doc)
+    setShowPreviewModalTrue()
+  }, [setShowPreviewModalTrue])
+  
   const handleRenamed = useCallback(() => {
     onUpdate()
   }, [onUpdate])
@@ -535,6 +548,11 @@ const DocumentList: FC<IDocumentListProps> = ({
                 </div>
               </td>
               <td>
+                <div className='flex w-[240px]'>
+                  {t('datasetDocuments.list.table.header.fileId')}
+                </div>
+              </td>
+              <td>
                 <div className='flex'>
                   {t('datasetDocuments.list.table.header.fileName')}
                 </div>
@@ -580,13 +598,27 @@ const DocumentList: FC<IDocumentListProps> = ({
                   </div>
                 </td>
                 <td>
+                  <div className='truncate text-sm' title={doc.name}>{doc.name}</div>
+                </td>
+                <td>
+                  <div className='truncate text-sm' title={doc.real_name}>{doc.real_name}</div>
+                </td>
+                {/* <td>
                   <div className={'group mr-6 flex max-w-[460px] items-center hover:mr-0'}>
                     <div className='shrink-0'>
                       {doc?.data_source_type === DataSourceType.NOTION && <NotionIcon className='mr-1.5 mt-[-3px] inline-flex align-middle' type='page' src={doc.data_source_info.notion_page_icon} />}
                       {doc?.data_source_type === DataSourceType.FILE && <FileTypeIcon type={extensionToFileType(doc?.data_source_info?.upload_file?.extension ?? fileType)} className='mr-1.5' />}
                       {doc?.data_source_type === DataSourceType.WEB && <Globe01 className='mr-1.5 mt-[-3px] inline-flex align-middle' />}
                     </div>
-                    <span className='grow-1 truncate text-sm'>{doc.name}</span>
+                    <span 
+                      className='grow-1 truncate text-sm cursor-pointer hover:text-text-accent'
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleShowPreviewModal(doc)
+                      }}
+                    >
+                      {doc.name}
+                    </span>
                     <div className='hidden shrink-0 group-hover:ml-auto group-hover:flex'>
                       <Tooltip
                         popupContent={t('datasetDocuments.list.table.rename')}
@@ -603,7 +635,7 @@ const DocumentList: FC<IDocumentListProps> = ({
                       </Tooltip>
                     </div>
                   </div>
-                </td>
+                </td> */}
                 <td>
                   <ChunkingModeLabel
                     isGeneralMode={isGeneralMode}
@@ -664,6 +696,15 @@ const DocumentList: FC<IDocumentListProps> = ({
           name={currDocument.name}
           onClose={setShowRenameModalFalse}
           onSaved={handleRenamed}
+        />
+      )}
+
+      {isShowPreviewModal && previewDocument && (
+        <DocumentPreviewModal
+          isShow={isShowPreviewModal}
+          onClose={setShowPreviewModalFalse}
+          document={previewDocument}
+          datasetId={datasetId}
         />
       )}
 

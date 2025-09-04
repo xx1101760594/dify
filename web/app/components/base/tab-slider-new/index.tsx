@@ -25,10 +25,11 @@ const TabSliderNew: FC<TabSliderProps> = ({
           key={option.value}
           onClick={() => onChange(option.value)}
           className={cn(
-            'mr-1 flex h-[32px] cursor-pointer items-center rounded-lg border-[0.5px] border-transparent px-3 py-[7px] text-[13px] font-medium leading-[18px] text-text-tertiary hover:bg-components-main-nav-nav-button-bg-active',
-            value === option.value && 'border-components-main-nav-nav-button-border bg-components-main-nav-nav-button-bg-active text-components-main-nav-nav-button-text-active shadow-xs',
+            'relative mr-1 flex h-[32px] cursor-pointer items-center mr-6 py-[7px] text-[14px] leading-[18px] text-black hover:text-components-main-nav-nav-button-text-active',
+            value === option.value && 'text-components-main-nav-nav-button-text-active text-[16px]',
           )}
         >
+         {value === option.value &&  <span className='absolute w-[30px] h-[3px] bg-red-700 bottom-[-8px] ml-[50%]' style={{left: -15}}></span>}
           {option.icon}
           {option.text}
         </div>

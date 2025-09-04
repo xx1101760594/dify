@@ -35,8 +35,10 @@ import type { OpeningStatement } from '@/app/components/base/features/types'
 import type { InputVar } from '@/app/components/workflow/types'
 import type { UpdatePluginPayload } from '@/app/components/plugins/types'
 import UpdatePlugin from '@/app/components/plugins/update-plugin'
+import DatabaseModal from '@/app/components/database/database-modal'
 import { removeSpecificQueryParam } from '@/utils'
 import { noop } from 'lodash-es'
+import { DatabaseConnection } from '@/types/database'
 
 export type ModalState<T> = {
   payload: T
@@ -59,6 +61,11 @@ export type LoadBalancingEntryModalType = ModelModalType & {
   index?: number
 }
 
+export type DatabaseModalType = {
+  database?: DatabaseConnection
+  isEditMode: boolean
+}
+
 export type ModalContextState = {
   setShowAccountSettingModal: Dispatch<SetStateAction<ModalState<string> | null>>
   setShowApiBasedExtensionModal: Dispatch<SetStateAction<ModalState<ApiBasedExtension> | null>>
@@ -76,6 +83,7 @@ export type ModalContextState = {
     onAutoAddPromptVariable?: (variable: PromptVariable[]) => void
   }> | null>>
   setShowUpdatePluginModal: Dispatch<SetStateAction<ModalState<UpdatePluginPayload> | null>>
+  setShowDatabaseModal: Dispatch<SetStateAction<ModalState<DatabaseModalType> | null>>
 }
 const ModalContext = createContext<ModalContextState>({
   setShowAccountSettingModal: noop,
@@ -90,6 +98,7 @@ const ModalContext = createContext<ModalContextState>({
   setShowModelLoadBalancingEntryModal: noop,
   setShowOpeningModal: noop,
   setShowUpdatePluginModal: noop,
+  setShowDatabaseModal: noop,
 })
 
 export const useModalContext = () => useContext(ModalContext)
@@ -119,6 +128,7 @@ export const ModalContextProvider = ({
     onAutoAddPromptVariable?: (variable: PromptVariable[]) => void
   }> | null>(null)
   const [showUpdatePluginModal, setShowUpdatePluginModal] = useState<ModalState<UpdatePluginPayload> | null>(null)
+  const [showDatabaseModal, setShowDatabaseModal] = useState<ModalState<DatabaseModalType> | null>(null)
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -232,6 +242,18 @@ export const ModalContextProvider = ({
     setShowOpeningModal(null)
   }
 
+  const handleCancelDatabaseModal = useCallback(() => {
+    setShowDatabaseModal(null)
+    if (showDatabaseModal?.onCancelCallback)
+      showDatabaseModal.onCancelCallback()
+  }, [showDatabaseModal])
+
+  const handleSaveDatabaseModal = useCallback(() => {
+    if (showDatabaseModal?.onSaveCallback)
+      showDatabaseModal.onSaveCallback(showDatabaseModal.payload)
+    setShowDatabaseModal(null)
+  }, [showDatabaseModal])
+
   return (
     <ModalContext.Provider value={{
       setShowAccountSettingModal,
@@ -246,6 +268,7 @@ export const ModalContextProvider = ({
       setShowModelLoadBalancingEntryModal,
       setShowOpeningModal,
       setShowUpdatePluginModal,
+      setShowDatabaseModal,
     }}>
       <>
         {children}
@@ -369,6 +392,16 @@ export const ModalContextProvider = ({
                 setShowUpdatePluginModal(null)
                 showUpdatePluginModal.onSaveCallback?.({} as any)
               }}
+            />
+          )
+        }
+        {
+          !!showDatabaseModal && (
+            <DatabaseModal
+              database={showDatabaseModal.payload.database}
+              isEditMode={showDatabaseModal.payload.isEditMode}
+              onCancel={handleCancelDatabaseModal}
+              onSave={handleSaveDatabaseModal}
             />
           )
         }

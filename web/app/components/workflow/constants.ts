@@ -3,6 +3,7 @@ import { BlockEnum, VarType } from './types'
 import StartNodeDefault from './nodes/start/default'
 import AnswerDefault from './nodes/answer/default'
 import LLMDefault from './nodes/llm/default'
+import DatabaseDefault from './nodes/database-query/default'
 import KnowledgeRetrievalDefault from './nodes/knowledge-retrieval/default'
 import QuestionClassifierDefault from './nodes/question-classifier/default'
 import IfElseDefault from './nodes/if-else/default'
@@ -34,7 +35,7 @@ type NodesExtraData = {
 }
 export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
   [BlockEnum.Start]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -43,7 +44,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: StartNodeDefault.checkValid,
   },
   [BlockEnum.End]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -52,7 +53,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: EndNodeDefault.checkValid,
   },
   [BlockEnum.Answer]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -61,7 +62,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: AnswerDefault.checkValid,
   },
   [BlockEnum.LLM]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -69,8 +70,17 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     getAvailableNextNodes: LLMDefault.getAvailableNextNodes,
     checkValid: LLMDefault.checkValid,
   },
+  [BlockEnum.Database]: {
+    author: 'CloudWalk Cubix',
+    about: '',
+    availablePrevNodes: [],
+    availableNextNodes: [],
+    getAvailablePrevNodes: DatabaseDefault.getAvailablePrevNodes,
+    getAvailableNextNodes: DatabaseDefault.getAvailableNextNodes,
+    checkValid: DatabaseDefault.checkValid,
+  },
   [BlockEnum.KnowledgeRetrieval]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -79,7 +89,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: KnowledgeRetrievalDefault.checkValid,
   },
   [BlockEnum.IfElse]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -88,7 +98,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: IfElseDefault.checkValid,
   },
   [BlockEnum.Iteration]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -97,7 +107,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: IterationDefault.checkValid,
   },
   [BlockEnum.IterationStart]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -124,7 +134,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: LoopStartDefault.checkValid,
   },
   [BlockEnum.LoopEnd]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -133,7 +143,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: LoopEndDefault.checkValid,
   },
   [BlockEnum.Code]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -142,7 +152,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: CodeDefault.checkValid,
   },
   [BlockEnum.TemplateTransform]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -151,7 +161,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: TemplateTransformDefault.checkValid,
   },
   [BlockEnum.QuestionClassifier]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -160,7 +170,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: QuestionClassifierDefault.checkValid,
   },
   [BlockEnum.HttpRequest]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -169,7 +179,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: HttpRequestDefault.checkValid,
   },
   [BlockEnum.VariableAssigner]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -178,7 +188,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: VariableAssignerDefault.checkValid,
   },
   [BlockEnum.Assigner]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -187,7 +197,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: AssignerDefault.checkValid,
   },
   [BlockEnum.VariableAggregator]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -196,7 +206,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: VariableAssignerDefault.checkValid,
   },
   [BlockEnum.ParameterExtractor]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -205,7 +215,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: ParameterExtractorDefault.checkValid,
   },
   [BlockEnum.Tool]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -214,7 +224,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: ToolDefault.checkValid,
   },
   [BlockEnum.DocExtractor]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -223,7 +233,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: DocExtractorDefault.checkValid,
   },
   [BlockEnum.ListFilter]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -232,7 +242,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: ListFilterDefault.checkValid,
   },
   [BlockEnum.Agent]: {
-    author: 'Dify',
+    author: 'CloudWalk Cubix',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -267,6 +277,13 @@ export const NODES_INITIAL_DATA = {
     desc: '',
     variables: [],
     ...LLMDefault.defaultValue,
+  },
+  [BlockEnum.Database]: {
+    type: BlockEnum.Database,
+    title: '',
+    desc: '',
+    variables: [],
+    ...DatabaseDefault.defaultValue,
   },
   [BlockEnum.KnowledgeRetrieval]: {
     type: BlockEnum.KnowledgeRetrieval,
@@ -471,7 +488,7 @@ export const SUPPORT_OUTPUT_VARS_NODE = [
   BlockEnum.HttpRequest, BlockEnum.Tool, BlockEnum.VariableAssigner, BlockEnum.VariableAggregator, BlockEnum.QuestionClassifier,
   BlockEnum.ParameterExtractor, BlockEnum.Iteration, BlockEnum.Loop,
   BlockEnum.DocExtractor, BlockEnum.ListFilter,
-  BlockEnum.Agent,
+  BlockEnum.Agent, BlockEnum.Database,
 ]
 
 export const LLM_OUTPUT_STRUCT: Var[] = [
@@ -533,6 +550,21 @@ export const TOOL_OUTPUT_STRUCT: Var[] = [
   {
     variable: 'json',
     type: VarType.arrayObject,
+  },
+]
+
+export const DATABASE_OUTPUT_STRUCT: Var[] = [
+  {
+    variable: 'rows',
+    type: VarType.arrayObject,
+  },
+  {
+    variable: 'statement_type',
+    type: VarType.string,
+  },
+  {
+    variable: 'row_count',
+    type: VarType.number,
   },
 ]
 

@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'use-context-selector'
-import { useSelectedLayoutSegments } from 'next/navigation'
+import { useSelectedLayoutSegments,useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Toast from '../../base/toast'
 import Item from './app-nav-item'
@@ -54,10 +54,16 @@ const SideBar: FC<IExploreSideBarProps> = ({
 
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
+  const router = useRouter()
 
   const fetchInstalledAppList = async () => {
     const { installed_apps }: any = await doFetchInstalledAppList()
+    if (installed_apps.length > 0) {
+      console.log('------------------')
+      router.push(`/explore/installed/${installed_apps[0].id}`)
+    }
     setInstalledApps(installed_apps)
+   
   }
 
   const [showConfirm, setShowConfirm] = useState(false)
@@ -92,8 +98,8 @@ const SideBar: FC<IExploreSideBarProps> = ({
 
   const pinnedAppsCount = installedApps.filter(({ is_pinned }) => is_pinned).length
   return (
-    <div className='w-fit shrink-0 cursor-pointer border-r border-divider-burn px-4 pt-6 sm:w-[216px]'>
-      <div className={cn(isDiscoverySelected ? 'text-text-accent' : 'text-text-tertiary')}>
+    <div className='w-fit shrink-0 cursor-pointer border-r border-divider-burn px-4 pt-6 sm:w-[240px]'>
+      {/* <div className={cn(isDiscoverySelected ? 'text-text-accent' : 'text-text-tertiary')}>
         <Link
           href='/explore/apps'
           className={cn(isDiscoverySelected ? ' bg-components-main-nav-nav-button-bg-active' : 'font-medium hover:bg-state-base-hover',
@@ -103,13 +109,13 @@ const SideBar: FC<IExploreSideBarProps> = ({
           {isDiscoverySelected ? <SelectedDiscoveryIcon /> : <DiscoveryIcon />}
           {!isMobile && <div className='text-sm'>{t('explore.sidebar.discovery')}</div>}
         </Link>
-      </div>
+      </div> */}
       {installedApps.length > 0 && (
-        <div className='mt-10'>
-          <p className='break-all pl-2 text-xs font-medium uppercase text-text-tertiary mobile:px-0'>{t('explore.sidebar.workspace')}</p>
+        <div>
+          <p className='break-all pl-2 text-xs font-medium uppercase text-text-tertiary mobile:px-0'>{t('explore.sidebar.applicationList')}</p>
           <div className='mt-3 space-y-1 overflow-y-auto overflow-x-hidden'
             style={{
-              height: 'calc(100vh - 250px)',
+              height: 'calc(100vh - 120px)',
             }}
           >
             {installedApps.map(({ id, is_pinned, uninstallable, app: { name, icon_type, icon, icon_url, icon_background } }, index) => (

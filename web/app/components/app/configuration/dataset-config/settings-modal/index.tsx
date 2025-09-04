@@ -271,10 +271,10 @@ const SettingsModal: FC<SettingsModalProps> = ({
                   modelList={embeddingsModelList}
                 />
               </div>
-              <div className='mt-2 w-full text-xs leading-6 text-text-tertiary'>
+              {/* <div className='mt-2 w-full text-xs leading-6 text-text-tertiary'>
                 {t('datasetSettings.form.embeddingModelTip')}
                 <span className='cursor-pointer text-text-accent' onClick={() => setShowAccountSettingModal({ payload: 'provider' })}>{t('datasetSettings.form.embeddingModelTipLink')}</span>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -327,10 +327,10 @@ const SettingsModal: FC<SettingsModalProps> = ({
             <div className={cn(labelClass, 'w-auto min-w-[168px]')}>
               <div>
                 <div className='system-sm-semibold text-text-secondary'>{t('datasetSettings.form.retrievalSetting.title')}</div>
-                <div className='text-xs font-normal leading-[18px] text-text-tertiary'>
-                  <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/guides/knowledge-base/create-knowledge-and-upload-documents#id-4-retrieval-settings' className='text-text-accent'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
+                {/* <div className='text-xs font-normal leading-[18px] text-text-tertiary'>
+                  <a target='_blank' rel='noopener noreferrer' href='https://docs.cubix.ai/guides/knowledge-base/create-knowledge-and-upload-documents#id-4-retrieval-settings' className='text-text-accent'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
                   {t('datasetSettings.form.retrievalSetting.description')}
-                </div>
+                </div> */}
               </div>
             </div>
             <div>

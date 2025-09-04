@@ -16,7 +16,10 @@ import Button from '@/app/components/base/button'
 
 import { fetchInitValidateStatus, fetchSetupStatus, setup } from '@/service/common'
 import type { InitValidateStatusResponse, SetupStatusResponse } from '@/models/common'
-import { basePath } from '@/utils/var'
+import {
+  RiEyeLine,
+  RiEyeOffLine,
+} from '@remixicon/react'
 
 const validPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
 
@@ -81,12 +84,13 @@ const InstallForm = () => {
     fetchSetupStatus().then((res: SetupStatusResponse) => {
       if (res.step === 'finished') {
         localStorage.setItem('setup_status', 'finished')
-        router.push(`${basePath}/signin`)
+        // router.push('/signin')
+        setLoading(false)
       }
       else {
         fetchInitValidateStatus().then((res: InitValidateStatusResponse) => {
           if (res.status === 'not_started')
-            router.push(`${basePath}/init`)
+            router.push('/init')
         })
       }
       setLoading(false)
@@ -151,7 +155,7 @@ const InstallForm = () => {
                       onClick={() => setShowPassword(!showPassword)}
                       className="text-text-quaternary hover:text-text-tertiary focus:text-text-tertiary focus:outline-none"
                     >
-                      {showPassword ? '👀' : '😝'}
+                      {showPassword ? <RiEyeLine className='mr-2 h-4 w-4' /> : <RiEyeOffLine className='mr-2 h-4 w-4' />}
                     </button>
                   </div>
                 </div>
@@ -167,7 +171,7 @@ const InstallForm = () => {
                 </Button>
               </div>
             </form>
-            <div className="mt-2 block w-full text-xs text-text-tertiary">
+            {/* <div className="mt-2 block w-full text-xs text-text-tertiary">
               {t('login.license.tip')}
               &nbsp;
               <Link
@@ -175,7 +179,7 @@ const InstallForm = () => {
                 target='_blank' rel='noopener noreferrer'
                 href={'https://docs.dify.ai/user-agreement/open-source'}
               >{t('login.license.link')}</Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </>

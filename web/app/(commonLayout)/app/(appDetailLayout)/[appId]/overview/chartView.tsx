@@ -47,7 +47,7 @@ export default function ChartView({ appId }: IChartViewProps) {
   return (
     <div>
       <div className='system-xl-semibold mb-4 mt-8 flex flex-row items-center text-text-primary'>
-        <span className='mr-3'>{t('appOverview.analysis.title')}</span>
+        <span className='mr-3'>{t('common.appMenus.overview')}</span>
         <SimpleSelect
           items={Object.entries(TIME_PERIOD_MAPPING).map(([k, v]) => ({ value: k, name: t(`appLog.filter.period.${v.name}`) }))}
           className='mt-0 !w-40'

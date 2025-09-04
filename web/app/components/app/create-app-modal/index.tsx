@@ -44,7 +44,7 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
   const mutateApps = useContextSelector(AppsContext, state => state.mutateApps)
 
   const [appMode, setAppMode] = useState<AppMode>('chat')
-  const [appIcon, setAppIcon] = useState<AppIconSelection>({ type: 'emoji', icon: '🤖', background: '#FFEAD5' })
+  const [appIcon, setAppIcon] = useState<AppIconSelection>({ type: 'emoji', icon: 'speech_balloon',background:'' })
   const [showAppIconPicker, setShowAppIconPicker] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -105,7 +105,7 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
   })
   return <>
     <div className='flex h-full justify-center overflow-y-auto overflow-x-hidden'>
-      <div className='flex flex-1 shrink-0 justify-end'>
+      <div className='flex'>
         <div className='px-10'>
           <div className='h-6 w-full 2xl:h-[139px]' />
           <div className='pb-6 pt-1'>
@@ -114,13 +114,13 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
           <div className='mb-2 leading-6'>
             <span className='system-sm-semibold text-text-secondary'>{t('app.newApp.chooseAppType')}</span>
           </div>
-          <div className='flex w-[660px] flex-col gap-4'>
+          <div className='flex w-full flex-col gap-4'>
             <div>
-              <div className='mb-2'>
+              {/* <div className='mb-2'>
                 <span className='system-2xs-medium-uppercase text-text-tertiary'>{t('app.newApp.forBeginners')}</span>
-              </div>
+              </div> */}
               <div className='flex flex-row gap-2'>
-                <AppTypeCard
+                {/* <AppTypeCard
                   active={appMode === 'chat'}
                   title={t('app.types.chatbot')}
                   description={t('app.newApp.chatbotShortDescription')}
@@ -129,13 +129,13 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
                   </div>}
                   onClick={() => {
                     setAppMode('chat')
-                  }} />
+                  }} /> */}
                 <AppTypeCard
                   active={appMode === 'agent-chat'}
-                  title={t('app.types.agent')}
+                  title={t('app.typeSelector.agent')}
                   description={t('app.newApp.agentShortDescription')}
-                  icon={<div className='flex h-6 w-6 items-center justify-center rounded-md bg-components-icon-bg-violet-solid'>
-                    <Logic className='h-4 w-4 text-components-avatar-shape-fill-stop-100' />
+                  icon={<div className='flex h-8 w-8 items-center justify-center rounded-md bg-components-icon-bg-violet-solid'>
+                    <Logic className='h-8 w-8 text-components-avatar-shape-fill-stop-100' />
                   </div>}
                   onClick={() => {
                     setAppMode('agent-chat')
@@ -144,15 +144,35 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
                   active={appMode === 'completion'}
                   title={t('app.newApp.completeApp')}
                   description={t('app.newApp.completionShortDescription')}
-                  icon={<div className='flex h-6 w-6 items-center justify-center rounded-md bg-components-icon-bg-teal-solid'>
-                    <ListSparkle className='h-4 w-4 text-components-avatar-shape-fill-stop-100' />
+                  icon={<div className='flex h-8 w-8 items-center justify-center rounded-md bg-components-icon-bg-teal-solid'>
+                    <ListSparkle className='h-8 w-8 text-components-avatar-shape-fill-stop-100' />
                   </div>}
                   onClick={() => {
                     setAppMode('completion')
                   }} />
+                  <AppTypeCard
+                  active={appMode === 'advanced-chat'}
+                  title={t('app.typeSelector.advanced')}
+                  description={t('app.newApp.advancedShortDescription')}
+                  icon={<div className='flex h-8 w-8 items-center justify-center rounded-md bg-components-icon-bg-blue-light-solid'>
+                    <BubbleTextMod className='h-8 w-8 text-components-avatar-shape-fill-stop-100' />
+                  </div>}
+                  onClick={() => {
+                    setAppMode('advanced-chat')
+                  }} />
+                <AppTypeCard
+                  active={appMode === 'workflow'}
+                  title={t('app.typeSelector.workflow')}
+                  description={t('app.newApp.workflowShortDescription')}
+                  icon={<div className='flex h-8 w-8 items-center justify-center rounded-md bg-components-icon-bg-indigo-solid'>
+                    <RiExchange2Fill className='h-8 w-8 text-components-avatar-shape-fill-stop-100' />
+                  </div>}
+                  onClick={() => {
+                    setAppMode('workflow')
+                  }} />
               </div>
             </div>
-            <div>
+            {/* <div>
               <div className='mb-2'>
                 <span className='system-2xs-medium-uppercase text-text-tertiary'>{t('app.newApp.forAdvanced')}</span>
               </div>
@@ -178,12 +198,22 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
                     setAppMode('workflow')
                   }} />
               </div>
-            </div>
-            <Divider style={{ margin: 0 }} />
-            <div className='flex items-center space-x-3'>
-              <div className='flex-1'>
+            </div> */}
+            {/* <Divider style={{ margin: 0 }} /> */}
+            <div className='space-x-3'>
+              <div className=''>
                 <div className='mb-1 flex h-6 items-center'>
                   <label className='system-sm-semibold text-text-secondary'>{t('app.newApp.captionName')}</label>
+                </div>
+                <div className="w-full mb-3">
+                  <AppIcon
+                    iconType={appIcon.type}
+                    icon={appIcon.type === 'emoji' ? appIcon.icon : appIcon.fileId}
+                    background={appIcon.type === 'emoji' ? appIcon.background : undefined}
+                    imageUrl={appIcon.type === 'image' ? appIcon.url : undefined}
+                    size='xxl' className='cursor-pointer rounded-2xl'
+                    onClick={() => { setShowAppIconPicker(true) }}
+                  />
                 </div>
                 <Input
                   value={name}
@@ -191,14 +221,7 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
                   placeholder={t('app.newApp.appNamePlaceholder') || ''}
                 />
               </div>
-              <AppIcon
-                iconType={appIcon.type}
-                icon={appIcon.type === 'emoji' ? appIcon.icon : appIcon.fileId}
-                background={appIcon.type === 'emoji' ? appIcon.background : undefined}
-                imageUrl={appIcon.type === 'image' ? appIcon.url : undefined}
-                size='xxl' className='cursor-pointer rounded-2xl'
-                onClick={() => { setShowAppIconPicker(true) }}
-              />
+              
               {showAppIconPicker && <AppIconPicker
                 onSelect={(payload) => {
                   setAppIcon(payload)
@@ -225,25 +248,25 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
           {isAppsFull && <AppsFull className='mt-4' loc='app-create' />}
           <div className='flex items-center justify-between pb-10 pt-5'>
             <div className='system-xs-regular flex cursor-pointer items-center gap-1 text-text-tertiary' onClick={onCreateFromTemplate}>
-              <span>{t('app.newApp.noIdeaTip')}</span>
+              {/* <span>{t('app.newApp.noIdeaTip')}</span>
               <div className='p-[1px]'>
                 <RiArrowRightLine className='h-3.5 w-3.5' />
-              </div>
+              </div> */}
             </div>
             <div className='flex gap-2'>
               <Button onClick={onClose}>{t('app.newApp.Cancel')}</Button>
               <Button disabled={isAppsFull || !name} className='gap-1' variant="primary" onClick={handleCreateApp}>
                 <span>{t('app.newApp.Create')}</span>
-                <div className='flex gap-0.5'>
+                {/* <div className='flex gap-0.5'>
                   <RiCommandLine size={14} className='system-kbd rounded-sm bg-components-kbd-bg-white p-0.5' />
                   <RiCornerDownLeftLine size={14} className='system-kbd rounded-sm bg-components-kbd-bg-white p-0.5' />
-                </div>
+                </div> */}
               </Button>
             </div>
           </div>
         </div>
       </div>
-      <div className='relative flex h-full flex-1 shrink justify-start overflow-hidden'>
+      {/* <div className='relative flex h-full flex-1 shrink justify-start overflow-hidden'>
         <div className='absolute left-0 right-0 top-0 h-6 border-b border-b-divider-subtle 2xl:h-[139px]'></div>
         <div className='max-w-[760px] border-x border-x-divider-subtle'>
           <div className='h-6 2xl:h-[139px]' />
@@ -258,7 +281,7 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
           </div>
           <div className='absolute left-0 right-0 border-b border-b-divider-subtle'></div>
         </div>
-      </div>
+      </div> */}
     </div>
   </>
 }
@@ -298,8 +321,10 @@ function AppTypeCard({ icon, title, description, active, onClick }: AppTypeCardP
     }
     onClick={onClick}
   >
-    {icon}
-    <div className='system-sm-semibold mb-0.5 mt-2 text-text-secondary'>{title}</div>
+    <div className="flex items-center mb-4">
+      {icon}
+      <div className='system-sm-semibold text-text-secondary pl-2'>{title}</div>
+    </div>
     <div className='system-xs-regular text-text-tertiary'>{description}</div>
   </div>
 }
@@ -310,17 +335,17 @@ function AppPreview({ mode }: { mode: AppMode }) {
     'chat': {
       title: t('app.types.chatbot'),
       description: t('app.newApp.chatbotUserDescription'),
-      link: 'https://docs.dify.ai/guides/application-orchestrate#application_type',
+      link: 'https://docs.dify.ai/guides/application-orchestrate/readme',
     },
     'advanced-chat': {
       title: t('app.types.advanced'),
       description: t('app.newApp.advancedUserDescription'),
-      link: 'https://docs.dify.ai/guides/workflow',
+      link: 'https://docs.dify.ai/en/guides/workflow/README',
     },
     'agent-chat': {
       title: t('app.types.agent'),
       description: t('app.newApp.agentUserDescription'),
-      link: 'https://docs.dify.ai/guides/application-orchestrate/agent',
+      link: 'https://docs.dify.ai/en/guides/application-orchestrate/agent',
     },
     'completion': {
       title: t('app.newApp.completeApp'),
@@ -330,7 +355,7 @@ function AppPreview({ mode }: { mode: AppMode }) {
     'workflow': {
       title: t('app.types.workflow'),
       description: t('app.newApp.workflowUserDescription'),
-      link: 'https://docs.dify.ai/guides/workflow',
+      link: 'https://docs.dify.ai/en/guides/workflow/README',
     },
   }
   const previewInfo = modeToPreviewInfoMap[mode]

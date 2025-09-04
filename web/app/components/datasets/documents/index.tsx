@@ -91,6 +91,7 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
   const [inputValue, setInputValue] = useState<string>('') // the input value
   const [searchValue, setSearchValue] = useState<string>('')
   const [currPage, setCurrPage] = React.useState<number>(0)
+  const [totalNum, setTotalNum] = React.useState<number>(0)
   const [limit, setLimit] = useState<number>(DEFAULT_LIMIT)
   const router = useRouter()
   const { dataset } = useDatasetDetailContext()
@@ -117,6 +118,7 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
 
   useEffect(() => {
     if (documentsRes) {
+      setTotalNum(documentsRes.total)
       const totalPages = Math.ceil(documentsRes.total / limit)
       if (totalPages < currPage + 1)
         setCurrPage(totalPages === 0 ? 0 : totalPages - 1)
@@ -256,21 +258,21 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
   return (
     <div className='flex h-full flex-col overflow-y-auto'>
       <div className='flex flex-col justify-center gap-1 px-6 pt-4'>
-        <h1 className='text-base font-semibold text-text-primary'>{t('datasetDocuments.list.title')}</h1>
+        <h1 className='text-base font-semibold text-text-primary'>{t('datasetDocuments.list.title')}{`${t('datasetDocuments.list.showDocLength', { length: totalNum })}`}</h1>
         <div className='flex items-center space-x-0.5 text-sm font-normal text-text-tertiary'>
           <span>{t('datasetDocuments.list.desc')}</span>
-          <a
+          {/* <a
             className='flex items-center text-text-accent'
             target='_blank'
             href={
               locale === LanguagesSupported[1]
-                ? 'https://docs.dify.ai/v/zh-hans/guides/knowledge-base/integrate-knowledge-within-application'
-                : 'https://docs.dify.ai/guides/knowledge-base/integrate-knowledge-within-application'
+                ? 'https://docs.dify.ai/zh-hans/guides/knowledge-base/integrate-knowledge-within-application'
+                : 'https://docs.dify.ai/en/guides/knowledge-base/integrate-knowledge-within-application'
             }
             >
             <span>{t('datasetDocuments.list.learnMore')}</span>
             <RiExternalLinkLine className='h-3 w-3' />
-          </a>
+          </a> */}
         </div>
       </div>
       <div className='flex flex-1 flex-col px-6 py-4'>

@@ -262,7 +262,7 @@ const CreateFromDSLModal = ({ show, onSuccess, onClose, activeTab = CreateFromDS
           {
             currentTab === CreateFromDSLModalTab.FROM_URL && (
               <div>
-                <div className='system-md-semibold leading6 mb-1'>DSL URL</div>
+                <div className='system-md-semibold mb-1 text-text-secondary'>DSL URL</div>
                 <Input
                   placeholder={t('app.importFromDSLUrlPlaceholder') || ''}
                   value={dslUrlValue}
@@ -286,10 +286,10 @@ const CreateFromDSLModal = ({ show, onSuccess, onClose, activeTab = CreateFromDS
             className="gap-1"
           >
             <span>{t('app.newApp.Create')}</span>
-            <div className='flex gap-0.5'>
+            {/* <div className='flex gap-0.5'>
               <RiCommandLine size={14} className='system-kbd rounded-sm bg-components-kbd-bg-white p-0.5' />
               <RiCornerDownLeftLine size={14} className='system-kbd rounded-sm bg-components-kbd-bg-white p-0.5' />
-            </div>
+            </div> */}
           </Button>
         </div>
       </Modal>

@@ -115,13 +115,13 @@ const Operation: FC<OperationProps> = ({
         )}
         {!isOpeningStatement && (
           <div className='ml-1 hidden items-center gap-0.5 rounded-[10px] border-[0.5px] border-components-actionbar-border bg-components-actionbar-bg p-0.5 shadow-md backdrop-blur-sm group-hover:flex'>
-            {(config?.text_to_speech?.enabled) && (
+            {/* {(config?.text_to_speech?.enabled) && (
               <NewAudioButton
                 id={id}
                 value={content}
                 voice={config?.text_to_speech?.voice}
               />
-            )}
+            )} */}
             <ActionButton onClick={() => {
               copy(content)
               Toast.notify({ type: 'success', message: t('common.actionMsg.copySuccessfully') })

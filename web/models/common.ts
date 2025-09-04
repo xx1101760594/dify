@@ -302,3 +302,14 @@ export type StructuredOutputRulesResponse = {
   output: string
   error?: string
 }
+
+export type WorkspaceListRes = {
+  current: boolean
+  id: string
+  name: string
+  plan: string
+  status: string
+}
+export type WorkspaceReq = {
+  tenant_id: string
+}
