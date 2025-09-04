@@ -76,11 +76,11 @@ const NewFeaturePanel = ({
                 </div>
                 <div className='system-xs-medium p-1 text-text-primary'>
                   <span>{isChatMode ? t('workflow.common.fileUploadTip') : t('workflow.common.ImageUploadLegacyTip')}</span>
-                  <a
+                  {/* <a
                     className='text-text-accent'
                     href={docLink('/guides/workflow/bulletin')}
                     target='_blank' rel='noopener noreferrer'
-                  >{t('workflow.common.featuresDocLink')}</a>
+                  >{t('workflow.common.featuresDocLink')}</a> */}
                 </div>
               </div>
             </div>

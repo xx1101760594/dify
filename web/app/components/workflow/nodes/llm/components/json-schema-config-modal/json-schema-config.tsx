@@ -11,6 +11,7 @@ import VisualEditor from './visual-editor'
 import SchemaEditor from './schema-editor'
 import {
   checkJsonSchemaDepth,
+  convertBooleanToString,
   getValidationErrorMessage,
   jsonToSchema,
   preValidateSchema,
@@ -20,8 +21,8 @@ import { MittProvider, VisualEditorContextProvider, useMittContext } from './vis
 import ErrorMessage from './error-message'
 import { useVisualEditorStore } from './visual-editor/store'
 import Toast from '@/app/components/base/toast'
+import { useGetLanguage } from '@/context/i18n'
 import { JSON_SCHEMA_MAX_DEPTH } from '@/config'
-import { useDocLink } from '@/context/i18n'
 
 type JsonSchemaConfigProps = {
   defaultSchema?: SchemaRoot
@@ -46,13 +47,24 @@ const DEFAULT_SCHEMA: SchemaRoot = {
   additionalProperties: false,
 }
 
+const HELP_DOC_URL = {
+  // zh_Hans: 'https://docs.dify.ai/zh-hans/guides/workflow/structured-outputs',
+  // en_US: 'https://docs.dify.ai/en/guides/workflow/structured-outputs',
+  // ja_JP: 'https://docs.dify.ai/ja-jp/guides/workflow/structured-outputs',
+  zh_Hans: '',
+  en_US: '',
+  ja_JP: '',
+}
+
+type LocaleKey = keyof typeof HELP_DOC_URL
+
 const JsonSchemaConfig: FC<JsonSchemaConfigProps> = ({
   defaultSchema,
   onSave,
   onClose,
 }) => {
   const { t } = useTranslation()
-  const docLink = useDocLink()
+  const locale = useGetLanguage() as LocaleKey
   const [currentTab, setCurrentTab] = useState(SchemaView.VisualEditor)
   const [jsonSchema, setJsonSchema] = useState(defaultSchema || DEFAULT_SCHEMA)
   const [json, setJson] = useState(JSON.stringify(jsonSchema, null, 2))
@@ -86,6 +98,7 @@ const JsonSchemaConfig: FC<JsonSchemaConfigProps> = ({
           setValidationError(`Schema exceeds maximum depth of ${JSON_SCHEMA_MAX_DEPTH}.`)
           return
         }
+        convertBooleanToString(schema)
         const validationErrors = validateSchemaAgainstDraft7(schema)
         if (validationErrors.length > 0) {
           setValidationError(getValidationErrorMessage(validationErrors))
@@ -166,6 +179,7 @@ const JsonSchemaConfig: FC<JsonSchemaConfigProps> = ({
           setValidationError(`Schema exceeds maximum depth of ${JSON_SCHEMA_MAX_DEPTH}.`)
           return
         }
+        convertBooleanToString(schema)
         const validationErrors = validateSchemaAgainstDraft7(schema)
         if (validationErrors.length > 0) {
           setValidationError(getValidationErrorMessage(validationErrors))
@@ -249,7 +263,7 @@ const JsonSchemaConfig: FC<JsonSchemaConfigProps> = ({
       <div className='flex items-center gap-x-2 p-6 pt-5'>
         <a
           className='flex grow items-center gap-x-1 text-text-accent'
-          href={docLink('/guides/workflow/structured-outputs')}
+          href={HELP_DOC_URL[locale]}
           target='_blank'
           rel='noopener noreferrer'
         >

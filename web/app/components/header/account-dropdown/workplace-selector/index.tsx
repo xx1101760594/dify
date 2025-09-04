@@ -62,8 +62,8 @@ const WorkplaceSelector = () => {
                 anchor="bottom start"
                 className={cn(
                   `
-                    shadows-shadow-lg absolute left-[-15px] z-[1000] mt-1 flex max-h-[400px] w-[280px] flex-col items-start overflow-y-auto
-                    rounded-xl bg-components-panel-bg-blur backdrop-blur-[5px]
+                    shadows-shadow-lg absolute left-[-15px] mt-1 flex max-h-[400px] w-[280px] flex-col items-start overflow-y-auto rounded-xl
+                    bg-components-panel-bg-blur backdrop-blur-[5px]
                   `,
                 )}
               >

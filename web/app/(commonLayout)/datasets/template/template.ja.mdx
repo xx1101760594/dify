@@ -11,7 +11,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
 <div>
   ### 認証
 
-  Dify のサービス API は `API-Key` を使用して認証します。
+  Cubix のサービス API は `API-Key` を使用して認証します。
 
   開発者は、`API-Key` をクライアント側で共有または保存するのではなく、バックエンドに保存することを推奨します。これにより、`API-Key` の漏洩による財産損失を防ぐことができます。
 
@@ -256,7 +256,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
     ```bash {{ title: 'cURL' }}
     curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/document/create-by-file' \
     --header 'Authorization: Bearer {api_key}' \
-    --form 'data="{\"name\":\"Dify\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
+    --form 'data="{\"name\":\"Cubix\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
     --form 'file=@"/path/to/file"'
     ```
     </CodeGroup>
@@ -271,7 +271,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
           "upload_file_id": ""
         },
         "dataset_process_rule_id": "",
-        "name": "Dify.txt",
+        "name": "Cubix.txt",
         "created_from": "api",
         "created_by": "",
         "created_at": 1695308667,
@@ -666,12 +666,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
       title="リクエスト"
       tag="POST"
       label="/datasets/{dataset_id}/documents/{document_id}/update-by-file"
-      targetCode={`curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/update-by-file' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'data="{"name":"Dify","indexing_technique":"high_quality","process_rule":{"rules":{"pre_processing_rules":[{"id":"remove_extra_spaces","enabled":true},{"id":"remove_urls_emails","enabled":true}],"segmentation":{"separator":"###","max_tokens":500}},"mode":"custom"}}";type=text/plain' \\\n--form 'file=@"/path/to/file"'`}
+      targetCode={`curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/update-by-file' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'data="{"name":"Cubix","indexing_technique":"high_quality","process_rule":{"rules":{"pre_processing_rules":[{"id":"remove_extra_spaces","enabled":true},{"id":"remove_urls_emails","enabled":true}],"segmentation":{"separator":"###","max_tokens":500}},"mode":"custom"}}";type=text/plain' \\\n--form 'file=@"/path/to/file"'`}
     >
     ```bash {{ title: 'cURL' }}
     curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/update-by-file' \
     --header 'Authorization: Bearer {api_key}' \
-    --form 'data="{\"name\":\"Dify\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
+    --form 'data="{\"name\":\"Cubix\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
     --form 'file=@"/path/to/file"'
     ```
     </CodeGroup>
@@ -686,7 +686,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
           "upload_file_id": ""
         },
         "dataset_process_rule_id": "",
-        "name": "Dify.txt",
+        "name": "Cubix.txt",
         "created_from": "api",
         "created_by": "",
         "created_at": 1695308667,
@@ -856,7 +856,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
           "data_source_type": "file_upload",
           "data_source_info": null,
           "dataset_process_rule_id": null,
-          "name": "dify",
+          "name": "cubix",
           "created_from": "",
           "created_by": "",
           "created_at": 1681623639,
@@ -2515,7 +2515,7 @@ ___
     ```json {{ title: 'Response' }}
       {
         "code": "no_file_uploaded",
-        "message": "Please upload your file.",
+        "message": "请上传您的文件。",
         "status": 400
       }
     ```
@@ -2534,22 +2534,22 @@ ___
     <tr>
       <td className="p-2 border border-slate-300">no_file_uploaded</td>
       <td className="p-2 border border-slate-300">400</td>
-      <td className="p-2 border border-slate-300">Please upload your file.</td>
+      <td className="p-2 border border-slate-300">请上传您的文件。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">too_many_files</td>
       <td className="p-2 border border-slate-300">400</td>
-      <td className="p-2 border border-slate-300">Only one file is allowed.</td>
+      <td className="p-2 border border-slate-300">仅允许上传一个文件。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">file_too_large</td>
       <td className="p-2 border border-slate-300">413</td>
-      <td className="p-2 border border-slate-300">File size exceeded.</td>
+      <td className="p-2 border border-slate-300">文件大小超限。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">unsupported_file_type</td>
       <td className="p-2 border border-slate-300">415</td>
-      <td className="p-2 border border-slate-300">File type not allowed.</td>
+      <td className="p-2 border border-slate-300">不支持的文件类型。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">high_quality_dataset_only</td>

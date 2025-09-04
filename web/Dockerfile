@@ -1,5 +1,5 @@
 # base image
-FROM node:22-alpine3.21 AS base
+FROM nexus-docker.cloudwalk.work/yxpt-docker-cq-local/node:22-alpine3.21 AS base
 LABEL maintainer="takatost@gmail.com"
 
 # if you located in China, you can use aliyun mirror to speed up
@@ -25,7 +25,7 @@ RUN corepack install
 # if you located in China, you can use taobao registry to speed up
 # RUN pnpm install --frozen-lockfile --registry https://registry.npmmirror.com/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --registry https://registry.npmmirror.com/
 
 # build resources
 FROM base AS builder
@@ -52,7 +52,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PM2_INSTANCES=2
 
 # set timezone
-ENV TZ=UTC
+ENV TZ=Aisa/Shanghai
 RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone
 
@@ -66,7 +66,7 @@ COPY docker/entrypoint.sh ./entrypoint.sh
 
 
 # global runtime packages
-RUN pnpm add -g pm2 \
+RUN pnpm add -g pm2 --registry https://registry.npmmirror.com/ \
     && mkdir /.pm2 \
     && chown -R 1001:0 /.pm2 /app/web \
     && chmod -R g=u /.pm2 /app/web

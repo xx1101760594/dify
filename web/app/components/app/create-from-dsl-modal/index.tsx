@@ -292,10 +292,10 @@ const CreateFromDSLModal = ({ show, onSuccess, onClose, activeTab = CreateFromDS
             className="gap-1"
           >
             <span>{t('app.newApp.Create')}</span>
-            <div className='flex gap-0.5'>
+            {/* <div className='flex gap-0.5'>
               <RiCommandLine size={14} className='system-kbd rounded-sm bg-components-kbd-bg-white p-0.5' />
               <RiCornerDownLeftLine size={14} className='system-kbd rounded-sm bg-components-kbd-bg-white p-0.5' />
-            </div>
+            </div> */}
           </Button>
         </div>
       </Modal>

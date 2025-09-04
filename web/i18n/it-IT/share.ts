@@ -79,9 +79,6 @@ const translation = {
     execution: 'ESECUZIONE',
     executions: '{{num}} ESECUZIONI',
   },
-  login: {
-    backToHome: 'Torna alla home',
-  },
 }
 
 export default translation

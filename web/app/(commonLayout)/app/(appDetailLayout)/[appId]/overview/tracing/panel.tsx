@@ -24,6 +24,19 @@ import Divider from '@/app/components/base/divider'
 
 const I18N_PREFIX = 'app.tracing'
 
+const Title = ({
+  className,
+}: {
+  className?: string
+}) => {
+  const { t } = useTranslation()
+
+  return (
+    <div className={cn('system-xl-semibold flex items-center text-text-primary', className)}>
+      {t('dataset.datasetsApi')}
+    </div>
+  )
+}
 const Panel: FC = () => {
   const { t } = useTranslation()
   const pathname = usePathname()
@@ -192,31 +205,17 @@ const Panel: FC = () => {
   }
 
   return (
-    <div className={cn('flex items-center justify-between')}>
-      {!inUseTracingProvider && (
-        <ConfigButton
-          appId={appId}
-          readOnly={readOnly}
-          hasConfigured={false}
-          enabled={enabled}
-          onStatusChange={handleTracingEnabledChange}
-          chosenProvider={inUseTracingProvider}
-          onChooseProvider={handleChooseProvider}
-          arizeConfig={arizeConfig}
-          phoenixConfig={phoenixConfig}
-          langSmithConfig={langSmithConfig}
-          langFuseConfig={langFuseConfig}
-          opikConfig={opikConfig}
-          weaveConfig={weaveConfig}
-          aliyunConfig={aliyunConfig}
-          onConfigUpdated={handleTracingConfigUpdated}
-          onConfigRemoved={handleTracingConfigRemoved}
-        >
-          <div
-            className={cn(
-              'flex cursor-pointer select-none items-center rounded-xl border-l-[0.5px] border-t border-effects-highlight bg-background-default-dodge p-2 shadow-xs hover:border-effects-highlight-lightmode-off hover:bg-background-default-lighter',
-            )}
-          >
+    <div className={cn('mb-3 flex items-center justify-between')}>
+      <Title className='h-[41px]' />
+      <div
+        className={cn(
+          'flex cursor-pointer items-center rounded-xl border-l-[0.5px] border-t border-effects-highlight bg-background-default-dodge p-2 shadow-xs hover:border-effects-highlight-lightmode-off hover:bg-background-default-lighter',
+          controlShowPopup && 'border-effects-highlight-lightmode-off bg-background-default-lighter',
+        )}
+        onClick={showPopup}
+      >
+        {/* {!inUseTracingProvider && (
+          <>
             <TracingIcon size='md' />
             <div className='system-sm-semibold mx-2 text-text-secondary'>{t(`${I18N_PREFIX}.title`)}</div>
             <div className='rounded-md p-1'>
@@ -226,33 +225,10 @@ const Panel: FC = () => {
             <div className='rounded-md p-1'>
               <RiArrowDownDoubleLine className='h-4 w-4 text-text-tertiary' />
             </div>
-          </div>
-        </ConfigButton>
-      )}
-      {hasConfiguredTracing && (
-        <ConfigButton
-          appId={appId}
-          readOnly={readOnly}
-          hasConfigured
-          enabled={enabled}
-          onStatusChange={handleTracingEnabledChange}
-          chosenProvider={inUseTracingProvider}
-          onChooseProvider={handleChooseProvider}
-          arizeConfig={arizeConfig}
-          phoenixConfig={phoenixConfig}
-          langSmithConfig={langSmithConfig}
-          langFuseConfig={langFuseConfig}
-          opikConfig={opikConfig}
-          weaveConfig={weaveConfig}
-          aliyunConfig={aliyunConfig}
-          onConfigUpdated={handleTracingConfigUpdated}
-          onConfigRemoved={handleTracingConfigRemoved}
-        >
-          <div
-            className={cn(
-              'flex cursor-pointer select-none items-center rounded-xl border-l-[0.5px] border-t border-effects-highlight bg-background-default-dodge p-2 shadow-xs hover:border-effects-highlight-lightmode-off hover:bg-background-default-lighter',
-            )}
-          >
+          </>
+        )} */}
+        {hasConfiguredTracing && (
+          <>
             <div className='ml-4 mr-1 flex items-center'>
               <Indicator color={enabled ? 'green' : 'gray'} />
               <div className='system-xs-semibold-uppercase ml-1.5 text-text-tertiary'>

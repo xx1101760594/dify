@@ -7,6 +7,7 @@ import data from '@emoji-mart/data'
 import { cva } from 'class-variance-authority'
 import type { AppIconType } from '@/types/app'
 import classNames from '@/utils/classnames'
+import { basePath } from '@/utils/var'
 
 init({ data })
 
@@ -23,7 +24,7 @@ export type AppIconProps = {
   onClick?: () => void
 }
 const appIconVariants = cva(
-  'flex items-center justify-center relative text-lg rounded-lg grow-0 shrink-0 overflow-hidden leading-none',
+  'flex items-center justify-center relative text-lg rounded-[4px] grow-0 shrink-0 overflow-hidden leading-none',
   {
     variants: {
       size: {
@@ -63,10 +64,12 @@ const AppIcon: FC<AppIconProps> = ({
     style={{ background: isValidImageIcon ? undefined : (background || '#FFEAD5') }}
     onClick={onClick}
   >
+    {/* <img src={`${basePath}/icon/icon4.png`} alt="" /> */}
     {isValidImageIcon
 
       ? <img src={imageUrl} className="h-full w-full" alt="app icon" />
-      : (innerIcon || ((icon && icon !== '') ? <em-emoji id={icon} /> : <em-emoji id='🤖' />))
+      : (innerIcon || ((icon && icon !== '') ? <span className={['tiny','xs'].includes(size) ? 'text-[12px]' : 'text-[18px]'}><em-emoji id={icon} /></span> : <span className={['tiny','xs'].includes(size) ? 'text-[12px]' :'text-[18px]'}><em-emoji id='speech_balloon' /></span>))
+      // 🤖
     }
     {coverElement}
   </span>

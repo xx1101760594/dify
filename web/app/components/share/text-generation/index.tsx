@@ -356,9 +356,33 @@ const TextGeneration: FC<IMainProps> = ({
     }
   }
 
-  const appData = useWebAppStore(s => s.appInfo)
-  const appParams = useWebAppStore(s => s.appParams)
-  const accessMode = useWebAppStore(s => s.webAppAccessMode)
+  const fetchInitData = async () => {
+    if (!isInstalledApp)
+      await checkOrSetAccessToken()
+
+    return Promise.all([
+      isInstalledApp
+        ? {
+          app_id: installedAppInfo?.id,
+          site: {
+            title: installedAppInfo?.app.name,
+            prompt_public: false,
+            copyright: '',
+            icon: installedAppInfo?.app.icon,
+            icon_background: installedAppInfo?.app.icon_background,
+            icon_type: installedAppInfo?.app.icon_type,
+            icon_url: installedAppInfo?.app.icon_url,
+          },
+          plan: 'basic',
+        }
+        : fetchAppInfo(),
+      fetchAppParams(isInstalledApp, installedAppInfo?.id),
+      !isWorkflow
+        ? fetchSavedMessage()
+        : {},
+    ])
+  }
+
   useEffect(() => {
     (async () => {
       if (!appData || !appParams)
@@ -390,7 +414,14 @@ const TextGeneration: FC<IMainProps> = ({
   }, [appData, appParams, fetchSavedMessage, isWorkflow])
 
   // Can Use metadata(https://beta.nextjs.org/docs/api-reference/metadata) to set title. But it only works in server side client.
-  useDocumentTitle(siteInfo?.title || t('share.generation.title'))
+  useEffect(() => {
+    if (siteInfo?.title) {
+      if (canReplaceLogo)
+        document.title = `${siteInfo.title}`
+      else
+        document.title = `${siteInfo.title} - Powered by CloudWalk`
+    }
+  }, [siteInfo?.title, canReplaceLogo])
 
   useAppFavicon({
     enable: !isInstalledApp,
@@ -495,6 +526,9 @@ const TextGeneration: FC<IMainProps> = ({
         <Loading type='app' />
       </div>)
   }
+
+  console.log('-----siteInfo--',siteInfo)
+
   return (
     <div className={cn(
       'bg-background-default-burn',
@@ -519,7 +553,7 @@ const TextGeneration: FC<IMainProps> = ({
               imageUrl={siteInfo.icon_url}
             />
             <div className='system-md-semibold grow truncate text-text-secondary'>{siteInfo.title}</div>
-            <MenuDropdown hideLogout={isInstalledApp || accessMode === AccessMode.PUBLIC} data={siteInfo} />
+            {/* <MenuDropdown data={siteInfo} /> */}
           </div>
           {siteInfo.description && (
             <div className='system-xs-regular text-text-tertiary'>{siteInfo.description}</div>
@@ -584,22 +618,21 @@ const TextGeneration: FC<IMainProps> = ({
           )}
         </div>
         {/* powered by */}
-        {!customConfig?.remove_webapp_brand && (
+        {/* {!customConfig?.remove_webapp_brand && (
           <div className={cn(
             'flex shrink-0 items-center gap-1.5 bg-components-panel-bg py-3',
             isPC ? 'px-8' : 'px-4',
             !isPC && resultExisted && 'rounded-b-2xl border-b-[0.5px] border-divider-regular',
           )}>
             <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
-            {
-              systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
-                ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
-                : customConfig?.replace_webapp_logo
-                  ? <img src={`${customConfig?.replace_webapp_logo}`} alt='logo' className='block h-5 w-auto' />
-                  : <DifyLogo size='small' />
-            }
+            {customConfig?.replace_webapp_logo && (
+              <img src={customConfig?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
+            )}
+            {!customConfig?.replace_webapp_logo && (
+              <CubixLogo size='small' />
+            )}
           </div>
-        )}
+        )} */}
       </div>
       {/* Result */}
       <div className={cn(

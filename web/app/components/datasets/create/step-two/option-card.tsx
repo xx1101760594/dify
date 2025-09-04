@@ -8,6 +8,22 @@ const TriangleArrow: FC<ComponentProps<'svg'>> = props => (
   </svg>
 )
 
+// 复选框图标
+const CheckboxIcon: FC<{ checked: boolean }> = ({ checked }) => (
+  <div className={classNames(
+    'flex h-4 w-4 items-center justify-center rounded border',
+    checked 
+      ? 'border-primary-600 bg-primary-600' 
+      : 'border-gray-300 bg-white'
+  )}>
+    {checked && (
+      <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+      </svg>
+    )}
+  </div>
+)
+
 type OptionCardHeaderProps = {
   icon: ReactNode
   title: ReactNode
@@ -16,12 +32,14 @@ type OptionCardHeaderProps = {
   activeClassName?: string
   effectImg?: string
   disabled?: boolean
+  showCheckbox?: boolean
+  isCheckboxChecked?: boolean
 }
 
 export const OptionCardHeader: FC<OptionCardHeaderProps> = (props) => {
-  const { icon, title, description, isActive, activeClassName, effectImg, disabled } = props
+  const { icon, title, description, isActive, activeClassName, effectImg, disabled, showCheckbox, isCheckboxChecked } = props
   return <div className={classNames(
-    'relative flex h-full overflow-hidden rounded-t-xl',
+    'flex h-full overflow-hidden rounded-xl relative',
     isActive && activeClassName,
     !disabled && 'cursor-pointer',
   )}>
@@ -33,11 +51,16 @@ export const OptionCardHeader: FC<OptionCardHeaderProps> = (props) => {
         </div>
       </div>
     </div>
-    <TriangleArrow
-      className={classNames('absolute -bottom-1.5 left-4 text-transparent', isActive && 'text-components-panel-bg')}
-    />
+    {/* <TriangleArrow
+      className={classNames('absolute left-4 -bottom-1.5 text-transparent', isActive && 'text-components-panel-bg')}
+    /> */}
     <div className='flex-1 space-y-0.5 py-3 pr-4'>
-      <div className='system-md-semibold text-text-secondary'>{title}</div>
+      <div className='flex items-center justify-between'>
+        <div className='system-md-semibold text-text-secondary'>{title}</div>
+        {showCheckbox && (
+          <CheckboxIcon checked={isCheckboxChecked || false} />
+        )}
+      </div>
       <div className='system-xs-regular text-text-tertiary'>{description}</div>
     </div>
   </div>
@@ -55,6 +78,8 @@ type OptionCardProps = {
   onSwitched?: () => void
   noHighlight?: boolean
   disabled?: boolean
+  showCheckbox?: boolean
+  isCheckboxChecked?: boolean
 } & Omit<ComponentProps<'div'>, 'title' | 'onClick'>
 
 export const OptionCard: FC<OptionCardProps> = (
@@ -63,7 +88,7 @@ export const OptionCard: FC<OptionCardProps> = (
     ...props
   },
 ) => {
-  const { icon, className, title, description, isActive, children, actions, activeHeaderClassName, style, effectImg, onSwitched, noHighlight, disabled, ...rest } = props
+  const { icon, className, title, description, isActive, children, actions, activeHeaderClassName, style, effectImg, onSwitched, noHighlight, disabled, showCheckbox, isCheckboxChecked, ...rest } = props
   return <div
     className={classNames(
       'rounded-xl bg-components-option-card-option-bg shadow-xs',
@@ -77,7 +102,7 @@ export const OptionCard: FC<OptionCardProps> = (
       ...style,
     }}
     onClick={() => {
-      if (!isActive && !disabled)
+      if (!disabled)
         onSwitched?.()
     }}
     {...rest}
@@ -91,9 +116,11 @@ export const OptionCard: FC<OptionCardProps> = (
       activeClassName={activeHeaderClassName}
       effectImg={effectImg}
       disabled={disabled}
+      showCheckbox={showCheckbox}
+      isCheckboxChecked={isCheckboxChecked}
     />
     {/** Body */}
-    {isActive && (children || actions) && <div className='rounded-b-xl bg-components-panel-bg px-4 py-3'>
+    {isActive && (children || actions) && <div className='rounded-b-xl bg-components-panel-bg px-4 py-3 '>
       {children}
       {actions && <div className='mt-4 flex gap-2'>
         {actions}

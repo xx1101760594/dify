@@ -44,8 +44,8 @@ export default function NavLink({
       key={name}
       href={href}
       className={classNames(
-        isActive ? 'bg-state-accent-active font-semibold text-text-accent' : 'text-components-menu-item-text hover:bg-state-base-hover hover:text-components-menu-item-text-hover',
-        'group flex h-9 items-center rounded-md py-2 text-sm font-normal',
+        isActive ? 'bg-state-base-active text-components-menu-item-text-active font-semibold' : 'text-components-menu-item-text hover:bg-state-base-hover hover:text-components-menu-item-text-hover',
+        'group flex items-center h-9 rounded-md py-2 text-sm font-normal',
         mode === 'expand' ? 'px-3' : 'px-2.5',
       )}
       title={mode === 'collapse' ? name : ''}

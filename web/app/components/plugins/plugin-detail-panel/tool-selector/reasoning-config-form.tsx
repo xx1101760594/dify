@@ -247,7 +247,8 @@ const ReasoningConfigForm: React.FC<Props> = ({
               <FormInputTypeSwitch value={varInput?.type || VarKindType.constant} onChange={handleTypeChange(variable, defaultValue)}/>
             )}
             {isString && (
-              <MixedVariableTextInput
+              <Input
+                className={cn(inputsIsFocus[variable] ? 'border-components-input-border-active bg-components-input-bg-active shadow-xs' : 'border-components-input-border-hover bg-components-input-bg-normal', 'rounded-lg border px-3 py-[6px]')}
                 value={varInput?.value as string || ''}
                 onChange={handleValueChange(variable, type)}
                 nodesOutputVars={nodeOutputVars}

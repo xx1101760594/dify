@@ -8,6 +8,7 @@ This directory contains the internationalization (i18n) files for this project.
 
 ```
 ├── [  24]  README.md
+├── [   0]  README_CN.md
 ├── [ 704]  en-US
 │   ├── [2.4K]  app-annotation.ts
 │   ├── [5.2K]  app-api.ts
@@ -27,7 +28,7 @@ This directory contains the internationalization (i18n) files for this project.
 │   ├── [  52]  layout.ts
 │   ├── [2.3K]  login.ts
 │   ├── [  52]  register.ts
-│   ├── [2.5K]  share.ts
+│   ├── [2.5K]  share-app.ts
 │   └── [2.8K]  tools.ts
 ├── [1.6K]  i18next-config.ts
 ├── [ 634]  index.ts
@@ -36,7 +37,7 @@ This directory contains the internationalization (i18n) files for this project.
 
 We use English as the default language. The i18n files are organized by language and then by module. For example, the English translation for the `app` module is in `en-US/app.ts`.
 
-If you want to add a new language or modify an existing translation, you can create a new file for the language or modify the existing file. The file name should be the language code (e.g., `zh-Hans` for Chinese) and the file extension should be `.ts`.
+If you want to add a new language or modify an existing translation, you can create a new file for the language or modify the existing file. The file name should be the language code (e.g., `zh-CN` for Chinese) and the file extension should be `.ts`.
 
 For example, if you want to add french translation, you can create a new folder `fr-FR` and add the translation files in it.
 
@@ -47,13 +48,12 @@ By default we will use `LanguagesSupported` to determine which languages are sup
 1. Create a new folder for the new language.
 
 ```
-cd web/i18n
 cp -r en-US fr-FR
 ```
 
 2. Modify the translation files in the new folder.
 
-1. Add type to new language in the `language.ts` file.
+3. Add type to new language in the `language.ts` file.
 
 ```typescript
 export type I18nText = {
@@ -80,79 +80,79 @@ export const languages = [
   {
     value: 'en-US',
     name: 'English(United States)',
-    example: 'Hello, Dify!',
+    example: 'Hello, Cubix!',
     supported: true,
   },
   {
     value: 'zh-Hans',
     name: '简体中文',
-    example: '你好，Dify！',
+    example: '你好，Cubix！',
     supported: true,
   },
   {
     value: 'pt-BR',
     name: 'Português(Brasil)',
-    example: 'Olá, Dify!',
+    example: 'Olá, Cubix!',
     supported: true,
   },
   {
     value: 'es-ES',
     name: 'Español(España)',
-    example: 'Saluton, Dify!',
+    example: 'Saluton, Cubix!',
     supported: false,
   },
   {
     value: 'fr-FR',
     name: 'Français(France)',
-    example: 'Bonjour, Dify!',
+    example: 'Bonjour, Cubix!',
     supported: false,
   },
   {
     value: 'de-DE',
     name: 'Deutsch(Deutschland)',
-    example: 'Hallo, Dify!',
+    example: 'Hallo, Cubix!',
     supported: false,
   },
   {
     value: 'ja-JP',
-    name: '日本語 (日本)',
-    example: 'こんにちは、Dify!',
+    name: '日本語(日本)',
+    example: 'こんにちは、Cubix!',
     supported: false,
   },
   {
     value: 'ko-KR',
-    name: '한국어 (대한민국)',
-    example: '안녕, Dify!',
+    name: '한국어(대한민국)',
+    example: '안녕, Cubix!',
     supported: true,
   },
   {
     value: 'ru-RU',
     name: 'Русский(Россия)',
-    example: ' Привет, Dify!',
+    example: ' Привет, Cubix!',
     supported: false,
   },
   {
     value: 'it-IT',
     name: 'Italiano(Italia)',
-    example: 'Ciao, Dify!',
+    example: 'Ciao, Cubix!',
     supported: false,
   },
   {
     value: 'th-TH',
     name: 'ไทย(ประเทศไทย)',
-    example: 'สวัสดี Dify!',
+    example: 'สวัสดี Cubix!',
     supported: false,
   },
   {
     value: 'id-ID',
     name: 'Bahasa Indonesia',
-    example: 'Saluto, Dify!',
+    example: 'Saluto, Cubix!',
     supported: false,
   },
   {
     value: 'uk-UA',
     name: 'Українська(Україна)',
-    example: 'Привет, Dify!',
+    example: 'Привет, Cubix!',
     supported: true,
   },
   // Add your language here 👇
@@ -163,8 +163,10 @@ export const languages = [
 
 5. Don't forget to mark the supported field as `true` if the language is supported.
 
-1. Sometime you might need to do some changes in the server side. Please change this file as well. 👇
-   https://github.com/langgenius/dify/blob/61e4bbabaf2758354db4073cbea09fdd21a5bec1/api/constants/languages.py#L5
+6. Sometime you might need to do some changes in the server side. Please change this file as well. 👇
+https://github.com/cloudwalk/cubix/blob/61e4bbabaf2758354db4073cbea09fdd21a5bec1/api/constants/languages.py#L5
+
+
 
 ## Clean Up
 

@@ -116,8 +116,8 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
         - `inputs` (object) ノードで使用されるすべての前のノード変数の内容
         - `created_at` (timestamp) 開始のタイムスタンプ、例：1705395332
     - `event: text_chunk` テキストフラグメント
-      - `task_id` (string) タスク ID、リクエスト追跡と以下の Stop Generate API に使用
-      - `workflow_run_id` (string) ワークフロー実行の一意の ID
+      - `task_id` (string) タスクID、リクエスト追跡と以下のStop Generate APIに使用
+      - `workflow_run_id` (string) ワークフロー実行の一意のID
       - `event` (string) `text_chunk`に固定
       - `data` (object) 詳細
         - `text` (string) テキスト内容
@@ -251,7 +251,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
       import json
 
       def upload_file(file_path, user):
-          upload_url = "https://api.dify.ai/v1/files/upload"
+          upload_url = "https://api.cubix.ai/v1/files/upload"
           headers = {
               "Authorization": "Bearer app-xxxxxxxx",
           }
@@ -279,7 +279,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
               return None
 
       def run_workflow(file_id, user, response_mode="blocking"):
-          workflow_url = "https://api.dify.ai/v1/workflows/run"
+          workflow_url = "https://api.cubix.ai/v1/workflows/run"
           headers = {
               "Authorization": "Bearer app-xxxxxxxxx",
               "Content-Type": "application/json"
@@ -312,7 +312,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
 
       # 使用例
       file_path = "{your_file_path}"
-      user = "difyuser"
+      user = "cubixuser"
 
       # ファイルをアップロードする
       file_id = upload_file(file_path, user)
@@ -704,15 +704,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
   </Col>
   <Col sticky>
   ### リクエスト例
-  <CodeGroup
-    title="リクエスト"
-    tag="POST"
-    label="/files/upload"
-    targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
---header 'Authorization: Bearer {api_key}' \\
---form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
---form 'user=abc-123'`}
-  />
+  <CodeGroup title="リクエスト" tag="POST" label="/files/upload" targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\\n--form 'user=abc-123'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X POST '${props.appDetail.api_base_url}/files/upload' \
+    --header 'Authorization: Bearer {api_key}' \
+    --form 'file=@"/path/to/file"'
+    ```
+
+    </CodeGroup>
 
 
   ### 応答例
@@ -1080,13 +1080,13 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
 />
 <Row>
   <Col>
-  アプリの WebApp 設定を取得するために使用します。
+  アプリのWebApp設定を取得するために使用します。
   ### 応答
-  - `title` (string) WebApp 名
+  - `title` (string) WebApp名
   - `icon_type` (string) アイコンタイプ、`emoji`-絵文字、`image`-画像
-  - `icon` (string) アイコン。`emoji`タイプの場合は絵文字、`image`タイプの場合は画像 URL
-  - `icon_background` (string) 16 進数形式の背景色
-  - `icon_url` (string) アイコンの URL
+  - `icon` (string) アイコン。`emoji`タイプの場合は絵文字、`image`タイプの場合は画像URL
+  - `icon_background` (string) 16進数形式の背景色
+  - `icon_url` (string) アイコンのURL
   - `description` (string) 説明
   - `copyright` (string) 著作権情報
   - `privacy_policy` (string) プライバシーポリシーのリンク
@@ -1095,13 +1095,13 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
   - `show_workflow_steps` (bool) ワークフローの詳細を表示するかどうか
   </Col>
   <Col>
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/meta"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\
-  -H 'Authorization: Bearer {api_key}'`}
-    />
+  <CodeGroup title="Request" tag="POST" label="/meta" targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\\n-H 'Authorization: Bearer {api_key}'`}>
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/site' \
+    -H 'Authorization: Bearer {api_key}'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}

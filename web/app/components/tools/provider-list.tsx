@@ -84,40 +84,10 @@ const ProviderList = () => {
     return detail
   }, [currentProvider?.plugin_id, pluginList?.plugins])
 
-  const toolListTailRef = useRef<HTMLDivElement>(null)
-  const showMarketplacePanel = useCallback(() => {
-    containerRef.current?.scrollTo({
-      top: toolListTailRef.current
-        ? toolListTailRef.current?.offsetTop - 80
-        : 0,
-      behavior: 'smooth',
-    })
-  }, [toolListTailRef])
 
-  const marketplaceContext = useMarketplace(keywords, tagFilterValue)
-  const {
-    handleScroll,
-  } = marketplaceContext
-
-  const [isMarketplaceArrowVisible, setIsMarketplaceArrowVisible] = useState(true)
-  const onContainerScroll = useMemo(() => {
-    return (e: Event) => {
-      handleScroll(e)
-      if (containerRef.current && toolListTailRef.current)
-        setIsMarketplaceArrowVisible(containerRef.current.scrollTop < (toolListTailRef.current?.offsetTop - 80))
-    }
-  }, [handleScroll, containerRef, toolListTailRef, setIsMarketplaceArrowVisible])
-
-  useEffect(() => {
-    const container = containerRef.current
-    if (container)
-      container.addEventListener('scroll', onContainerScroll)
-
-    return () => {
-      if (container)
-        container.removeEventListener('scroll', onContainerScroll)
-    }
-  }, [onContainerScroll])
+  const viewClick = (id: string)=> {
+   activeTab === 'builtin' &&  setCurrentProviderId(id)
+  }
 
   return (
     <>
@@ -127,47 +97,49 @@ const ProviderList = () => {
           className='relative flex grow flex-col overflow-y-auto bg-background-body'
         >
           <div className={cn(
-            'sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-2 bg-background-body px-12 pb-2 pt-4 leading-[56px]',
+            'sticky top-0 z-20 bg-background-body px-12 pt-4 leading-[56px]',
             currentProviderId && 'pr-6',
           )}>
-            <TabSliderNew
-              value={activeTab}
-              onChange={(state) => {
-                setActiveTab(state)
-                if (state !== activeTab)
-                  setCurrentProviderId(undefined)
-              }}
-              options={options}
-            />
-            <div className='flex items-center gap-2'>
-              {activeTab !== 'mcp' && (
-                <LabelFilter value={tagFilterValue} onChange={handleTagsChange} />
-              )}
-              <Input
-                showLeftIcon
-                showClearIcon
-                wrapperClassName='w-[200px]'
-                value={keywords}
-                onChange={e => handleKeywordsChange(e.target.value)}
-                onClear={() => handleKeywordsChange('')}
+            <div className="border-b border-divider-regular pb-[8px]">
+              <TabSliderNew
+                value={activeTab}
+                onChange={(state) => {
+                  setActiveTab(state)
+                  if (state !== activeTab)
+                    setCurrentProviderId(undefined)
+                }}
+                options={options}
               />
             </div>
+            <div className='flex justify-between items-center gap-2'>
+                {/* <LabelFilter value={tagFilterValue} onChange={handleTagsChange} /> */}
+                {activeTab === 'api' && <CustomCreateCard onRefreshData={refetch} />}
+                <Input
+                  showLeftIcon
+                  showClearIcon
+                  wrapperClassName='w-[200px]'
+                  value={keywords}
+                  onChange={e => handleKeywordsChange(e.target.value)}
+                  onClear={() => handleKeywordsChange('')}
+                />
+              </div>
           </div>
           {activeTab !== 'mcp' && (
             <div className={cn(
-              'relative grid shrink-0 grid-cols-1 content-start gap-4 px-12 pb-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+              'relative grid shrink-0 grid-cols-1 content-start gap-8 px-12 pb-5 pt-2 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 2k:grid-cols-6',
               !filteredCollectionList.length && activeTab === 'workflow' && 'grow',
             )}>
-              {activeTab === 'api' && <CustomCreateCard onRefreshData={refetch} />}
+              {/* {activeTab === 'api' && <CustomCreateCard onRefreshData={refetch} />} */}
               {filteredCollectionList.map(collection => (
                 <div
                   key={collection.id}
-                  onClick={() => setCurrentProviderId(collection.id)}
+                  onClick={() => viewClick(collection.id)}
                 >
                   <Card
                     className={cn(
-                      'cursor-pointer border-[1.5px] border-transparent',
+                      'border-[1.5px] border-transparent',
                       currentProviderId === collection.id && 'border-components-option-card-option-selected-border',
+                      activeTab === 'builtin' && 'cursor-pointer hover:border-components-option-card-option-selected-border'
                     )}
                     hideCornerMark
                     payload={{
@@ -181,28 +153,27 @@ const ProviderList = () => {
                         tags={collection.labels}
                       />
                     }
+                    onRefreshData={refetch}
                   />
                 </div>
               ))}
               {!filteredCollectionList.length && activeTab === 'workflow' && <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><WorkflowToolEmpty type={getToolType(activeTab)} /></div>}
             </div>
           )}
-          {!filteredCollectionList.length && activeTab === 'builtin' && (
-            <Empty lightCard text={t('tools.noTools')} className='h-[224px] shrink-0 px-12' />
+          {!filteredCollectionList.length &&( activeTab === 'builtin' || activeTab === 'api') && (
+            <Empty lightCard text={t('tools.noTools')} className='h-[224px] px-12' />
           )}
-          <div ref={toolListTailRef} />
-          {enable_marketplace && activeTab === 'builtin' && (
-            <Marketplace
-              searchPluginText={keywords}
-              filterPluginTags={tagFilterValue}
-              isMarketplaceArrowVisible={isMarketplaceArrowVisible}
-              showMarketplacePanel={showMarketplacePanel}
-              marketplaceContext={marketplaceContext}
-            />
-          )}
-          {activeTab === 'mcp' && (
-            <MCPList searchText={keywords} />
-          )}
+          {/* {
+            enable_marketplace && activeTab === 'builtin' && (
+              <Marketplace
+                onMarketplaceScroll={() => {
+                  containerRef.current?.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' })
+                }}
+                searchPluginText={keywords}
+                filterPluginTags={tagFilterValue}
+              />
+            )
+          } */}
         </div>
       </div>
       {currentProvider && !currentProvider.plugin_id && (

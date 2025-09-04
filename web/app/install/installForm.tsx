@@ -14,11 +14,14 @@ import Loading from '../components/base/loading'
 import classNames from '@/utils/classnames'
 import Button from '@/app/components/base/button'
 
-import { fetchInitValidateStatus, fetchSetupStatus, login, setup } from '@/service/common'
+import { fetchInitValidateStatus, fetchSetupStatus, setup } from '@/service/common'
 import type { InitValidateStatusResponse, SetupStatusResponse } from '@/models/common'
-import useDocumentTitle from '@/hooks/use-document-title'
-import { useDocLink } from '@/context/i18n'
-import { validPassword } from '@/config'
+import {
+  RiEyeLine,
+  RiEyeOffLine,
+} from '@remixicon/react'
+
+const validPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
 
 const accountFormSchema = z.object({
   email: z
@@ -34,9 +37,7 @@ const accountFormSchema = z.object({
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
 const InstallForm = () => {
-  useDocumentTitle('')
   const { t } = useTranslation()
-  const docLink = useDocLink()
   const router = useRouter()
   const [showPassword, setShowPassword] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
@@ -54,32 +55,12 @@ const InstallForm = () => {
   })
 
   const onSubmit: SubmitHandler<AccountFormValues> = async (data) => {
-    // First, setup the admin account
     await setup({
       body: {
         ...data,
       },
     })
-
-    // Then, automatically login with the same credentials
-    const loginRes = await login({
-      url: '/login',
-      body: {
-        email: data.email,
-        password: data.password,
-      },
-    })
-
-    // Store tokens and redirect to apps if login successful
-    if (loginRes.result === 'success') {
-      localStorage.setItem('console_token', loginRes.data.access_token)
-      localStorage.setItem('refresh_token', loginRes.data.refresh_token)
-      router.replace('/apps')
-    }
- else {
-      // Fallback to signin page if auto-login fails
-      router.replace('/signin')
-    }
+    router.push('/signin')
   }
 
   const handleSetting = async () => {
@@ -103,7 +84,8 @@ const InstallForm = () => {
     fetchSetupStatus().then((res: SetupStatusResponse) => {
       if (res.step === 'finished') {
         localStorage.setItem('setup_status', 'finished')
-        router.push('/signin')
+        // router.push('/signin')
+        setLoading(false)
       }
       else {
         fetchInitValidateStatus().then((res: InitValidateStatusResponse) => {
@@ -173,7 +155,7 @@ const InstallForm = () => {
                       onClick={() => setShowPassword(!showPassword)}
                       className="text-text-quaternary hover:text-text-tertiary focus:text-text-tertiary focus:outline-none"
                     >
-                      {showPassword ? '👀' : '😝'}
+                      {showPassword ? <RiEyeLine className='mr-2 h-4 w-4' /> : <RiEyeOffLine className='mr-2 h-4 w-4' />}
                     </button>
                   </div>
                 </div>
@@ -189,15 +171,15 @@ const InstallForm = () => {
                 </Button>
               </div>
             </form>
-            <div className="mt-2 block w-full text-xs text-text-tertiary">
+            {/* <div className="mt-2 block w-full text-xs text-text-tertiary">
               {t('login.license.tip')}
               &nbsp;
               <Link
                 className='text-text-accent'
                 target='_blank' rel='noopener noreferrer'
-                href={docLink('/policies/open-source')}
+                href={'https://docs.dify.ai/user-agreement/open-source'}
               >{t('login.license.link')}</Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </>

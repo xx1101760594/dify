@@ -119,6 +119,7 @@ const WorkflowToolAsModal: FC<Props> = ({
     <>
       <Drawer
         isShow
+        positionCenter
         onHide={onHide}
         title={t('workflow.common.workflowAsTool')!}
         panelClassName='mt-2 !w-[640px]'

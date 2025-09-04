@@ -211,7 +211,7 @@ const ChatWrapper = () => {
       )
     }
     return (
-      <div className={cn('flex h-[50vh] flex-col items-center justify-center gap-3 py-12')}>
+      <div className={cn('flex min-h-[50vh] flex-col items-center justify-center gap-3 py-12')}>
         <AppIcon
           size='xl'
           iconType={appData?.site.icon_type}
@@ -262,7 +262,7 @@ const ChatWrapper = () => {
         onFeedback={handleFeedback}
         suggestedQuestions={suggestedQuestions}
         answerIcon={answerIcon}
-        hideProcessDetail
+        hideProcessDetail = {false}
         themeBuilder={themeBuilder}
         switchSibling={siblingMessageId => setTargetMessageId(siblingMessageId)}
         inputDisabled={inputDisabled}

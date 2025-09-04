@@ -71,16 +71,8 @@ const RunOnce: FC<IRunOnceProps> = ({
     if (isInitialized) return
     const newInputs: Record<string, any> = {}
     promptConfig.prompt_variables.forEach((item) => {
-      if (item.type === 'select')
-        newInputs[item.key] = item.default
-      else if (item.type === 'string' || item.type === 'paragraph')
-        newInputs[item.key] = item.default || ''
-      else if (item.type === 'number')
-        newInputs[item.key] = item.default
-      else if (item.type === 'file')
-        newInputs[item.key] = item.default
-      else if (item.type === 'file-list')
-        newInputs[item.key] = item.default || []
+      if (item.type === 'string' || item.type === 'paragraph')
+        newInputs[item.key] = ''
       else
         newInputs[item.key] = undefined
     })

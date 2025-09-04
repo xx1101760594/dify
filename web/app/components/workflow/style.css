@@ -21,6 +21,4 @@
   z-index: -1000 !important;
 }
 
-#workflow-container .react-flow__attribution {
-  background: none !important;
-}
+#workflow-container .react-flow {}

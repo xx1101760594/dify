@@ -40,7 +40,6 @@ const translation = {
     deleteApp: '删除应用',
     settings: '设置',
     setup: '设置',
-    config: '配置',
     getForFree: '免费获取',
     reload: '刷新',
     ok: '好的',
@@ -65,8 +64,7 @@ const translation = {
     skip: '跳过',
     format: '格式化',
     more: '更多',
-    selectAll: '全选',
-    deSelectAll: '取消全选',
+    new:'新增'
   },
   errorMsg: {
     fieldRequired: '{{field}} 为必填项',
@@ -112,6 +110,7 @@ const translation = {
     generatedUnsuccessfully: '生成失败',
     paySucceeded: '已支付成功',
     payCancelled: '已取消支付',
+    deletedSuccessfully: '删除成功',
   },
   model: {
     params: {
@@ -129,11 +128,14 @@ const translation = {
         '影响常见与罕见词汇使用。\n值较大时，倾向于生成不常见的词汇和表达方式。\n值越小，更倾向于使用常见和普遍接受的词汇或短语。',
       max_tokens: '单次回复限制 max_tokens',
       max_tokensTip:
-        '用于限制回复的最大长度，以 token 为单位。\n较大的值可能会限制给提示词、聊天记录和知识库留出的空间。\n建议将其设置在三分之二以下。\ngpt-4-1106-preview、gpt-4-vision-preview 最大长度 (输入 128k，输出 4k)',
-      maxTokenSettingTip: '您设置的最大 tokens 数较大，可能会导致 prompt、用户问题、知识库内容没有 token 空间进行处理，建议设置到 2/3 以下。',
-      setToCurrentModelMaxTokenTip: '最大令牌数更新为当前模型最大的令牌数 {{maxToken}} 的 80%。',
+        '用于限制回复的最大长度，以 token 为单位。\n较大的值可能会限制给提示词、聊天记录和知识库留出的空间。\n建议将其设置在三分之二以下。\ngpt-4-1106-preview、gpt-4-vision-preview 最大长度 (输入128k，输出4k)',
+      maxTokenSettingTip:
+        '您设置的最大 tokens 数较大，可能会导致 prompt、用户问题、知识库内容没有 token 空间进行处理，建议设置到 2/3 以下。',
+      setToCurrentModelMaxTokenTip:
+        '最大令牌数更新为当前模型最大的令牌数 {{maxToken}} 的 80%。',
       stop_sequences: '停止序列 stop_sequences',
-      stop_sequencesTip: '最多四个序列，API 将停止生成更多的 token。返回的文本将不包含停止序列。',
+      stop_sequencesTip:
+        '最多四个序列，API 将停止生成更多的 token。返回的文本将不包含停止序列。',
       stop_sequencesPlaceholder: '输入序列并按 Tab 键',
     },
     tone: {
@@ -149,17 +151,22 @@ const translation = {
   menus: {
     status: 'beta',
     explore: '探索',
+    intelligentCenter: '智能体中心',
     apps: '工作室',
-    appDetail: '应用详情',
-    account: '账户',
+    workSpace: '智能体开发',
     plugins: '插件',
     exploreMarketplace: '探索 Marketplace',
     pluginsTips: '集成第三方插件或创建与 ChatGPT 兼容的 AI 插件。',
     datasets: '知识库',
-    datasetsTips: '即将到来：上传自己的长文本数据，或通过 Webhook 集成自己的数据源',
+    datasetsTips:
+      '即将到来: 上传自己的长文本数据，或通过 Webhook 集成自己的数据源',
     newApp: '创建应用',
     newDataset: '创建知识库',
     tools: '工具',
+    skillLibrary:'技能库',
+    models: '模型仓',
+    mofang: '魔方 Cubix',
+    database: '数据库',
   },
   userProfile: {
     settings: '设置',
@@ -175,6 +182,7 @@ const translation = {
     community: '社区',
     about: '关于',
     logout: '登出',
+    api: '开发文档'
   },
   compliance: {
     soc2Type1: 'SOC 2 Type I Report',
@@ -213,12 +221,13 @@ const translation = {
     newPassword: '新密码',
     notEqual: '两个密码不相同',
     confirmPassword: '确认密码',
-    langGeniusAccount: '账号关联数据',
-    langGeniusAccountTip: '您的账号相关的用户数据。',
+    langGeniusAccount: '账号',
+    langGeniusAccountTip: '您的账号和相关的用户数据。',
     editName: '编辑名字',
     showAppLength: '显示 {{length}} 个应用',
     delete: '删除账户',
-    deleteTip: '请注意，一旦确认，作为任何空间的所有者，您的空间将被安排进入永久删除队列，您的所有用户数据也将被排入永久删除队列。',
+    deleteTip:
+      '请注意，一旦确认，作为任何空间的所有者，您的空间将被安排进入永久删除队列，您的所有用户数据也将被排入永久删除队列。',
     deletePrivacyLinkTip: '有关我们如何处理您的数据的更多信息，请参阅我们的',
     deletePrivacyLink: '隐私政策',
     deleteSuccessTip: '删除账户需要一些时间。完成后，我们会通过邮件通知您。',
@@ -234,29 +243,6 @@ const translation = {
     editWorkspaceInfo: '编辑工作空间信息',
     workspaceName: '工作空间名称',
     workspaceIcon: '工作空间图标',
-    changeEmail: {
-      title: '更改邮箱',
-      verifyEmail: '验证当前邮箱',
-      newEmail: '设置新邮箱',
-      verifyNew: '验证新邮箱',
-      authTip: '一旦您的电子邮件地址更改，链接到您旧电子邮件地址的 Google 或 GitHub 帐户将无法再登录该帐户。',
-      content1: '如果您继续，我们将向 <email>{{email}}</email> 发送验证码以进行重新验证。',
-      content2: '你的当前邮箱是 <email>{{email}}</email> 。验证码已发送至该邮箱。',
-      content3: '输入新的邮箱，我们将向您发送验证码。',
-      content4: '我们已将验证码发送至 <email>{{email}}</email>。',
-      codeLabel: '验证码',
-      codePlaceholder: '输入 6 位数字验证码',
-      emailLabel: '新邮箱',
-      emailPlaceholder: '输入新邮箱',
-      existingEmail: '该邮箱已存在',
-      unAvailableEmail: '该邮箱暂时无法使用。',
-      sendVerifyCode: '发送验证码',
-      continue: '继续',
-      changeTo: '更改为 {{email}}',
-      resendTip: '没有收到验证码？',
-      resendCount: '请在 {{count}} 秒后重新发送',
-      resend: '重新发送',
-    },
   },
   members: {
     team: '团队',
@@ -276,14 +262,15 @@ const translation = {
     datasetOperatorTip: '只能管理知识库',
     inviteTeamMember: '添加团队成员',
     inviteTeamMemberTip: '对方在登录后可以访问你的团队数据。',
-    emailNotSetup: '由于邮件服务器未设置，无法发送邀请邮件。请将邀请后生成的邀请链接通知用户。',
+    emailNotSetup:
+      '由于邮件服务器未设置，无法发送邀请邮件。请将邀请后生成的邀请链接通知用户。',
     email: '邮箱',
     emailInvalid: '邮箱格式无效',
     emailPlaceholder: '输入邮箱',
     sendInvite: '发送邀请',
     invitedAsRole: '邀请为{{role}}用户',
     invitationSent: '邀请已发送',
-    invitationSentTip: '邀请已发送，对方登录 Dify 后即可访问你的团队数据。',
+    invitationSentTip: '邀请已发送，对方登录后即可访问你的团队数据。',
     invitationLink: '邀请链接',
     failedInvitationEmails: '邀请以下邮箱失败',
     ok: '好的',
@@ -296,28 +283,13 @@ const translation = {
     deleteMember: '删除成员',
     you: '（你）',
     builderTip: '可以构建和编辑自己的应用程序',
-    setBuilder: 'Set as builder（设置为构建器）',
+    setBuilder: 'Set as builder （设置为构建器）',
     builder: '构建器',
-    transferOwnership: '转移所有权',
-    transferModal: {
-      title: '转移工作空间所有权',
-      warning: '您即将转移 “{{workspace}}”的所有权。该操作将立即生效，且无法撤销。',
-      warningTip: '您将成为管理员成员，新所有者将拥有完全控制权。',
-      sendTip: '如果您继续，我们将向 <email>{{email}}</email> 发送验证码以进行身份认证。',
-      verifyEmail: '验证您当前的邮箱',
-      verifyContent: '您当前的邮箱是 <email>{{email}}</email>。',
-      verifyContent2: '我们将向该邮箱发送临时验证码以完成身份验证。',
-      codeLabel: '验证码',
-      codePlaceholder: '输入 6 位数字验证码',
-      resendTip: '没有收到验证码？',
-      resendCount: '请在 {{count}} 秒后重新发送',
-      resend: '重新发送',
-      transferLabel: '新所有者',
-      transferPlaceholder: '选择一个成员',
-      sendVerifyCode: '发送验证码',
-      continue: '继续',
-      transfer: '转移工作空间所有权',
-    },
+    workspaceLabel: '创建工作空间',
+    setWorkspace: '{{workspace}}工作空间',
+    setWorkspaceTrue: '开通',
+    setWorkspaceFalse: '不开通',
+    switchSucessTip: '切换成功'
   },
   integrations: {
     connected: '登录方式',
@@ -354,7 +326,7 @@ const translation = {
       openaiHosted: '托管 OpenAI',
       onTrial: '体验',
       exhausted: '超出限额',
-      desc: '托管 OpenAI 由 Dify 提供的托管 OpenAI 服务，你可以使用 GPT-3.5 等模型，在体验额度消耗完毕前你需要设置其它模型供应商。',
+      desc: '托管 OpenAI 由 CloudWalk Cubix 提供的托管 OpenAI 服务，你可以使用 GPT-3.5 等模型，在体验额度消耗完毕前你需要设置其它模型供应商。',
       callTimes: '调用次数',
       usedUp: '试用额度已用完，请在下方添加自己的模型供应商',
       useYourModel: '当前正在使用你自己的模型供应商。',
@@ -369,11 +341,13 @@ const translation = {
       usedUp: '试用额度已用完，请在下方添加自己的模型供应商',
       useYourModel: '当前正在使用你自己的模型供应商。',
       close: '关闭',
-      trialQuotaTip: '您的 Anthropic 体验额度将于 2025/03/17 过期，过期后将无法使用，请尽快体验。',
+      trialQuotaTip:
+        '您的 Anthropic 体验额度将于 2025/03/17 过期，过期后将无法使用，请尽快体验。',
     },
     anthropic: {
       using: '嵌入能力正在使用',
-      enableTip: '要启用 Anthropic 模型，您需要先绑定 OpenAI 或 Azure OpenAI 服务。',
+      enableTip:
+        '要启用 Anthropic 模型，您需要先绑定 OpenAI 或 Azure OpenAI 服务。',
       notEnabled: '未启用',
       keyFrom: '从 Anthropic 获取您的 API 密钥',
     },
@@ -394,7 +368,7 @@ const translation = {
     },
     embeddingModel: {
       key: 'Embedding 模型',
-      tip: '设置知识库文档嵌入处理的默认模型，检索和导入知识库均使用该 Embedding 模型进行向量化处理，切换后将导致已导入的知识库与问题之间的向量维度不一致，从而导致检索失败。为避免检索失败，请勿随意切换该模型。',
+      tip: '设置知识库文档嵌入处理的默认模型，检索和导入知识库均使用该Embedding模型进行向量化处理，切换后将导致已导入的知识库与问题之间的向量维度不一致，从而导致检索失败。为避免检索失败，请勿随意切换该模型。',
       required: '请选择 Embedding 模型',
     },
     speechToTextModel: {
@@ -430,10 +404,11 @@ const translation = {
       buyQuota: '购买额度',
       priorityUse: '优先使用',
       removeKey: '删除 API 密钥',
-      tip: '已付费额度将优先考虑。试用额度将在付费额度用完后使用。',
+      tip: '已付费额度将优先考虑。 试用额度将在付费额度用完后使用。',
     },
     item: {
-      deleteDesc: '{{modelName}} 被用作系统推理模型。删除后部分功能将无法使用。请确认。',
+      deleteDesc:
+        '{{modelName}} 被用作系统推理模型。删除后部分功能将无法使用。请确认。',
       freeQuota: '免费额度',
     },
     addApiKey: '添加您的 API 密钥',
@@ -461,12 +436,13 @@ const translation = {
     getFreeTokens: '获得免费 Tokens',
     priorityUsing: '优先使用',
     deprecated: '已弃用',
-    confirmDelete: '确认删除？',
+    confirmDelete: '确认删除?',
     quotaTip: '剩余免费额度',
     loadPresets: '加载预设',
     parameters: '参数',
     loadBalancing: '负载均衡',
-    loadBalancingDescription: '为模型配置多组凭据，并自动调用。',
+    loadBalancingDescription:
+      '为了减轻单组凭据的压力，您可以为模型调用配置多组凭据。',
     loadBalancingHeadline: '负载均衡',
     configLoadBalancing: '设置负载均衡',
     modelHasBeenDeprecated: '该模型已废弃',
@@ -478,7 +454,8 @@ const translation = {
     addConfig: '增加配置',
     editConfig: '修改配置',
     loadBalancingLeastKeyWarning: '至少启用 2 个 Key 以使用负载均衡',
-    loadBalancingInfo: '默认情况下，负载均衡使用 Round-robin 策略。如果触发速率限制，将应用 1 分钟的冷却时间',
+    loadBalancingInfo:
+      '默认情况下，负载均衡使用 Round-robin 策略。如果触发速率限制，将应用 1 分钟的冷却时间',
     upgradeForLoadBalancing: '升级以解锁负载均衡功能',
     apiKey: 'API 密钥',
     toBeConfigured: '待配置',
@@ -487,28 +464,6 @@ const translation = {
     discoverMore: '发现更多就在',
     emptyProviderTitle: '尚未安装模型供应商',
     emptyProviderTip: '请安装模型供应商。',
-    auth: {
-      unAuthorized: '未授权',
-      authRemoved: '授权已移除',
-      apiKeys: 'API 密钥',
-      addApiKey: '添加 API 密钥',
-      addNewModel: '添加新模型',
-      addCredential: '添加凭据',
-      addModelCredential: '添加模型凭据',
-      modelCredentials: '模型凭据',
-      configModel: '配置模型',
-      configLoadBalancing: '配置负载均衡',
-      authorizationError: '授权错误',
-      specifyModelCredential: '指定模型凭据',
-      specifyModelCredentialTip: '使用已配置的模型凭据。',
-      providerManaged: '由模型供应商管理',
-      providerManagedTip: '使用模型供应商提供的单组凭据。',
-      apiKeyModal: {
-        title: 'API 密钥授权配置',
-        desc: '配置凭据后，工作空间中的所有成员都可以在编排应用时使用此模型。',
-        addModel: '添加模型',
-      },
-    },
   },
   dataSource: {
     add: '添加数据源',
@@ -532,7 +487,6 @@ const translation = {
         addPages: '添加页面',
         preview: '预览',
       },
-      integratedAlert: 'Notion通过内部凭证集成，无需重新授权。',
     },
     website: {
       title: '网站',
@@ -551,8 +505,11 @@ const translation = {
     },
   },
   apiBasedExtension: {
-    title: 'API 扩展提供了一个集中式的 API 管理，在此统一添加 API 配置后，方便在 Dify 上的各类应用中直接使用。',
+    title:
+      'API 扩展提供了一个集中式的 API 管理，在此统一添加 API 配置后，方便在各类应用中直接使用。',
     link: '了解如何开发您自己的 API 扩展。',
+    linkUrl: '',
+    // linkUrl: 'https://docs.dify.ai/zh-hans/guides/extension/api-based-extension',
     add: '新增 API 扩展',
     selector: {
       title: 'API 扩展',
@@ -581,8 +538,8 @@ const translation = {
   about: {
     changeLog: '更新日志',
     updateNow: '现在更新',
-    nowAvailable: 'Dify {{version}} 现已可用。',
-    latestAvailable: 'Dify {{version}} 已是最新版本。',
+    nowAvailable: 'CloudWalk Cubix {{version}} 现已可用。',
+    latestAvailable: 'CloudWalk Cubix {{version}} 已是最新版本。',
   },
   appMenus: {
     overview: '监测',
@@ -636,14 +593,22 @@ const translation = {
       hitCount: '召回次数：',
       vectorHash: '向量哈希：',
       hitScore: '召回得分：',
+      preview: '预览',
+      previewDocument: '预览文档',
+      documentPreview: '文档预览',
+      openInDocument: '在文档中打开',
+      referencedContent: '引用内容',
+      documentContent: '文档内容',
+      documentOriginal: '文档原文',
+      noContentAvailable: '暂无内容可预览',
     },
-    inputPlaceholder: '和 {{botName}} 聊天',
+    inputPlaceholder: '和机器人聊天',
     thinking: '深度思考中...',
     thought: '已深度思考',
     resend: '重新发送',
   },
   promptEditor: {
-    placeholder: '在这里写你的提示词，输入\'{\' 插入变量、输入\'/\' 插入提示内容块',
+    placeholder: "在这里写你的提示词，输入'{' 插入变量、输入'/' 插入提示内容块",
     context: {
       item: {
         title: '上下文',
@@ -727,21 +692,15 @@ const translation = {
   license: {
     expiring: '许可证还有 1 天到期',
     expiring_plural: '许可证还有 {{count}} 天到期',
-    unlimited: '无限制',
   },
   pagination: {
     perPage: '每页显示',
   },
-  avatar: {
-    deleteTitle: '删除头像',
-    deleteDescription: '确定要删除你的个人头像吗？你的账号将使用默认的首字母头像。',
-  },
   imageInput: {
     dropImageHere: '将图片拖放到此处，或',
     browse: '浏览',
-    supportedFormats: '支持 PNG、JPG、JPEG、WEBP 和 GIF 格式',
+    supportedFormats: '支持PNG、JPG、JPEG、WEBP和GIF格式',
   },
-  you: '你',
-}
+};
 
-export default translation
+export default translation;

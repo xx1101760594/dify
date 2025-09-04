@@ -77,9 +77,6 @@ const translation = {
     execution: 'EXECUȚIE',
     executions: '{{num}} EXECUȚII',
   },
-  login: {
-    backToHome: 'Înapoi la Acasă',
-  },
 }
 
 export default translation

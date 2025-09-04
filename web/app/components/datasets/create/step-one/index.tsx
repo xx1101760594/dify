@@ -142,7 +142,7 @@ const StepOne = ({
         <div className='relative h-full w-1/2 overflow-y-auto'>
           <div className='flex justify-end'>
             <div className={classNames(s.form)}>
-              {
+              {/* {
                 shouldShowDataSourceTypeList && (
                   <div className={classNames(s.stepHeader, 'system-md-semibold text-text-secondary')}>
                     {t('datasetCreation.steps.one')}
@@ -225,7 +225,7 @@ const StepOne = ({
                     )}
                   </div>
                 )
-              }
+              } */}
               {dataSourceType === DataSourceType.FILE && (
                 <>
                   <FileUploader

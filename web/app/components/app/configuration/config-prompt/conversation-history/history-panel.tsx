@@ -43,11 +43,12 @@ const HistoryPanel: FC<Props> = ({
       {showWarning && (
         <div className='flex justify-between rounded-b-xl bg-background-section-burn px-3 py-2 text-xs text-text-secondary'>
           <div>{t('appDebug.feature.conversationHistory.tip')}
-            <a href={docLink('/learn-more/extended-reading/what-is-llmops',
-              { 'zh-Hans': '/learn-more/extended-reading/prompt-engineering/README' })}
+            {/* <a href={`${locale === LanguagesSupported[1]
+              ? 'https://docs.cubix.ai/zh-hans/learn-more/extended-reading/prompt-engineering/README'
+              : 'https://docs.cubix.ai/en/features/prompt-engineering'}`}
             target='_blank' rel='noopener noreferrer'
             className='text-[#155EEF]'>{t('appDebug.feature.conversationHistory.learnMore')}
-            </a>
+            </a> */}
           </div>
         </div>
       )}

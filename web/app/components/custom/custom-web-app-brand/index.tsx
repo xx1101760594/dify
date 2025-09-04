@@ -246,12 +246,9 @@ const CustomWebAppBrand = () => {
                 {!webappBrandRemoved && (
                   <>
                     <div className='system-2xs-medium-uppercase text-text-tertiary'>POWERED BY</div>
-                    {
-                      systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
-                        ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
-                        : webappLogo
-                          ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
-                          : <DifyLogo size='small' />
+                    {webappLogo
+                      ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
+                      : <DifyLogo size='small' />
                     }
                   </>
                 )}
@@ -266,7 +263,7 @@ const CustomWebAppBrand = () => {
                   <div className='h-2 w-[144px] rounded-sm bg-text-quaternary opacity-20'></div>
                 </Button>
               </div>
-              <div className='body-lg-regular flex h-[52px] w-[578px] items-center rounded-xl border border-components-chat-input-border bg-components-panel-bg-blur pl-3.5 text-text-placeholder shadow-md backdrop-blur-sm'>Talk to Dify</div>
+              <div className='body-lg-regular flex h-[52px] w-[578px] items-center rounded-xl border border-components-chat-input-border bg-components-panel-bg-blur pl-3.5 text-text-placeholder shadow-md backdrop-blur-sm'>Talk to CloudWalk Cubix</div>
             </div>
           </div>
         </div>
@@ -308,12 +305,9 @@ const CustomWebAppBrand = () => {
             {!webappBrandRemoved && (
               <>
                 <div className='system-2xs-medium-uppercase text-text-tertiary'>POWERED BY</div>
-                {
-                  systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
-                    ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
-                    : webappLogo
-                      ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
-                      : <DifyLogo size='small' />
+                {webappLogo
+                  ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
+                  : <DifyLogo size='small' />
                 }
               </>
             )}

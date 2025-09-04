@@ -7,23 +7,181 @@ import { CodeGroup } from '@/app/components/develop/code.tsx'
 import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstruction, Paragraph } from '@/app/components/develop/md.tsx'
 
 # 知识库 API
+    <div>
 
-<div>
-  ### 鉴权
+    ### 鉴权
 
-  Service API 使用 `API-Key` 进行鉴权。
+    CloudWalk Cubix Service API 使用 `API-Key` 进行鉴权。
 
-  建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。
+    建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。
 
-  所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
+    所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
 
-  <CodeGroup title="Code">
-    ```javascript
-      Authorization: Bearer {API_KEY}
-
+    <CodeGroup title="Code">
+    ```http
+    Authorization: Bearer {API_KEY}
     ```
-  </CodeGroup>
-</div>
+    </CodeGroup>
+
+    </div>
+
+<hr className="ml-0 mr-0" />
+
+<Heading  
+url="decorator/validate_app_token"  
+method="DECORATOR"  
+title="应用 API Token 验证"  
+name="#validate_app_token"  
+/> 
+<Row>
+  <Col>
+    用于校验 OpenAPI 请求中的 Bearer Token。将验证该 Token 所关联应用的有效性（存在、启用状态、租户状态）并注入访问上下文。
+    支持从请求参数中提取终端用户 ID 并创建或更新对应的 EndUser。
+
+    ### 可选参数
+    <Properties>
+    <Property name="fetch_user_arg" type="FetchUserArg" key="fetch_user_arg">
+        用户提取配置，可指定从 query/json/form 中提取 user_id。
+    </Property>
+    </Properties>
+
+
+  </Col>
+</Row>
+
+<hr className="ml-0 mr-0" />
+
+<Heading  
+url="decorator/validate_dataset_token"  
+method="DECORATOR"  
+title="知识库 Token 校验"  
+name="#validate_dataset_token"  
+/> <Row>
+
+  <Col>
+    校验 Dataset 类型接口的请求 Token 是否有效，并设置租户上下文。
+
+
+    - 自动提取并注入 `tenant_id`
+    - 将 `tenant_id` 注入为视图函数的第一个参数
+
+    ### 错误返回
+    无效 Token、未绑定租户、租户状态异常将返回 401 或 403。
+
+
+  </Col>
+</Row>
+
+<hr className="ml-0 mr-0" />
+
+<Heading  
+url="decorator/cloud_edition_billing_resource_check"  
+method="DECORATOR"  
+title="资源容量限制检查"  
+name="#cloud_edition_billing_resource_check"  
+/> <Row>
+
+  <Col>
+    检查租户是否超出配额，如成员数量、应用数量、向量空间或文档上传限制。
+
+    ### 参数
+    <Properties>
+    <Property name="resource" type="string" key="resource">
+        被检查的资源名，例如 "vector_space"
+    </Property>
+    <Property name="api_token_type" type="string" key="api_token_type">
+        调用所用 Token 类型，通常为 "app" 或 "dataset"
+    </Property>
+    </Properties>
+
+
+  </Col>
+</Row>
+
+<hr className="ml-0 mr-0" />
+
+<Heading  
+url="decorator/cloud_edition_billing_knowledge_limit_check"  
+method="DECORATOR"  
+title="知识库能力限制检查"  
+name="#cloud_edition_billing_knowledge_limit_check"  
+/> <Row>
+
+  <Col>
+    用于限制部分高级知识库能力仅对部分用户开放，例如新增分段操作。
+
+    ### 参数
+    <Properties>
+    <Property name="resource" type="string" key="resource">
+        被访问的功能能力名，例如 "add_segment"
+    </Property>
+    <Property name="api_token_type" type="string" key="api_token_type">
+        Token 类型，如 "app" 或 "dataset"
+    </Property>
+    </Properties>
+
+
+  </Col>
+</Row>
+
+<hr className="ml-0 mr-0" />
+
+<Heading  
+url="decorator/cloud_edition_billing_rate_limit_check"  
+method="DECORATOR"  
+title="请求频率限制检查"  
+name="#cloud_edition_billing_rate_limit_check"  
+/> <Row>
+
+  <Col>
+    使用 Redis 滑动窗口算法实现的请求速率控制装饰器。超出速率限制将拒绝请求并记录日志。
+
+    ### 参数
+    <Properties>
+    <Property name="resource" type="string" key="resource">
+        请求资源类型标识（如 "knowledge"）
+    </Property>
+    <Property name="api_token_type" type="string" key="api_token_type">
+        请求使用的 Token 类型（如 "app" 或 "dataset"）
+    </Property>
+    </Properties>
+
+
+  </Col>
+</Row>
+
+<hr className="ml-0 mr-0" />
+
+<Heading  
+url="function/create_or_update_end_user_for_user_id"  
+method="FUNC"  
+title="创建或更新 EndUser 终端用户"  
+name="#create_or_update_end_user_for_user_id"  
+/> <Row>
+
+  <Col>
+    根据传入的 user_id 创建或更新一个 App 下绑定的 EndUser 用户实体。用于记录终端用户身份。
+
+
+    ### 参数
+    <Properties>
+    <Property name="app_model" type="App" key="app_model">
+        当前操作所依附的 App 实例
+    </Property>
+    <Property name="user_id" type="string" key="user_id">
+        终端用户标识。若为空，将使用默认值 "DEFAULT-USER"
+    </Property>
+    </Properties>
+
+    ### 返回值
+    <Properties>
+    <Property name="EndUser" type="model" key="return">
+        创建或更新后的 EndUser 实体对象
+    </Property>
+    </Properties>
+
+  </Col>
+</Row>
 
 <hr style={{ marginLeft: 0, marginRight: 0, width: '100%', maxWidth: '100%' }} />
 
@@ -207,7 +365,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
         - <code>doc_language</code> 在 Q&A 模式下，指定文档的语言，例如：<code>English</code>、<code>Chinese</code>
 
         - <code>process_rule</code> 处理规则
-          - <code>mode</code> (string) 清洗、分段模式，automatic 自动 / custom 自定义 / hierarchical 父子
+          - <code>mode</code> (string) 清洗、分段模式 ，automatic 自动 / custom 自定义 / hierarchical 父子
           - <code>rules</code> (object) 自定义规则（自动模式下，该字段为空）
             - <code>pre_processing_rules</code> (array[object]) 预处理规则
               - <code>id</code> (string) 预处理规则的唯一标识符
@@ -260,7 +418,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
     ```bash {{ title: 'cURL' }}
     curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/document/create-by-file' \
     --header 'Authorization: Bearer {api_key}' \
-    --form 'data="{\"name\":\"Dify\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
+    --form 'data="{\"name\":\"Cubix\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
     --form 'file=@"/path/to/file"'
     ```
     </CodeGroup>
@@ -275,7 +433,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
           "upload_file_id": ""
         },
         "dataset_process_rule_id": "",
-        "name": "Dify.txt",
+        "name": "Cubix.txt",
         "created_from": "api",
         "created_by": "",
         "created_at": 1695308667,
@@ -916,12 +1074,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
       title="Request"
       tag="POST"
       label="/datasets/{dataset_id}/documents/{document_id}/update-by-file"
-      targetCode={`curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/update-by-file' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'data="{"name":"Dify","indexing_technique":"high_quality","process_rule":{"rules":{"pre_processing_rules":[{"id":"remove_extra_spaces","enabled":true},{"id":"remove_urls_emails","enabled":true}],"segmentation":{"separator":"###","max_tokens":500}},"mode":"custom"}}";type=text/plain' \\\n--form 'file=@"/path/to/file"'`}
+      targetCode={`curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/update-by-file' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'data="{"name":"Cubix","indexing_technique":"high_quality","process_rule":{"rules":{"pre_processing_rules":[{"id":"remove_extra_spaces","enabled":true},{"id":"remove_urls_emails","enabled":true}],"segmentation":{"separator":"###","max_tokens":500}},"mode":"custom"}}";type=text/plain' \\\n--form 'file=@"/path/to/file"'`}
     >
     ```bash {{ title: 'cURL' }}
     curl --location --request POST '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/update-by-file' \
     --header 'Authorization: Bearer {api_key}' \
-    --form 'data="{\"name\":\"Dify\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
+    --form 'data="{\"name\":\"Cubix\",\"indexing_technique\":\"high_quality\",\"process_rule\":{\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":true}],\"segmentation\":{\"separator\":\"###\",\"max_tokens\":500}},\"mode\":\"custom\"}}";type=text/plain' \
     --form 'file=@"/path/to/file"'
     ```
     </CodeGroup>
@@ -936,7 +1094,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
           "upload_file_id": ""
         },
         "dataset_process_rule_id": "",
-        "name": "Dify.txt",
+        "name": "Cubix.txt",
         "created_from": "api",
         "created_by": "",
         "created_at": 1695308667,
@@ -969,6 +1127,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
 />
 <Row>
   <Col>
+    查询指定知识库中某个上传批次下所有文档的索引状态（即嵌入进度）。该接口返回各文档的处理状态、完成度、阶段耗时及错误信息，适用于前端轮询或后台任务监控文档嵌入是否完成。
+    - 文档状态字段包含多个处理阶段的时间戳字段，便于故障排查与性能分析。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1024,6 +1185,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
 />
 <Row>
   <Col>
+     删除指定 dataset 中的文档。
+
+    - **若文档处于索引中（indexing）状态，将无法删除。**
+    - **若文档已归档，将禁止删除。**
+    - 删除成功后，系统将同步移除其对应的原始文件内容与所有关联的分段（segment）信息。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1064,6 +1231,8 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
 />
 <Row>
   <Col>
+    分页获取指定知识库（dataset）中的全部文档信息。支持按文档名称进行模糊搜索，默认结果按创建时间倒序排列。返回结构包括文档 ID、状态、名称、索引进度等。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1074,7 +1243,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
     ### Query
     <Properties>
       <Property name='keyword' type='string' key='keyword'>
-        搜索关键词，可选，目前仅搜索文档名称
+        模糊搜索关键词，仅匹配文档名称
       </Property>
       <Property name='page' type='string' key='page'>
         页码，可选
@@ -1106,7 +1275,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, PropertyInstructi
           "data_source_type": "file_upload",
           "data_source_info": null,
           "dataset_process_rule_id": null,
-          "name": "dify",
+          "name": "cubix",
           "created_from": "",
           "created_by": "",
           "created_at": 1681623639,
@@ -1320,6 +1489,11 @@ ___
 />
 <Row>
   <Col>
+    向指定文档添加一个或多个自定义分段（segment）。支持文本模式与问答模式，适用于自定义补录、手动编辑或数据导入等场景。
+
+    - 若仅需插入单个片段且需自定义其 `segment_id`，请改用 `/segments/{segment_id}` 接口。
+    - 若采用批量新增，可统一在请求体中指定多个 `segments`。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1333,6 +1507,7 @@ ___
     ### Request Body
     <Properties>
       <Property name='segments' type='object list' key='segments'>
+        片段列表，每个对象支持以下字段：<br/>
         - <code>content</code> (text) 文本内容/问题内容，必填
         - <code>answer</code> (text) 答案内容，非必填，如果知识库的模式为 Q&A 模式则传值
         - <code>keywords</code> (list) 关键字，非必填
@@ -1393,6 +1568,14 @@ ___
     }
     ```
     </CodeGroup>
+
+    ### 返回示例（批量）
+    - `data`：返回每个新增 segment 的详细信息，包括 ID、位置、关键词、状态等字段
+    - `doc_form`：当前文档的索引模式
+
+    ### 注意事项
+    - 请确保片段内容非空，避免空分片进入索引。
+    - 使用 `/segments/{segment_id}` 插入时，如目标 ID 已存在，可能更新而非插入。
   </Col>
 </Row>
 
@@ -1406,6 +1589,8 @@ ___
 />
 <Row>
   <Col>
+    查询指定知识库中某个文档的分段（segment）列表。支持分页、状态过滤和关键词搜索，常用于前端渲染结构化内容或查询索引情况。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1418,20 +1603,40 @@ ___
 
      ### Query
     <Properties>
-      <Property name='keyword' type='string' key='keyword'>
-        搜索关键词，可选
+      <Property name="keyword" type="string" key="keyword">
+        搜索关键词（目前仅匹配分段内容）<br/>
+        <b>可选</b>
       </Property>
-      <Property name='status' type='string' key='status'>
-        搜索状态，completed
+      <Property name="status" type="string" key="status">
+        分段状态过滤，例如：<code>completed</code><br/>
+        <b>可选</b>
       </Property>
-      <Property name='page' type='string' key='page'>
-        页码，可选
+      <Property name="page" type="int" key="page">
+        页码，默认 1<br/>
+        <b>可选</b>
       </Property>
-      <Property name='limit' type='string' key='limit'>
-        返回条数，可选，默认 20，范围 1-100
+      <Property name="limit" type="int" key="limit">
+        返回条数，默认 20，范围 1~100<br/>
+        <b>可选</b>
       </Property>
     </Properties>
+
+    ### 返回字段说明
+    - `data`: 分段列表，每个分段包含如下字段：
+      - `id`: 分段 ID
+      - `content`: 内容文本
+      - `answer`: 问答模式下的回答（可选）
+      - `keywords`: 关键词数组
+      - `position`: 在文档中的位置索引
+      - `tokens`, `word_count`: 内容统计信息
+      - `status`: 当前状态（如 completed）
+      - `created_at`, `indexing_at`, `completed_at`: 时间戳
+    - `doc_form`: 当前文档的索引模式
+    - `has_more`: 是否还有下一页
+    - `total`: 总分段数量
+    - `limit`, `page`: 分页信息
   </Col>
+
   <Col sticky>
     <CodeGroup
       title="Request"
@@ -1448,31 +1653,31 @@ ___
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
     {
-      "data": [{
-        "id": "",
-        "position": 1,
-        "document_id": "",
-        "content": "1",
-        "answer": "1",
-        "word_count": 25,
-        "tokens": 0,
-        "keywords": [
-            "a"
-        ],
-        "index_node_id": "",
-        "index_node_hash": "",
-        "hit_count": 0,
-        "enabled": true,
-        "disabled_at": null,
-        "disabled_by": null,
-        "status": "completed",
-        "created_by": "",
-        "created_at": 1695312007,
-        "indexing_at": 1695312007,
-        "completed_at": 1695312007,
-        "error": null,
-        "stopped_at": null
-      }],
+      "data": [
+        {
+          "id": "segment-uuid",
+          "position": 1,
+          "document_id": "document-uuid",
+          "content": "什么是LLM？",
+          "answer": "大语言模型是一种AI模型...",
+          "word_count": 25,
+          "tokens": 40,
+          "keywords": ["LLM", "AI"],
+          "index_node_id": "node-1",
+          "index_node_hash": "hash-abc",
+          "hit_count": 0,
+          "enabled": true,
+          "disabled_at": null,
+          "disabled_by": null,
+          "status": "completed",
+          "created_by": "user_id",
+          "created_at": 1695312007,
+          "indexing_at": 1695312007,
+          "completed_at": 1695312007,
+          "error": null,
+          "stopped_at": null
+        }
+      ],
       "doc_form": "text_model",
       "has_more": false,
       "limit": 20,
@@ -1494,6 +1699,10 @@ ___
 />
 <Row>
   <Col>
+    删除指定知识库中某个文档下的特定分段（segment），常用于手动维护或修复文档分片数据。
+
+    删除操作仅对已存在的分段生效，不存在或已被删除的分段将返回 404 或无效操作。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1523,76 +1732,6 @@ ___
     <CodeGroup title="Response">
     ```text {{ title: 'Response' }}
     204 No Content
-    ```
-    </CodeGroup>
-  </Col>
-</Row>
-
-<hr style={{ marginLeft: 0, marginRight: 0, width: '100%', maxWidth: '100%' }} />
-
-<Heading
-  url='/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}'
-  method='GET'
-  title='查看文档分段详情'
-  name='#view_document_segment'
-/>
-<Row>
-  <Col>
-    查看指定知识库中特定文档的分段详情
-
-    ### Path
-    <Properties>
-      <Property name='dataset_id' type='string' key='dataset_id'>
-        知识库 ID
-      </Property>
-      <Property name='document_id' type='string' key='document_id'>
-        文档 ID
-      </Property>
-      <Property name='segment_id' type='string' key='segment_id'>
-        分段 ID
-      </Property>
-    </Properties>
-  </Col>
-  <Col sticky>
-    <CodeGroup
-      title="Request"
-      tag="GET"
-      label="/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}"
-      targetCode={`curl --location --request GET '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}' \\\n--header 'Authorization: Bearer {api_key}'`}
-    >
-    ```bash {{ title: 'cURL' }}
-    curl --location --request GET '${props.apiBaseUrl}/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}' \
-    --header 'Authorization: Bearer {api_key}'
-    ```
-    </CodeGroup>
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
-    {
-      "data": {
-        "id": "分段唯一ID",
-        "position": 2,
-        "document_id": "所属文档ID",
-        "content": "分段内容文本",
-        "sign_content": "签名内容文本",
-        "answer": "答案内容(如果有)",
-        "word_count": 470,
-        "tokens": 382,
-        "keywords": ["关键词1", "关键词2"],
-        "index_node_id": "索引节点ID",
-        "index_node_hash": "索引节点哈希值",
-        "hit_count": 0,
-        "enabled": true,
-        "status": "completed",
-        "created_by": "创建者ID",
-        "created_at": 创建时间戳,
-        "updated_at": 更新时间戳,
-        "indexing_at": 索引时间戳,
-        "completed_at": 完成时间戳,
-        "error": null,
-        "child_chunks": []
-      },
-      "doc_form": "text_model"
-    }
     ```
     </CodeGroup>
   </Col>
@@ -1697,6 +1836,8 @@ ___
 />
 <Row>
   <Col>
+    向指定文档分段下新增一个子分段（child chunk）。常用于人工插入更细粒度的索引片段，以支持更精细的向量检索。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1717,6 +1858,22 @@ ___
       </Property>
     </Properties>
   </Col>
+    <Col>
+    ### 错误响应示例
+
+    删除失败可能由以下原因导致：
+
+    - 子分段不存在
+    - 子分段处于索引中状态，不允许删除
+
+    ### 错误字段
+    <Properties>
+      <Property name="code" type="string" key="code">错误代码</Property>
+      <Property name="status" type="number" key="status">HTTP 状态码</Property>
+      <Property name="message" type="string" key="message">错误描述</Property>
+    </Properties>
+  </Col>
+
   <Col sticky>
     <CodeGroup
       title="Request"
@@ -1767,6 +1924,10 @@ ___
   name='#get_child_chunks'
 />
 <Row>
+    获取指定知识库中文档下某个分段（segment）的子段（child_chunks）列表。该接口用于展示更细粒度的文本切片，常用于增强结构化内容控制或编辑体验。
+
+    支持通过关键词模糊匹配筛选结果，并提供分页功能。
+
   <Col>
     ### Path
     <Properties>
@@ -1845,6 +2006,11 @@ ___
 />
 <Row>
   <Col>
+
+    删除指定分段（segment）下的某个子分段（child_chunk）。
+
+    若目标子段仍处于向量构建（索引）过程中，将无法删除并返回错误。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -1907,7 +2073,7 @@ ___
     ```json {{ title: 'Response' }}
       {
         "code": "no_file_uploaded",
-        "message": "Please upload your file.",
+        "message": "请上传您的文件。",
         "status": 400
       }
     ```
@@ -1924,6 +2090,8 @@ ___
   name='#update_child_chunk'
 />
 <Row>
+    修改指定子分段的内容，仅支持内容更新，结构属性如 ID 不可变更。适用于微调嵌入文本、修正内容等场景。
+
   <Col>
     ### Path
     <Properties>
@@ -1999,6 +2167,12 @@ ___
 />
 <Row>
   <Col>
+    查询指定知识库文档所关联的上传文件的详细信息。**仅适用于数据源类型为 `upload_file` 的文档**。
+
+    返回内容包括文件的基本元信息（名称、大小、扩展名、MIME 类型）、上传者信息、创建时间，以及用于在线预览和下载的签名访问链接。
+
+    该接口常用于前端展示文件信息、实现在线预览或提供文件下载功能。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -2007,6 +2181,19 @@ ___
       <Property name='document_id' type='string' key='document_id'>
         文档 ID
       </Property>
+    </Properties>
+
+    ### 返回字段
+    <Properties>
+      <Property name='id' type='string' key='id'>上传文件唯一标识</Property>
+      <Property name='name' type='string' key='name'>文件名称</Property>
+      <Property name='size' type='number' key='size'>文件大小（字节）</Property>
+      <Property name='extension' type='string' key='extension'>文件扩展名（如 txt/pdf）</Property>
+      <Property name='url' type='string' key='url'>预览使用的签名 URL</Property>
+      <Property name='download_url' type='string' key='download_url'>下载使用的签名 URL</Property>
+      <Property name='mime_type' type='string' key='mime_type'>MIME 类型（如 text/plain）</Property>
+      <Property name='created_by' type='string' key='created_by'>上传者用户 ID</Property>
+      <Property name='created_at' type='number' key='created_at'>上传时间（Unix 时间戳）</Property>
     </Properties>
   </Col>
   <Col sticky>
@@ -2050,6 +2237,10 @@ ___
 />
 <Row>
   <Col>
+    向指定知识库发送检索请求，返回匹配的文档片段。支持多种检索模式，包括关键词检索、语义检索、全文检索及混合检索，可配置 Rerank 模型用于结果重排序。
+
+    该接口适用于向量召回测试、前端内容命中展示、以及知识库内容智能搜索等场景。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -2104,7 +2295,7 @@ ___
             - <code>value</code> (string|number|null) 比较值
       </Property>
       <Property name='external_retrieval_model' type='object' key='external_retrieval_model'>
-          未启用字段
+          外部检索模型配置（保留字段，暂未启用）
       </Property>
     </Properties>
   </Col>
@@ -2218,8 +2409,7 @@ ___
     </CodeGroup>
   </Col>
 </Row>
-
-<hr style={{ marginLeft: 0, marginRight: 0, width: '100%', maxWidth: '100%' }} />
+>
 
 <Heading
   url='/datasets/{dataset_id}/metadata'
@@ -2229,6 +2419,10 @@ ___
 />
 <Row>
   <Col>
+    为指定知识库新增一个元数据字段，用于标注文档片段信息，支持段落的标签化管理。
+
+    每个字段需指定名称（唯一）和类型，目前仅支持字符串类型。该字段创建后可被文档分段的元信息引用，用于后续筛选与语义检索。
+
     ### Params
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -2238,9 +2432,11 @@ ___
 
     ### Request Body
     <Properties>
-      <Property name='segment' type='object' key='segment'>
-        - <code>type</code> (string) 元数据类型，必填
-        - <code>name</code> (string) 元数据名称，必填
+      <Property name="type" type="string" key="type">
+        元数据字段类型，目前仅支持 <code>"string"</code>
+      </Property>
+      <Property name="name" type="string" key="name">
+        元数据字段名称，必须唯一
       </Property>
     </Properties>
   </Col>
@@ -2276,6 +2472,10 @@ ___
 />
 <Row>
   <Col>
+    更新指定知识库中的某个元数据字段的名称。
+
+    通常用于修改段落标签名称，调用方需具备该知识库的编辑权限。字段类型不可变更，仅可修改 `name` 字段，修改后原有片段上的该元数据值仍保留。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -2289,7 +2489,7 @@ ___
     ### Request Body
     <Properties>
       <Property name='segment' type='object' key='segment'>
-        - <code>name</code> (string) 元数据名称，必填
+        - <code>name</code> (string)  新的元数据字段名称，必填
       </Property>
     </Properties>
   </Col>
@@ -2325,15 +2525,19 @@ ___
 />
 <Row>
   <Col>
-    ### Path
+    删除指定知识库下的某个元数据字段。
+
+    删除前需确保该字段未被任何已索引文档引用，否则操作将被拒绝。调用方必须具备该知识库的管理权限。
+
+    ### Path 参数
     <Properties>
-      <Property name='dataset_id' type='string' key='dataset_id'>
-        知识库 ID
-      </Property>
-      <Property name='metadata_id' type='string' key='metadata_id'>
-        元数据 ID
-      </Property>
+      <Property name="dataset_id" type="string" key="dataset_id">知识库 ID</Property>
+      <Property name="metadata_id" type="string" key="metadata_id">元数据字段 ID</Property>
     </Properties>
+
+    ### 返回值
+    - 成功返回 HTTP 状态码：<code>204 No Content</code>
+    - 若字段已被使用或无权限操作，返回相应错误信息。
   </Col>
   <Col sticky>
     <CodeGroup
@@ -2358,15 +2562,21 @@ ___
 />
 <Row>
   <Col>
-    ### Path
+    用于启用或禁用指定知识库的内置元数据字段功能（如来源页码、原始来源链接等系统生成的字段）。
+
+    当前支持的 <code>action</code> 值为：
+    - <code>enable</code>：启用内置元数据字段
+    - <code>disable</code>：禁用内置元数据字段
+
+    ### Path 参数
     <Properties>
-      <Property name='dataset_id' type='string' key='dataset_id'>
-        知识库 ID
-      </Property>
-      <Property name='action' type='string' key='action'>
-        disable/enable
-      </Property>
+      <Property name="dataset_id" type="string" key="dataset_id">知识库 ID</Property>
+      <Property name="action" type="string" key="action">操作类型（可选值：<code>enable</code> 或 <code>disable</code>）</Property>
     </Properties>
+
+    ### 注意事项
+    - 该设置会影响后续文档分段是否生成内置字段
+    - 切换状态不会影响已有已分段文档
   </Col>
   <Col sticky>
     <CodeGroup
@@ -2391,6 +2601,8 @@ ___
 />
 <Row>
   <Col>
+    对指定知识库中的多个文档段落的元数据字段进行批量设置或修改。适用于自动标注、结构化迁移、数据增强或多条件筛选配置等场景。
+
     ### Path
     <Properties>
       <Property name='dataset_id' type='string' key='dataset_id'>
@@ -2467,109 +2679,18 @@ ___
     </CodeGroup>
   </Col>
 </Row>
+<hr className='ml-0 mr-0' />
 
-<hr style={{ marginLeft: 0, marginRight: 0, width: '100%', maxWidth: '100%' }} />
- 
-<Heading
- url='/workspaces/current/models/model-types/text-embedding'
- method='GET'
- title='获取嵌入模型列表'
- name='#model_type_list'
+<Heading  
+  url="/datasets/metadata/built-in"  
+  method="GET"  
+  title="获取内置元数据字段"  
+  name="#get_built_in_metadata_fields"  
 />
 <Row>
-   <Col>
-     ### Query
-     <Properties>
-     </Properties>
-   </Col>
-   <Col sticky>
-     <CodeGroup
-       title="Request"
-       tag="GET"
-       label="/datasets/{dataset_id}"
-       targetCode={`curl --location --location --request GET '${props.apiBaseUrl}/workspaces/current/models/model-types/text-embedding' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' `}
-     >
-     ```bash {{ title: 'cURL' }}
-     curl --location --request GET '${props.apiBaseUrl}/workspaces/current/models/model-types/text-embedding' \
-     --header 'Authorization: Bearer {api_key}' \
-     --header 'Content-Type: application/json' \
-     ```
-     </CodeGroup>
-     <CodeGroup title="Response">
-     ```json {{ title: 'Response' }}
-     {
-       "data": [
-           {
-               "provider": "zhipuai",
-               "label": {
-                   "zh_Hans": "智谱 AI",
-                   "en_US": "ZHIPU AI"
-               },
-               "icon_small": {
-                   "zh_Hans": "http://127.0.0.1:5001/console/api/workspaces/current/model-providers/zhipuai/icon_small/zh_Hans",
-                   "en_US": "http://127.0.0.1:5001/console/api/workspaces/current/model-providers/zhipuai/icon_small/en_US"
-               },
-               "icon_large": {
-                   "zh_Hans": "http://127.0.0.1:5001/console/api/workspaces/current/model-providers/zhipuai/icon_large/zh_Hans",
-                   "en_US": "http://127.0.0.1:5001/console/api/workspaces/current/model-providers/zhipuai/icon_large/en_US"
-               },
-               "status": "active",
-               "models": [
-                   {
-                       "model": "embedding-3",
-                       "label": {
-                           "zh_Hans": "embedding-3",
-                           "en_US": "embedding-3"
-                       },
-                       "model_type": "text-embedding",
-                       "features": null,
-                       "fetch_from": "predefined-model",
-                       "model_properties": {
-                           "context_size": 8192
-                       },
-                       "deprecated": false,
-                       "status": "active",
-                       "load_balancing_enabled": false
-                   },
-                   {
-                       "model": "embedding-2",
-                       "label": {
-                           "zh_Hans": "embedding-2",
-                           "en_US": "embedding-2"
-                       },
-                       "model_type": "text-embedding",
-                       "features": null,
-                       "fetch_from": "predefined-model",
-                       "model_properties": {
-                           "context_size": 8192
-                       },
-                       "deprecated": false,
-                       "status": "active",
-                       "load_balancing_enabled": false
-                   },
-                   {
-                       "model": "text_embedding",
-                       "label": {
-                           "zh_Hans": "text_embedding",
-                           "en_US": "text_embedding"
-                       },
-                       "model_type": "text-embedding",
-                       "features": null,
-                       "fetch_from": "predefined-model",
-                       "model_properties": {
-                           "context_size": 512
-                       },
-                       "deprecated": false,
-                       "status": "active",
-                       "load_balancing_enabled": false
-                   }
-               ]
-           }
-       ]
-     }
-     ```
-     </CodeGroup>
-   </Col>
+  <Col>
+    获取系统提供的内置元数据字段列表，如 document_name、source_type 等。可用于文档结构补充与系统功能增强。
+  </Col>
 </Row>
 
 <hr style={{ marginLeft: 0, marginRight: 0, width: '100%', maxWidth: '100%' }} />
@@ -2882,37 +3003,55 @@ ___
 
 <hr style={{ marginLeft: 0, marginRight: 0, width: '100%', maxWidth: '100%' }} />
 
+<Heading  
+  url="/datasets/{dataset_id}/metadata"  
+  method="GET"  
+  title="获取元数据字段列表"  
+  name="#list_metadata_fields"  
+/>
 <Row>
   <Col>
-    ### 错误信息
+    获取当前知识库下所有已创建的元数据字段。元数据字段可用于文档段落的结构化标记与检索筛选。
+
+    ### Path
     <Properties>
-      <Property name='code' type='string' key='code'>
-        返回的错误代码
-      </Property>
+      <Property name="dataset_id" type="string" key="dataset_id">知识库 ID</Property>
     </Properties>
-    <Properties>
-      <Property name='status' type='number' key='status'>
-        返回的错误状态
-      </Property>
-    </Properties>
-    <Properties>
-      <Property name='message' type='string' key='message'>
-        返回的错误信息
-      </Property>
-    </Properties>
-  </Col>
-  <Col>
-    <CodeGroup title="Example">
-    ```json {{ title: 'Response' }}
-      {
-        "code": "no_file_uploaded",
-        "message": "Please upload your file.",
-        "status": 400
-      }
-    ```
-    </CodeGroup>
   </Col>
 </Row>
+
+
+<hr className='ml-0 mr-0' />
+
+<Heading  
+  url="/datasets/{dataset_id}/hit-testing"  
+  method="POST"  
+  title="知识库命中测试"  
+  name="#hit_testing"  
+/>
+<Row>
+  <Col>
+    对指定知识库执行一次“命中测试”（Hit Testing），用于判断某段文本或查询是否能在知识库中检索到相关段落。常用于模型评估、语义索引验证等。
+
+    ### Path
+    <Properties>
+      <Property name="dataset_id" type="string" key="dataset_id">知识库 ID</Property>
+    </Properties>
+
+    ### Request Body
+    <Properties>
+      <Property name="query" type="string" key="query">待测试的查询文本</Property>
+      <Property name="top_k" type="int" key="top_k">返回最相关的前 K 条结果</Property>
+      <Property name="score_threshold" type="float" key="score_threshold">相似度分数阈值</Property>
+      <Property name="filter" type="dict" key="filter">附加过滤条件（可选）</Property>
+    </Properties>
+
+   ⚠️ 说明：本接口常作为内部评估工具或功能调试手段，依赖知识库中 segment 索引完成。
+  </Col>
+</Row>
+
+
+
 <table className="max-w-auto border-collapse border border-slate-400" style={{ maxWidth: 'none', width: 'auto' }}>
   <thead style={{ background: '#f9fafc' }}>
     <tr>
@@ -2925,22 +3064,22 @@ ___
     <tr>
       <td className="p-2 border border-slate-300">no_file_uploaded</td>
       <td className="p-2 border border-slate-300">400</td>
-      <td className="p-2 border border-slate-300">Please upload your file.</td>
+      <td className="p-2 border border-slate-300">请上传您的文件。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">too_many_files</td>
       <td className="p-2 border border-slate-300">400</td>
-      <td className="p-2 border border-slate-300">Only one file is allowed.</td>
+      <td className="p-2 border border-slate-300">仅允许上传一个文件。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">file_too_large</td>
       <td className="p-2 border border-slate-300">413</td>
-      <td className="p-2 border border-slate-300">File size exceeded.</td>
+      <td className="p-2 border border-slate-300">文件大小超限。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">unsupported_file_type</td>
       <td className="p-2 border border-slate-300">415</td>
-      <td className="p-2 border border-slate-300">File type not allowed.</td>
+      <td className="p-2 border border-slate-300">不支持的文件类型。</td>
     </tr>
     <tr>
       <td className="p-2 border border-slate-300">high_quality_dataset_only</td>
@@ -2985,3 +3124,4 @@ ___
   </tbody>
 </table>
 <div className="pb-4" />
+

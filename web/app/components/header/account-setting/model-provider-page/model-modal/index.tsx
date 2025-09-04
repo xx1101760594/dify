@@ -145,6 +145,12 @@ const ModelModal: FC<ModelModalProps> = ({
           </div>
         </div>
       )
+      if (res.result === 'success') {
+        notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
+        // mutate()
+        onSave()
+        onCancel()
+      }
     }
     let label = t('common.modelProvider.auth.apiKeyModal.title')
 
@@ -165,45 +171,28 @@ const ModelModal: FC<ModelModalProps> = ({
           {t('common.modelProvider.auth.apiKeyModal.desc')}
         </div>
       )
+      if (res.result === 'success') {
+        notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
+        // mutate()
+        onSave()
+        onCancel()
+      }
     }
 
-    return null
-  }, [providerFormSchemaPredefined, t])
-
-  const modalModel = useMemo(() => {
-    if (model) {
-      return (
-        <div className='mt-2 flex items-center'>
-          <ModelIcon
-            className='mr-2 h-4 w-4 shrink-0'
-            provider={provider}
-            modelName={model.model}
-          />
-          <div className='system-md-regular mr-1 text-text-secondary'>{model.model}</div>
-          <Badge>{model.model_type}</Badge>
-        </div>
-      )
-    }
-
-    return null
-  }, [model, provider])
+  const renderTitlePrefix = () => {
+    const prefix = isEditMode ? t('common.operation.setup') : t('common.operation.add')
+    // return `${prefix}${t('common.modelProvider.model')}`
+    return `${prefix} ${provider.label[language] || provider.label.en_US}`
+  }
 
   return (
     <PortalToFollowElem open>
       <PortalToFollowElemContent className='z-[60] h-full w-full'>
         <div className='fixed inset-0 flex items-center justify-center bg-black/[.25]'>
-          <div className='relative w-[640px] rounded-2xl bg-components-panel-bg shadow-xl'>
-            <div
-              className='absolute right-5 top-5 flex h-8 w-8 cursor-pointer items-center justify-center'
-              onClick={onCancel}
-            >
-              <RiCloseLine className='h-4 w-4 text-text-tertiary' />
-            </div>
-            <div className='px-6 pt-6'>
-              <div className='pb-3'>
-                {modalTitle}
-                {modalDesc}
-                {modalModel}
+          <div className='mx-2 w-[640px] overflow-auto rounded-2xl bg-components-panel-bg shadow-xl'>
+            <div className='px-8 pt-8'>
+              <div className='flex items-center mb-2'>
+                <div className='text-xl font-semibold text-text-primary'>{renderTitlePrefix()}</div>
               </div>
 
               <div className='max-h-[calc(100vh-320px)] overflow-y-auto'>
@@ -232,7 +221,7 @@ const ModelModal: FC<ModelModalProps> = ({
                 }
               </div>
 
-              <div className='sticky bottom-0 -mx-2 mt-2 flex flex-wrap items-center justify-between gap-y-2 bg-components-panel-bg px-2 pb-6 pt-4'>
+              <div className='flex sticky bottom-0 flex-wrap gap-y-2 justify-between items-center px-2 pt-4 pb-6 -mx-2 mt-2 bg-components-panel-bg'>
                 {
                   (provider.help && (provider.help.title || provider.help.url))
                     ? (
@@ -243,13 +232,13 @@ const ModelModal: FC<ModelModalProps> = ({
                         onClick={e => !provider.help.url && e.preventDefault()}
                       >
                         {provider.help.title?.[language] || provider.help.url[language] || provider.help.title?.en_US || provider.help.url.en_US}
-                        <LinkExternal02 className='ml-1 h-3 w-3' />
+                        <LinkExternal02 className='ml-1 w-3 h-3' />
                       </a>
                     )
                     : <div />
                 }
                 <div>
-                  {
+                  {/* {
                     isEditMode && (
                       <Button
                         variant='warning'
@@ -260,7 +249,7 @@ const ModelModal: FC<ModelModalProps> = ({
                         {t('common.operation.remove')}
                       </Button>
                     )
-                  }
+                  } */}
                   <Button
                     size='large'
                     className='mr-2'
@@ -279,20 +268,31 @@ const ModelModal: FC<ModelModalProps> = ({
                 </div>
               </div>
             </div>
-            <div className='border-t-[0.5px] border-t-divider-regular'>
-              <div className='flex items-center justify-center rounded-b-2xl bg-background-section-burn py-3 text-xs text-text-tertiary'>
-                <Lock01 className='mr-1 h-3 w-3 text-text-tertiary' />
-                {t('common.modelProvider.encrypted.front')}
-                <a
-                  className='mx-1 text-text-accent'
-                  target='_blank' rel='noopener noreferrer'
-                  href='https://pycryptodome.readthedocs.io/en/latest/src/cipher/oaep.html'
-                >
-                  PKCS1_OAEP
-                </a>
-                {t('common.modelProvider.encrypted.back')}
-              </div>
-            </div>
+            {/* <div className='border-t-[0.5px] border-t-divider-regular'>
+              {
+                (validatedStatusState.status === ValidatedStatus.Error && validatedStatusState.message)
+                  ? (
+                    <div className='flex bg-background-section-burn px-[10px] py-3 text-xs text-[#D92D20]'>
+                      <RiErrorWarningFill className='mr-2 mt-[1px] h-[14px] w-[14px]' />
+                      {validatedStatusState.message}
+                    </div>
+                  )
+                  : (
+                    <div className='flex justify-center items-center py-3 text-xs bg-background-section-burn text-text-tertiary'>
+                      <Lock01 className='mr-1 w-3 h-3 text-text-tertiary' />
+                      {t('common.modelProvider.encrypted.front')}
+                      <a
+                        className='mx-1 text-text-accent'
+                        target='_blank' rel='noopener noreferrer'
+                        href='https://pycryptodome.readthedocs.io/en/latest/src/cipher/oaep.html'
+                      >
+                        PKCS1_OAEP
+                      </a>
+                      {t('common.modelProvider.encrypted.back')}
+                    </div>
+                  )
+              }
+            </div> */}
           </div>
           {
             deleteCredentialId && (

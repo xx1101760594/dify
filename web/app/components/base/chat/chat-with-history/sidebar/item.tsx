@@ -7,6 +7,9 @@ import { useHover } from 'ahooks'
 import type { ConversationItem } from '@/models/share'
 import Operation from '@/app/components/base/chat/chat-with-history/sidebar/operation'
 import cn from '@/utils/classnames'
+import {
+  RiRadioButtonLine
+} from '@remixicon/react'
 
 type ItemProps = {
   isPin?: boolean
@@ -31,12 +34,14 @@ const Item: FC<ItemProps> = ({
       ref={ref}
       key={item.id}
       className={cn(
-        'system-sm-medium group flex cursor-pointer rounded-lg p-1 pl-3 text-components-menu-item-text hover:bg-state-base-hover',
-        isSelected && 'bg-state-accent-active text-text-accent hover:bg-state-accent-active',
+        'system-sm-medium group flex items-center cursor-pointer rounded-lg p-1.5 pl-3 text-components-menu-item-text hover:bg-state-base-hover hover:text-black',
+        isSelected && 'bg-white text-black hover:text-text-accent hover:bg-white',
       )}
       onClick={() => onChangeConversation(item.id)}
     >
-      <div className='grow truncate p-1 pl-0' title={item.name}>{item.name}</div>
+     { isSelected ?  <RiRadioButtonLine className={cn(isSelected && 'text-text-accent w-[14px]' )}></RiRadioButtonLine>
+      : <span className='block w-[8px] h-[8px] mx-[3px] rounded-[10px] bg-[#D0D3D8]'></span>}
+      <div className='grow truncate p-1 pl-2' title={item.name}>{item.name}</div>
       {item.id !== '' && (
         <div className='shrink-0' onClick={e => e.stopPropagation()}>
           <Operation

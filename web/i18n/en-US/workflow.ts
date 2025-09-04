@@ -260,6 +260,7 @@ const translation = {
     'loop-start': 'Loop Start',
     'loop': 'Loop',
     'loop-end': 'Exit Loop',
+    'database-query': 'Database Query',
   },
   blocksAbout: {
     'start': 'Define the initial parameters for launching a workflow',
@@ -282,6 +283,7 @@ const translation = {
     'document-extractor': 'Used to parse uploaded documents into text content that is easily understandable by LLM.',
     'list-operator': 'Used to filter or sort array content.',
     'agent': 'Invoking large language models to answer questions or process natural language',
+    'database-query': 'Query data from the database',
   },
   operator: {
     zoomIn: 'Zoom In',
@@ -916,6 +918,24 @@ const translation = {
       },
       clickToViewParameterSchema: 'Click to view parameter schema',
       parameterSchema: 'Parameter Schema',
+    },
+    database: {
+      inputVar: 'Input Variable',
+      databaseConnection: 'Database Connection',
+      selectDatabase: 'Select Database',
+      outputVars: {
+        rows: 'query result',
+        statementType: 'sql type',
+        rowCount: 'affected rows'
+      },
+      supportFileTypes: 'Support file types: {{types}}.',
+      learnMore: 'Learn more',
+      searchPlaceholder: 'Search database...',
+      empty: {
+        title: 'No Databases',
+        description: 'You haven\'t created any database connections yet. After creating database connections, you can use database query functionality in workflows.',
+        createButton: 'Create Database Connection',
+      },
     },
   },
   tracing: {

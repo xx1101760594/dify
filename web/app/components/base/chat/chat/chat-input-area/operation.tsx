@@ -59,13 +59,13 @@ const Operation = (
           className='ml-3 w-8 px-0'
           variant='primary'
           onClick={onSend}
-          style={
-            theme
-              ? {
-                backgroundColor: theme.primaryColor,
-              }
-              : {}
-          }
+          // style={
+          //   theme
+          //     ? {
+          //       backgroundColor: theme.primaryColor,
+          //     }
+          //     : {}
+          // }
         >
           <RiSendPlane2Fill className='h-4 w-4' />
         </Button>

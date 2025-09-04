@@ -61,6 +61,7 @@ export type CitationItem = {
   segment_position: number
   score: number
   word_count: number
+  polygons?: string
 }
 
 export type IChatItem = {

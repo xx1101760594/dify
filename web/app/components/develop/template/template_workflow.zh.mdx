@@ -11,7 +11,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
 
   ### Authentication
 
-  Service API 使用 `API-Key` 进行鉴权。
+  CloudWalk Cubix Service API 使用 `API-Key` 进行鉴权。
   <i>**强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。**</i>
   所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
 
@@ -243,7 +243,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
       import json
 
       def upload_file(file_path, user):
-          upload_url = "https://api.dify.ai/v1/files/upload"
+          upload_url = "https://api.cubix.ai/v1/files/upload"
           headers = {
               "Authorization": "Bearer app-xxxxxxxx",
           }
@@ -271,7 +271,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
               return None
 
       def run_workflow(file_id, user, response_mode="blocking"):
-          workflow_url = "https://api.dify.ai/v1/workflows/run"
+          workflow_url = "https://api.cubix.ai/v1/workflows/run"
           headers = {
               "Authorization": "Bearer app-xxxxxxxxx",
               "Content-Type": "application/json"
@@ -304,7 +304,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
 
       # 使用示例
       file_path = "{your_file_path}"
-      user = "difyuser"
+      user = "cubixuser"
 
       # 上传文件
       file_id = upload_file(file_path, user)
@@ -697,15 +697,15 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
   </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/files/upload"
-      targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
---header 'Authorization: Bearer {api_key}' \\
---form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
---form 'user=abc-123'`}
-    />
+    <CodeGroup title="Request" tag="POST" label="/files/upload" targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\\n--form 'user=abc-123'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X POST '${props.appDetail.api_base_url}/files/upload' \
+    --header 'Authorization: Bearer {api_key}' \
+    --form 'file=@"/path/to/file"'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1072,8 +1072,8 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
   用于获取应用的 WebApp 设置
   ### Response
   - `title` (string) WebApp 名称
-  - `icon_type` (string) 图标类型，`emoji`-表情，`image`-图片
-  - `icon` (string) 图标，如果是 `emoji` 类型，则是 emoji 表情符号，如果是 `image` 类型，则是图片 URL
+  - `icon_type` (string) 图标类型, `emoji`-表情, `image`-图片
+  - `icon` (string) 图标, 如果是 `emoji` 类型, 则是 emoji 表情符号, 如果是 `image` 类型, 则是图片 URL
   - `icon_background` (string) hex 格式的背景色
   - `icon_url` (string) 图标 URL
   - `description` (string) 描述
@@ -1084,13 +1084,13 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
   - `show_workflow_steps` (bool) 是否显示工作流详情
   </Col>
   <Col>
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/meta"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\
--H 'Authorization: Bearer {api_key}'`}
-    />
+  <CodeGroup title="Request" tag="POST" label="/meta" targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\\n-H 'Authorization: Bearer {api_key}'`}>
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/site' \
+    -H 'Authorization: Bearer {api_key}'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}

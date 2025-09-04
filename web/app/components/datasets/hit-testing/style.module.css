@@ -1,5 +1,5 @@
 .container {
-  @apply flex h-full w-full relative overflow-y-auto;
+  @apply flex h-full w-full relative overflow-y-auto overflow-x-hidden;
 }
 
 .container>div {

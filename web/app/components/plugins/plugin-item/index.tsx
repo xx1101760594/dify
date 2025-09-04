@@ -1,6 +1,6 @@
 'use client'
 import type { FC } from 'react'
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTheme } from 'next-themes'
 import {
   RiArrowRightUpLine,
@@ -180,14 +180,14 @@ const PluginItem: FC<Props> = ({
               </a>
             </>
           }
-          {source === PluginSource.marketplace && enable_marketplace
+          {/* {source === PluginSource.marketplace
             && <>
-              <a href={getMarketplaceUrl(`/plugins/${author}/${name}`, { theme })} target='_blank' className='flex items-center gap-0.5'>
+              <a href={`${MARKETPLACE_URL_PREFIX}/plugins/${author}/${name}${theme ? `?theme=${theme}` : ''}`} target='_blank' className='flex items-center gap-0.5'>
                 <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('plugin.from')} <span className='text-text-secondary'>marketplace</span></div>
                 <RiArrowRightUpLine className='h-3 w-3 text-text-tertiary' />
               </a>
             </>
-          }
+          } */}
           {source === PluginSource.local
             && <>
               <div className='flex items-center gap-1'>

@@ -80,17 +80,25 @@ export const validateLoadBalancingCredentials = async (predefined: boolean, prov
 export const saveCredentials = async (predefined: boolean, provider: string, v: FormValue, loadBalancing?: ModelLoadBalancingConfig) => {
   let body, url
 
-  if (predefined) {
-    const { __authorization_name__, ...rest } = v
-    body = {
-      config_from: ConfigurationMethodEnum.predefinedModel,
-      credentials: rest,
-      load_balancing: loadBalancing,
-      name: __authorization_name__,
-    }
-    url = `/workspaces/current/model-providers/${provider}/credentials`
-  }
-  else {
+  // if (predefined) {
+  //   body = {
+  //     config_from: ConfigurationMethodEnum.predefinedModel,
+  //     credentials: v,
+  //     load_balancing: loadBalancing,
+  //   }
+  //   url = `/workspaces/current/model-providers/${provider}`
+  // }
+  // else {
+  //   const { __model_name, __model_type, ...credentials } = v
+  //   body = {
+  //     model: __model_name,
+  //     model_type: __model_type,
+  //     credentials,
+  //     load_balancing: loadBalancing,
+  //   }
+  //   url = `/workspaces/current/model-providers/${provider}/models`
+  // }
+
     const { __model_name, __model_type, ...credentials } = v
     body = {
       model: __model_name,
@@ -98,8 +106,7 @@ export const saveCredentials = async (predefined: boolean, provider: string, v: 
       credentials,
       load_balancing: loadBalancing,
     }
-    url = `/workspaces/current/model-providers/${provider}/models`
-  }
+    url = `/workspaces/current/openai-compatible-models`
 
   return setModelProvider({ url, body })
 }
@@ -122,23 +129,27 @@ export const removeCredentials = async (predefined: boolean, provider: string, v
   let url = ''
   let body
 
-  if (predefined) {
-    url = `/workspaces/current/model-providers/${provider}/credentials`
-    if (credentialId) {
-      body = {
-        credential_id: credentialId,
-      }
+  // if (predefined) {
+  //   url = `/workspaces/current/model-providers/${provider}`
+  // }
+  // else {
+  //   if (v) {
+  //     const { __model_name, __model_type } = v
+  //     body = {
+  //       model: __model_name,
+  //       model_type: __model_type,
+  //     }
+  //     url = `/workspaces/current/model-providers/${provider}/models`
+  //   }
+  // }
+
+  if (v) {
+    const { __model_name, __model_type } = v
+    body = {
+      model: __model_name,
+      model_type: __model_type,
     }
-  }
-  else {
-    if (v) {
-      const { __model_name, __model_type } = v
-      body = {
-        model: __model_name,
-        model_type: __model_type,
-      }
-      url = `/workspaces/current/model-providers/${provider}/models`
-    }
+    url = `/workspaces/current/openai-compatible-models`
   }
 
   return deleteModelProvider({ url, body })

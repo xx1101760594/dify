@@ -73,9 +73,6 @@ const translation = {
     execution: 'ВИКОНАННЯ',
     executions: '{{num}} ВИКОНАНЬ',
   },
-  login: {
-    backToHome: 'Повернутися на головну',
-  },
 }
 
 export default translation

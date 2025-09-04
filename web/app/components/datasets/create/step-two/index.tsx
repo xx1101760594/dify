@@ -389,6 +389,7 @@ const StepTwo = ({
     top_k: 3,
     score_threshold_enabled: false,
     score_threshold: 0.5,
+    // hybrid_search_with_graph: false
   } as RetrievalConfig)
 
   useEffect(() => {
@@ -404,6 +405,7 @@ const StepTwo = ({
       top_k: 3,
       score_threshold_enabled: false,
       score_threshold: 0.5,
+      // hybrid_search_with_graph: false
     })
   }, [rerankDefaultModel, isRerankDefaultModelValid])
 
@@ -479,6 +481,15 @@ const StepTwo = ({
         })
       }
     }
+    params.enable_knowledge_graph = false
+    if([RETRIEVE_METHOD.pprSearch, RETRIEVE_METHOD.semanticAndPprSearch, RETRIEVE_METHOD.fullTextAndPprSearch, RETRIEVE_METHOD.allHybrid].includes(retrievalConfig.search_method)) {
+      params.enable_knowledge_graph = true
+    }
+    // if(retrievalConfig.hybrid_search_with_graph) {
+    //   params.enable_knowledge_graph = true
+    //   params.retrieval_model.search_method = RETRIEVE_METHOD.hybridAndGraph
+    // }
+    
     return params
   }
 
@@ -556,6 +567,8 @@ const StepTwo = ({
 
   const createHandle = async () => {
     const params = getCreationParams()
+    console.log('---getCreationParams--',params)
+    // return
     if (!params)
       return false
 
@@ -587,6 +600,7 @@ const StepTwo = ({
   }
 
   useEffect(() => {
+    // updatePreview()
     // fetch rules
     if (!isSetting) {
       fetchDefaultProcessRuleMutation.mutate('/datasets/process-rule')
@@ -613,7 +627,8 @@ const StepTwo = ({
   return (
     <div className='flex h-full w-full'>
       <div className={cn('relative h-full w-1/2 overflow-y-auto py-6', isMobile ? 'px-4' : 'px-12')}>
-        <div className={'system-md-semibold mb-1 text-text-secondary'}>{t('datasetCreation.stepTwo.segmentation')}</div>
+      <>
+        {/* <div className={'system-md-semibold mb-1 text-text-secondary'}>{t('datasetCreation.stepTwo.segmentation')}</div>
         {((isInUpload && [ChunkingMode.text, ChunkingMode.qa].includes(currentDataset!.doc_form))
           || isUploadInEmptyDataset
           || isInInit)
@@ -958,7 +973,8 @@ const StepTwo = ({
             {t('datasetCreation.stepTwo.indexSettingTip')}
             <Link className='text-text-accent' href={`/datasets/${datasetId}/settings`}>{t('datasetCreation.stepTwo.datasetSettingLink')}</Link>
           </div>
-        )}
+        )} */}
+        </>
         {/* Embedding model */}
         {indexType === IndexingType.QUALIFIED && (
           <div className='mt-5'>
@@ -985,18 +1001,16 @@ const StepTwo = ({
         <div>
           {!isModelAndRetrievalConfigDisabled
             ? (
-              <div className={'mb-1'}>
+              <div className={'mb-4'}>
                 <div className='system-md-semibold mb-0.5 text-text-secondary'>{t('datasetSettings.form.retrievalSetting.title')}</div>
                 <div className='body-xs-regular text-text-tertiary'>
-                  <a target='_blank' rel='noopener noreferrer'
-                    href={docLink('/guides/knowledge-base/create-knowledge-and-upload-documents')}
-                    className='text-text-accent'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
+                  {/* <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/guides/knowledge-base/create-knowledge-and-upload-documents#id-4-retrieval-settings' className='text-text-accent'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a> */}
                   {t('datasetSettings.form.retrievalSetting.longDescription')}
                 </div>
               </div>
             )
             : (
-              <div className={cn('system-md-semibold mb-0.5 text-text-secondary', 'flex items-center justify-between')}>
+              <div className={cn('system-md-semibold mb-1 text-text-secondary', 'flex items-center justify-between')}>
                 <div>{t('datasetSettings.form.retrievalSetting.title')}</div>
               </div>
             )}
@@ -1110,6 +1124,10 @@ const StepTwo = ({
                 }) as string}
                 />
               }
+              <Button variant={'secondary-accent'} onClick={() => updatePreview()}>
+                <RiSearchEyeLine className='mr-0.5 h-4 w-4' />
+                {t('datasetCreation.stepTwo.previewChunk')}
+              </Button>
             </div>
           </PreviewHeader>}
           className={cn('relative flex h-full w-1/2 shrink-0 p-4 pr-0', isMobile && 'w-full max-w-[524px]')}

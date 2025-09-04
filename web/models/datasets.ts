@@ -212,7 +212,8 @@ export type IndexingStatusBatchResponse = {
 }
 
 export enum ProcessMode {
-  general = 'custom',
+  general = 'markdown',
+  // general = 'custom',
   parentChild = 'hierarchical',
 }
 
@@ -299,6 +300,7 @@ export type InitialDocumentDetail = {
   data_source_info: DataSourceInfo
   dataset_process_rule_id: string
   name: string
+  real_name: string
   created_from: 'api' | 'web'
   created_by: string
   created_at: number
@@ -349,6 +351,7 @@ export type CreateDocumentReq = DocumentReq & {
   retrieval_model: RetrievalConfig
   embedding_model: string
   embedding_model_provider: string
+  enable_knowledge_graph?: boolean
 }
 
 export type IndexingEstimateParams = DocumentReq & Partial<DataSource> & {

@@ -179,7 +179,6 @@ const translation = {
     checkName: {
       invalid: 'Numele metadatelor poate conține doar litere mici, cifre și underscore și trebuie să înceapă cu o literă mică.',
       empty: 'Numele metadatelor nu poate fi gol',
-      tooLong: 'Numele metadatelor nu poate depăși {{max}} caractere',
     },
     batchEditMetadata: {
       multipleValue: 'Valoare multiplă',

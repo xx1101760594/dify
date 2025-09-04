@@ -74,9 +74,6 @@ const translation = {
     execution: 'IZVEDBA',
     executions: '{{num}} IZVRŠITEV',
   },
-  login: {
-    backToHome: 'Nazaj na začetno stran',
-  },
 }
 
 export default translation

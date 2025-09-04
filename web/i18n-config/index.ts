@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
 
-import { changeLanguage } from '@/i18n-config/i18next-config'
+import { changeLanguage } from '@/i18n/i18next-config'
 import { LOCALE_COOKIE_NAME } from '@/config'
-import { LanguagesSupported } from '@/i18n-config/language'
+import { LanguagesSupported } from '@/i18n/language'
 
 export const i18n = {
   defaultLocale: 'en-US',
@@ -11,9 +11,9 @@ export const i18n = {
 
 export type Locale = typeof i18n['locales'][number]
 
-export const setLocaleOnClient = async (locale: Locale, reloadPage = true) => {
+export const setLocaleOnClient = (locale: Locale, reloadPage = true) => {
   Cookies.set(LOCALE_COOKIE_NAME, locale, { expires: 365 })
-  await changeLanguage(locale)
+  changeLanguage(locale)
   reloadPage && location.reload()
 }
 

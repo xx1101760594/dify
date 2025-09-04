@@ -236,15 +236,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
   </Col>
   <Col sticky>
   ### リクエスト例
-  <CodeGroup
-    title="Request"
-    tag="POST"
-    label="/files/upload"
-    targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
---header 'Authorization: Bearer {api_key}' \\
---form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
---form 'user=abc-123'`}
-  />
+  <CodeGroup title="Request" tag="POST" label="/files/upload" targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\\n--form 'user=abc-123'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X POST '${props.appDetail.api_base_url}/files/upload' \
+    --header 'Authorization: Bearer {api_key}' \
+    --form 'file=@"/path/to/file"'
+    ```
+
+    </CodeGroup>
 
 
   ### レスポンス例
@@ -473,12 +473,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
   </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="GET"
-      label="/app/feedbacks"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20'`}
-    />
+    <CodeGroup title="Request" tag="GET" label="/app/feedbacks" targetCode={`curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -519,7 +522,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
 
     <Properties>
       <Property name='message_id' type='str' key='message_id'>
-        Difyが生成したテキストメッセージの場合、生成されたmessage-idを直接渡すだけです。バックエンドはmessage-idを使用して対応するコンテンツを検索し、音声情報を直接合成します。message_idとtextの両方が同時に提供された場合、message_idが優先されます。
+        cubixが生成したテキストメッセージの場合、生成されたmessage-idを直接渡すだけです。バックエンドはmessage-idを使用して対応するコンテンツを検索し、音声情報を直接合成します。message_idとtextの両方が同時に提供された場合、message_idが優先されます。
       </Property>
       <Property name='text' type='str' key='text'>
         音声生成コンテンツ。
@@ -531,19 +534,20 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
   </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/text-to-audio"
-      targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\
---header 'Authorization: Bearer {api_key}' \\
---header 'Content-Type: application/json' \\
---data-raw '{
-    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-    "text": "Hello Dify",
-    "user": "abc-123"
-}'`}
-    />
+    <CodeGroup title="Request" tag="POST" label="/text-to-audio" targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",\n    "text": "Hello cubix",\n    "user": "abc-123"\n}'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
+        "text": "Hello cubix",
+        "user": "abc-123"
+    }'
+    ```
+    
+    </CodeGroup>
 
     <CodeGroup title="headers">
     ```json {{ title: 'headers' }}
@@ -737,31 +741,31 @@ import { Row, Col, Properties, Property, Heading, SubProperty, Paragraph } from 
 />
 <Row>
   <Col>
-  アプリの WebApp 設定を取得するために使用します。
+  アプリのWebApp設定を取得するために使用します。
   ### レスポンス
-  - `title` (string) WebApp 名
-  - `chat_color_theme` (string) チャットの色テーマ、16 進数形式
+  - `title` (string) WebApp名
+  - `chat_color_theme` (string) チャットの色テーマ、16進数形式
   - `chat_color_theme_inverted` (bool) チャットの色テーマを反転するかどうか
   - `icon_type` (string) アイコンタイプ、`emoji`-絵文字、`image`-画像
-  - `icon` (string) アイコン。`emoji`タイプの場合は絵文字、`image`タイプの場合は画像 URL
-  - `icon_background` (string) 16 進数形式の背景色
-  - `icon_url` (string) アイコンの URL
+  - `icon` (string) アイコン。`emoji`タイプの場合は絵文字、`image`タイプの場合は画像URL
+  - `icon_background` (string) 16進数形式の背景色
+  - `icon_url` (string) アイコンのURL
   - `description` (string) 説明
   - `copyright` (string) 著作権情報
   - `privacy_policy` (string) プライバシーポリシーのリンク
   - `custom_disclaimer` (string) カスタム免責事項
   - `default_language` (string) デフォルト言語
   - `show_workflow_steps` (bool) ワークフローの詳細を表示するかどうか
-  - `use_icon_as_answer_icon` (bool) WebApp のアイコンをチャット内の🤖に置き換えるかどうか
+  - `use_icon_as_answer_icon` (bool) WebAppのアイコンをチャット内の🤖に置き換えるかどうか
   </Col>
   <Col>
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/meta"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\
-  -H 'Authorization: Bearer {api_key}'`}
-    />
+  <CodeGroup title="Request" tag="POST" label="/meta" targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\\n-H 'Authorization: Bearer {api_key}'`}>
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/site' \
+    -H 'Authorization: Bearer {api_key}'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}

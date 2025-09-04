@@ -115,9 +115,9 @@ Workflow applications offers non-session support and is ideal for translation, a
         - `predecessor_node_id` (string) optional Prefix node ID, used for canvas display execution path
         - `inputs` (object) Contents of all preceding node variables used in the node
         - `created_at` (timestamp) timestamp of start, e.g., 1705395332
-    - `event: text_chunk` Text fragment
-      - `task_id` (string) Task ID, used for request tracking and the below Stop Generate API
-      - `workflow_run_id` (string) Unique ID of workflow execution
+    - `event: text_chunk` Text fragment  
+      - `task_id` (string) Task ID, used for request tracking and the below Stop Generate API 
+      - `workflow_run_id` (string) Unique ID of workflow execution 
       - `event` (string) fixed to `text_chunk`
       - `data` (object) detail
         - `text` (string) Text content
@@ -251,7 +251,7 @@ Workflow applications offers non-session support and is ideal for translation, a
       import json
 
       def upload_file(file_path, user):
-          upload_url = "https://api.dify.ai/v1/files/upload"
+          upload_url = "https://api.cubix.ai/v1/files/upload"
           headers = {
               "Authorization": "Bearer app-xxxxxxxx",
           }
@@ -279,7 +279,7 @@ Workflow applications offers non-session support and is ideal for translation, a
               return None
 
       def run_workflow(file_id, user, response_mode="blocking"):
-          workflow_url = "https://api.dify.ai/v1/workflows/run"
+          workflow_url = "https://api.cubix.ai/v1/workflows/run"
           headers = {
               "Authorization": "Bearer app-xxxxxxxxx",
               "Content-Type": "application/json"
@@ -312,7 +312,7 @@ Workflow applications offers non-session support and is ideal for translation, a
 
       # Usage Examples
       file_path = "{your_file_path}"
-      user = "difyuser"
+      user = "cubixuser"
 
       # Upload files
       file_id = upload_file(file_path, user)
@@ -709,15 +709,16 @@ Workflow applications offers non-session support and is ideal for translation, a
   </Col>
   <Col sticky>
   ### Request Example
-  <CodeGroup
-    title="Request"
-    tag="POST"
-    label="/files/upload"
-    targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
---header 'Authorization: Bearer {api_key}' \\
---form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
---form 'user=abc-123'`}
-  />
+  <CodeGroup title="Request" tag="POST" label="/files/upload" targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\\n--form 'user=abc-123'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X POST '${props.appDetail.api_base_url}/files/upload' \
+    --header 'Authorization: Bearer {api_key}' \
+    --form 'file=@"/path/to/file"'
+    ```
+
+    </CodeGroup>
+
 
   ### Response Example
   <CodeGroup title="Response">
@@ -1099,13 +1100,13 @@ Workflow applications offers non-session support and is ideal for translation, a
   - `show_workflow_steps` (bool) Whether to show workflow details
   </Col>
   <Col>
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/meta"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\
--H 'Authorization: Bearer {api_key}'`}
-    />
+  <CodeGroup title="Request" tag="POST" label="/meta" targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\\n-H 'Authorization: Bearer {api_key}'`}>
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/site' \
+    -H 'Authorization: Bearer {api_key}'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}

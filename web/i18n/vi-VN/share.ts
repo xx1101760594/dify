@@ -73,9 +73,6 @@ const translation = {
     executions: '{{num}} ÁN TỬ HÌNH',
     execution: 'THI HÀNH',
   },
-  login: {
-    backToHome: 'Trở về Trang Chủ',
-  },
 }
 
 export default translation

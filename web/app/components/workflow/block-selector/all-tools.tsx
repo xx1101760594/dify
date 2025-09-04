@@ -150,14 +150,14 @@ const AllTools = ({
           canChooseMCPTool={canChooseMCPTool}
         />
         {/* Plugins from marketplace */}
-        {enable_marketplace && <PluginList
+        {/* {enable_marketplace && <PluginList
           ref={pluginRef}
           wrapElemRef={wrapElemRef}
           list={notInstalledPlugins}
           searchText={searchText}
           toolContentClassName={toolContentClassName}
           tags={tags}
-        />}
+        />} */}
       </div>
     </div>
   )

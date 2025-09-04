@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  useMemo,
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -22,11 +23,13 @@ import {
 import { useProviderContext } from '@/context/provider-context'
 import { useToastContext } from '@/app/components/base/toast'
 import { EDUCATION_VERIFYING_LOCALSTORAGE_ITEM } from '@/app/education-apply/constants'
+import { getLocaleOnClient } from '@/i18n'
 import { noop } from 'lodash-es'
 import DifyLogo from '../components/base/logo/dify-logo'
-import { useDocLink } from '@/context/i18n'
+
 const EducationApplyAge = () => {
   const { t } = useTranslation()
+  const locale = getLocaleOnClient()
   const [schoolName, setSchoolName] = useState('')
   const [role, setRole] = useState('Student')
   const [ageChecked, setAgeChecked] = useState(false)
@@ -40,7 +43,15 @@ const EducationApplyAge = () => {
   const updateEducationStatus = useInvalidateEducationStatus()
   const { notify } = useToastContext()
   const router = useRouter()
-  const docLink = useDocLink()
+
+  const docLink = useMemo(() => {
+    // if (locale === 'zh-Hans')
+    //   return 'https://docs.dify.ai/zh-hans/getting-started/dify-for-education'
+    // if (locale === 'ja-JP')
+    //   return 'https://docs.dify.ai/ja-jp/getting-started/dify-for-education'
+    // return 'https://docs.dify.ai/getting-started/dify-for-education'
+    return ''
+  }, [locale])
 
   const handleModalConfirm = () => {
     setShowModal(undefined)
@@ -154,10 +165,10 @@ const EducationApplyAge = () => {
           >
             {t('education.submit')}
           </Button>
-          <div className='mb-4 mt-5 h-px bg-gradient-to-r from-[rgba(16,24,40,0.08)]'></div>
+          <div className='mb-4 mt-5 h-[1px] bg-gradient-to-r from-[rgba(16,24,40,0.08)]'></div>
           <a
             className='system-xs-regular flex items-center text-text-accent'
-            href={docLink('/getting-started/dify-for-education')}
+            href={docLink}
             target='_blank'
           >
             {t('education.learn')}

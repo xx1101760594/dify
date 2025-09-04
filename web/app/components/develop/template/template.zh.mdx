@@ -12,7 +12,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### 鉴权
 
 
-  Service API 使用 `API-Key` 进行鉴权。
+  CloudWalk Cubix Service API 使用 `API-Key` 进行鉴权。
   <i>**强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。**</i>
   所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
 
@@ -217,15 +217,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/files/upload"
-      targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
---header 'Authorization: Bearer {api_key}' \\
---form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
---form 'user=abc-123'`}
-    />
+    <CodeGroup title="Request" tag="POST" label="/files/upload" targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\\n--header 'Authorization: Bearer {api_key}' \\\n--form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\\n--form 'user=abc-123'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X POST '${props.appDetail.api_base_url}/files/upload' \
+    --header 'Authorization: Bearer {api_key}' \
+    --form 'file=@"/path/to/file"'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -450,12 +450,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="GET"
-      label="/app/feedbacks"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20'`}
-    />
+    <CodeGroup title="Request" tag="GET" label="/app/feedbacks" targetCode={`curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -496,7 +499,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     <Properties>
       <Property name='message_id' type='str' key='message_id'>
-        Dify 生成的文本消息，那么直接传递生成的message-id 即可，后台会通过 message_id 查找相应的内容直接合成语音信息。如果同时传 message_id 和 text，优先使用 message_id。
+        CloudWalk Cubix 生成的文本消息，那么直接传递生成的message-id 即可，后台会通过 message_id 查找相应的内容直接合成语音信息。如果同时传 message_id 和 text，优先使用 message_id。
       </Property>
       <Property name='text' type='str' key='text'>
         语音生成内容。如果没有传 message-id的话，则会使用这个字段的内容
@@ -508,19 +511,21 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/text-to-audio"
-      targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\
---header 'Authorization: Bearer {api_key}' \\
---header 'Content-Type: application/json' \\
---data-raw '{
-    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-    "text": "你好Dify",
-    "user": "abc-123"
-}'`}
-    />
+    <CodeGroup title="Request" tag="POST" label="/text-to-audio" targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",\n    "text": "你好CloudWalk Cubix",\n    "user": "abc-123"\n}'`}>
+
+    ```bash {{ title: 'cURL' }}
+    curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
+        "text": "你好CloudWalk Cubix",
+        "user": "abc-123",
+        "streaming": false
+    }'
+    ```
+    
+    </CodeGroup>
 
     <CodeGroup title="headers">
     ```json {{ title: 'headers' }}
@@ -706,10 +711,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   用于获取应用的 WebApp 设置
   ### Response
   - `title` (string) WebApp 名称
-  - `chat_color_theme` (string) 聊天颜色主题，hex 格式
+  - `chat_color_theme` (string) 聊天颜色主题, hex 格式
   - `chat_color_theme_inverted` (bool) 聊天颜色主题是否反转
-  - `icon_type` (string) 图标类型，`emoji`-表情，`image`-图片
-  - `icon` (string) 图标，如果是 `emoji` 类型，则是 emoji 表情符号，如果是 `image` 类型，则是图片 URL
+  - `icon_type` (string) 图标类型, `emoji`-表情, `image`-图片
+  - `icon` (string) 图标, 如果是 `emoji` 类型, 则是 emoji 表情符号, 如果是 `image` 类型, 则是图片 URL
   - `icon_background` (string) hex 格式的背景色
   - `icon_url` (string) 图标 URL
   - `description` (string) 描述
@@ -721,13 +726,13 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   - `use_icon_as_answer_icon` (bool) 是否使用 WebApp 图标替换聊天中的 🤖
   </Col>
   <Col>
-    <CodeGroup
-      title="Request"
-      tag="POST"
-      label="/meta"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\
--H 'Authorization: Bearer {api_key}'`}
-    />
+  <CodeGroup title="Request" tag="POST" label="/meta" targetCode={`curl -X GET '${props.appDetail.api_base_url}/site' \\\n-H 'Authorization: Bearer {api_key}'`}>
+    ```bash {{ title: 'cURL' }}
+    curl -X GET '${props.appDetail.api_base_url}/site' \
+    -H 'Authorization: Bearer {api_key}'
+    ```
+
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -791,7 +796,7 @@ ___
         {
           "id": "69d48372-ad81-4c75-9c46-2ce197b4d402",
           "question": "What is your name?",
-          "answer": "I am Dify.",
+          "answer": "I am CloudWalk Cubix.",
           "hit_count": 0,
           "created_at": 1735625869
         }
@@ -830,18 +835,25 @@ ___
       title="Request"
       tag="POST"
       label="/apps/annotations"
-      targetCode={`curl --location --request POST '${props.apiBaseUrl}/apps/annotations' \\
---header 'Authorization: Bearer {api_key}' \\
---header 'Content-Type: application/json' \\
---data-raw '{"question": "What is your name?","answer": "I am Dify."}'`}
-    />
+      targetCode={`curl --location --request POST '${props.apiBaseUrl}/apps/annotations' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"question": "What is your name?","answer": "I am CloudWalk Cubix."}'`}
+    >
+    ```bash {{ title: 'cURL' }}
+    curl --location --request POST '${props.apiBaseUrl}/apps/annotations' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "question": "What is your name?",
+        "answer": "I am CloudWalk Cubix."
+    }'
+    ```
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
     {
       "id": "69d48372-ad81-4c75-9c46-2ce197b4d402",
       "question": "What is your name?",
-      "answer": "I am Dify.",
+      "answer": "I am CloudWalk Cubix.",
       "hit_count": 0,
       "created_at": 1735625869
     }
@@ -877,18 +889,25 @@ ___
       title="Request"
       tag="PUT"
       label="/apps/annotations/{annotation_id}"
-      targetCode={`curl --location --request PUT '${props.apiBaseUrl}/apps/annotations/{annotation_id}' \\
---header 'Authorization: Bearer {api_key}' \\
---header 'Content-Type: application/json' \\
---data-raw '{"question": "What is your name?","answer": "I am Dify."}'`}
-    />
+      targetCode={`curl --location --request PUT '${props.apiBaseUrl}/apps/annotations/{annotation_id}' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"question": "What is your name?","answer": "I am CloudWalk Cubix."}'`}
+    >
+    ```bash {{ title: 'cURL' }}
+    curl --location --request PUT '${props.apiBaseUrl}/apps/annotations/{annotation_id}' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "question": "What is your name?",
+        "answer": "I am CloudWalk Cubix."
+    }'
+    ```
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
     {
       "id": "69d48372-ad81-4c75-9c46-2ce197b4d402",
       "question": "What is your name?",
-      "answer": "I am Dify.",
+      "answer": "I am CloudWalk Cubix.",
       "hit_count": 0,
       "created_at": 1735625869
     }
@@ -968,11 +987,19 @@ ___
       title="Request"
       tag="POST"
       label="/apps/annotation-reply/{action}"
-      targetCode={`curl --location --request POST '${props.apiBaseUrl}/apps/annotation-reply/{action}' \\
---header 'Authorization: Bearer {api_key}' \\
---header 'Content-Type: application/json' \\
---data-raw '{"score_threshold": 0.9, "embedding_provider_name": "zhipu", "embedding_model_name": "embedding_3"}'`}
-    />
+      targetCode={`curl --location --request POST '${props.apiBaseUrl}/apps/annotation-reply/{action}' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"score_threshold": 0.9, "embedding_provider_name": "zhipu", "embedding_model_name": "embedding_3"}'`}
+    >
+    ```bash {{ title: 'cURL' }}
+    curl --location --request POST 'https://api.cubix.ai/v1/apps/annotation-reply/{action}' \
+    --header 'Authorization: Bearer {api_key}' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "score_threshold": 0.9,
+        "embedding_provider_name": "zhipu",
+        "embedding_model_name": "embedding_3"
+    }'
+    ```
+    </CodeGroup>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}

@@ -61,8 +61,6 @@ const DetailHeader = ({
   onUpdate,
 }: Props) => {
   const { t } = useTranslation()
-    const { userProfile: { timezone } } = useAppContext()
-
   const { theme } = useTheme()
   const locale = useGetLanguage()
   const { locale: currentLocale } = useI18N()
@@ -112,7 +110,7 @@ const DetailHeader = ({
     if (isFromGitHub)
       return `https://github.com/${meta!.repo}`
     if (isFromMarketplace)
-      return getMarketplaceUrl(`/plugins/${author}/${name}`, { language: currentLocale, theme })
+      return `${MARKETPLACE_URL_PREFIX}/plugins/${author}/${name}${theme ? `?theme=${theme}` : ''}`
     return ''
   }, [author, isFromGitHub, isFromMarketplace, meta, name, theme])
 

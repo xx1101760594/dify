@@ -363,25 +363,41 @@ const AppPublisher = ({
                   >
                     {t('workflow.common.accessAPIReference')}
                   </SuggestedAction>
-                  {appDetail?.mode === 'workflow' && (
-                    <WorkflowToolConfigureButton
-                      disabled={!publishedAt}
-                      published={!!toolPublished}
-                      detailNeedUpdate={!!toolPublished && published}
-                      workflowAppId={appDetail?.id}
-                      icon={{
-                        content: (appDetail.icon_type === 'image' ? '🤖' : appDetail?.icon) || '🤖',
-                        background: (appDetail.icon_type === 'image' ? appDefaultIconBackground : appDetail?.icon_background) || appDefaultIconBackground,
-                      }}
-                      name={appDetail?.name}
-                      description={appDetail?.description}
-                      inputs={inputs}
-                      handlePublish={handlePublish}
-                      onRefreshData={onRefreshData}
-                    />
-                  )}
-                </div>
-              </>}
+                )}
+              {/* <SuggestedAction
+                onClick={() => {
+                  publishedAt && handleOpenInExplore()
+                }}
+                disabled={!publishedAt}
+                icon={<RiPlanetLine className='h-4 w-4' />}
+              >
+                {t('workflow.common.openInExplore')}
+              </SuggestedAction> */}
+              {/* <SuggestedAction
+                disabled={!publishedAt}
+                link='./develop'
+                icon={<RiTerminalBoxLine className='h-4 w-4' />}
+              >
+                {t('workflow.common.accessAPIReference')}
+              </SuggestedAction> */}
+              {appDetail?.mode === 'workflow' && (
+                <WorkflowToolConfigureButton
+                  disabled={!publishedAt}
+                  published={!!toolPublished}
+                  detailNeedUpdate={!!toolPublished && published}
+                  workflowAppId={appDetail?.id}
+                  icon={{
+                    content: (appDetail.icon_type === 'image' ? '🤖' : appDetail?.icon) || '🤖',
+                    background: (appDetail.icon_type === 'image' ? appDefaultIconBackground : appDetail?.icon_background) || appDefaultIconBackground,
+                  }}
+                  name={appDetail?.name}
+                  description={appDetail?.description}
+                  inputs={inputs}
+                  handlePublish={handlePublish}
+                  onRefreshData={onRefreshData}
+                />
+              )}
+            </div>
           </div>
         </PortalToFollowElemContent>
         <EmbeddedModal

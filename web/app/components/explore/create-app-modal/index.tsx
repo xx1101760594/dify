@@ -158,7 +158,7 @@ const CreateAppModal = ({
             />
           </div>
           {/* answer icon */}
-          {isEditModal && (appMode === 'chat' || appMode === 'advanced-chat' || appMode === 'agent-chat') && (
+          {/* {isEditModal && (appMode === 'chat' || appMode === 'advanced-chat' || appMode === 'agent-chat') && (
             <div className='pt-2'>
               <div className='flex items-center justify-between'>
                 <div className='py-2 text-sm font-medium leading-[20px] text-text-primary'>{t('app.answerIcon.title')}</div>
@@ -169,23 +169,7 @@ const CreateAppModal = ({
               </div>
               <p className='body-xs-regular text-text-tertiary'>{t('app.answerIcon.descriptionInExplore')}</p>
             </div>
-          )}
-          {isEditModal && (
-            <div className='pt-2'>
-              <div className='mb-2 mt-2 text-sm font-medium leading-[20px] text-text-primary'>{t('app.maxActiveRequests')}</div>
-              <Input
-                type='number'
-                min={1}
-                placeholder={t('app.maxActiveRequestsPlaceholder')}
-                value={maxActiveRequestsInput}
-                onChange={(e) => {
-                  setMaxActiveRequestsInput(e.target.value)
-                }}
-                className='h-10 w-full'
-              />
-              <p className='body-xs-regular mb-0 mt-2 text-text-tertiary'>{t('app.maxActiveRequestsTip')}</p>
-            </div>
-          )}
+          )} */}
           {!isEditModal && isAppsFull && <AppsFull className='mt-4' loc='app-explore-create' />}
         </div>
         <div className='flex flex-row-reverse'>

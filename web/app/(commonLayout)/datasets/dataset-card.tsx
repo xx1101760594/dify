@@ -125,7 +125,7 @@ const DatasetCard = ({
   return (
     <>
       <div
-        className='group relative col-span-1 flex min-h-[171px] cursor-pointer flex-col rounded-xl border-[0.5px] border-solid border-components-card-border bg-components-card-bg shadow-sm transition-all duration-200 ease-in-out hover:shadow-lg'
+        className='group relative col-span-1 flex h-[152px] cursor-pointer flex-col rounded-lg border-[0.5px] border-solid border-components-card-border bg-components-card-bg transition-all duration-200 ease-in-out hover:shadow-lg hover:border-primary-600'
         data-disable-nprogress={true}
         onClick={(e) => {
           e.preventDefault()
@@ -137,13 +137,13 @@ const DatasetCard = ({
         {isExternalProvider(dataset.provider) && <CornerLabel label='External' className='absolute right-0' labelClassName='rounded-tr-xl' />}
         <div className='flex h-[66px] shrink-0 grow-0 items-center gap-3 px-[14px] pb-3 pt-[14px]'>
           <div className={cn(
-            'flex shrink-0 items-center justify-center rounded-md border-[0.5px] border-[#E0EAFF] bg-[#F5F8FF] p-2.5',
+            'flex shrink-0 items-center justify-center rounded-md border-[0.5px] border-[#FFF6DF] bg-[#FFF6DF] p-2.5',
             !dataset.embedding_available && 'opacity-50 hover:opacity-100',
           )}>
-            <Folder className='h-5 w-5 text-[#444CE7]' />
+            <Folder className='h-5 w-5 text-[#000000]' />
           </div>
           <div className='w-0 grow py-[1px]'>
-            <div className='flex items-center text-sm font-semibold leading-5 text-text-secondary'>
+            <div className='flex items-center text-base font-semibold leading-5 text-text-secondary'>
               <div className={cn('truncate', !dataset.embedding_available && 'text-text-tertiary opacity-50 hover:opacity-100')} title={dataset.name}>{dataset.name}</div>
               {!dataset.embedding_available && (
                 <Tooltip
@@ -176,21 +176,23 @@ const DatasetCard = ({
         </div>
         <div
           className={cn(
-            'mb-2 line-clamp-2 max-h-[36px] grow px-[14px] text-xs leading-normal text-text-tertiary',
+            'max-h-[80px] grow px-[14px] text-sm leading-normal text-[#999999] line-clamp-2 h-[40px]',
             !dataset.embedding_available && 'opacity-50 hover:opacity-100',
           )}
           title={dataset.description}>
           {dataset.description}
         </div>
-        <div className='mt-4 flex h-[42px] shrink-0 items-center pb-[6px] pl-[14px] pr-[6px] pt-1'>
+        <div className={cn(
+          'h-[40px] shrink-0 items-center pb-[6px] pl-[14px] pr-[6px] pt-1 flex',
+        )}>
           <div className={cn('flex w-0 grow items-center gap-1', !dataset.embedding_available && 'opacity-50 hover:opacity-100')} onClick={(e) => {
             e.stopPropagation()
             e.preventDefault()
           }}>
             <div className={cn(
-              'mr-[41px] w-full grow group-hover:!mr-0',
+              'mr-[41px] w-full grow group-hover:!mr-0 block',
             )}>
-              <TagSelector
+              {/* <TagSelector
                 position='bl'
                 type='knowledge'
                 targetID={dataset.id}
@@ -198,11 +200,11 @@ const DatasetCard = ({
                 selectedTags={tags}
                 onCacheUpdate={setTags}
                 onChange={onSuccess}
-              />
+              /> */}
             </div>
           </div>
-          <div className='mx-1 !hidden h-[14px] w-[1px] shrink-0 bg-divider-regular group-hover:!flex' />
-          <div className='!hidden shrink-0 group-hover:!flex'>
+          {/* <div className='mx-1 !hidden h-[14px] w-[1px] shrink-0 bg-divider-regular group-hover:!flex' /> */}
+          <div className='shrink-0 flex'>
             <CustomPopover
               htmlContent={<Operations showDelete={!isCurrentWorkspaceDatasetOperator} />}
               position="br"

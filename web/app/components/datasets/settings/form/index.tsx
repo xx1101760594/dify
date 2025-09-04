@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMount } from 'ahooks'
 import { useContext } from 'use-context-selector'
 import { useTranslation } from 'react-i18next'
@@ -32,7 +32,7 @@ import { ModelTypeEnum } from '@/app/components/header/account-setting/model-pro
 import { fetchMembers } from '@/service/common'
 import type { Member } from '@/models/common'
 import AlertTriangle from '@/app/components/base/icons/src/vender/solid/alertsAndFeedback/AlertTriangle'
-import { useDocLink } from '@/context/i18n'
+import { RETRIEVE_METHOD } from '@/types/app'
 
 const rowClass = 'flex'
 const labelClass = `
@@ -155,6 +155,12 @@ const Form = () => {
           }
         })
       }
+
+      requestParams.body.enable_knowledge_graph = false
+      if([RETRIEVE_METHOD.pprSearch, RETRIEVE_METHOD.semanticAndPprSearch, RETRIEVE_METHOD.fullTextAndPprSearch, RETRIEVE_METHOD.allHybrid].includes(retrievalConfig.search_method)) {
+        requestParams.body.enable_knowledge_graph = true
+      }
+      
       await updateDatasetSetting(requestParams)
       notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
       if (mutateDatasets) {
@@ -214,7 +220,7 @@ const Form = () => {
           />
         </div>
       </div>
-      {currentDataset && currentDataset.indexing_technique && (
+      {/* {currentDataset && currentDataset.indexing_technique && (
         <>
           <div className='my-1 h-0 w-full border-b border-divider-subtle' />
           <div className={rowClass}>
@@ -239,7 +245,7 @@ const Form = () => {
             </div>
           </div>
         </>
-      )}
+      )} */}
       {indexMethod === 'high_quality' && (
         <>
           <div className={rowClass}>
@@ -309,19 +315,10 @@ const Form = () => {
               <div className={labelClass}>
                 <div>
                   <div className='system-sm-semibold text-text-secondary'>{t('datasetSettings.form.retrievalSetting.title')}</div>
-                  <div className='body-xs-regular text-text-tertiary'>
-                    <a
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      href={docLink('/guides/knowledge-base/create-knowledge-and-upload-documents/setting-indexing-methods#setting-the-retrieval-setting', {
-                        'zh-Hans': '/guides/knowledge-base/create-knowledge-and-upload-documents/setting-indexing-methods#指定检索方式',
-                        'ja-JP': '/guides/knowledge-base/create-knowledge-and-upload-documents/setting-indexing-methods#検索方法の指定',
-                      })}
-                      className='text-text-accent'>
-                      {t('datasetSettings.form.retrievalSetting.learnMore')}
-                    </a>
+                  {/* <div className='body-xs-regular text-text-tertiary'>
+                    <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/guides/knowledge-base/create-knowledge-and-upload-documents#id-4-retrieval-settings' className='text-text-accent'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
                     {t('datasetSettings.form.retrievalSetting.description')}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className='grow'>

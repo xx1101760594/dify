@@ -188,7 +188,8 @@ const PanelOperatorPopup = ({
           </div>
           <div className='mb-1 leading-[18px] text-text-secondary'>{about}</div>
           <div className='leading-[18px]'>
-            {t('workflow.panel.createdBy')} {author}
+            {t('workflow.panel.createdBy')} CloudWalk
+            {/* {author} */}
           </div>
         </div>
       </div>

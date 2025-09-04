@@ -8,8 +8,8 @@ import Button from '@/app/components/base/button'
 import type { LangGeniusVersionResponse } from '@/models/common'
 import { IS_CE_EDITION } from '@/config'
 import DifyLogo from '@/app/components/base/logo/dify-logo'
-
-import { useGlobalPublicStore } from '@/context/global-public-context'
+import { noop } from 'lodash-es'
+import { basePath } from '@/utils/var'
 
 type IAccountSettingProps = {
   langGeniusVersionInfo: LangGeniusVersionResponse
@@ -30,35 +30,28 @@ export default function AccountAbout({
       onClose={onCancel}
       className='!w-[480px] !max-w-[480px] !px-6 !py-4'
     >
-      <div className='relative'>
-        <div className='absolute right-0 top-0 flex h-8 w-8 cursor-pointer items-center justify-center' onClick={onCancel}>
+      <div>
+        <div className='absolute right-4 top-4 flex h-8 w-8 cursor-pointer items-center justify-center' onClick={onCancel}>
           <RiCloseLine className='h-4 w-4 text-text-tertiary' />
         </div>
-        <div className='flex flex-col items-center gap-4 py-8'>
-          {systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
-            ? <img
-              src={systemFeatures.branding.workspace_logo}
-              className='block h-7 w-auto object-contain'
-              alt='logo'
-            />
-            : <DifyLogo size='large' className='mx-auto' />}
-
-          <div className='text-center text-xs font-normal text-text-tertiary'>Version {langGeniusVersionInfo?.current_version}</div>
+        {/* <div className='flex flex-col items-center gap-4 py-8'>
+          <CubixLogo size='large' className='mx-auto' />
+          <div className='text-center text-xs font-normal text-text-tertiary'>Version {langeniusVersionInfo?.current_version}</div>
           <div className='flex flex-col items-center gap-2 text-center text-xs font-normal text-text-secondary'>
             <div>© {dayjs().year()} LangGenius, Inc., Contributors.</div>
             <div className='text-text-accent'>
               {
                 IS_CE_EDITION
-                  ? <Link href={'https://github.com/langgenius/dify/blob/main/LICENSE'} target='_blank' rel='noopener noreferrer'>Open Source License</Link>
+                  ? <Link href={'https://github.com/langgenius/cubix/blob/main/LICENSE'} target='_blank' rel='noopener noreferrer'>Open Source License</Link>
                   : <>
-                    <Link href='https://dify.ai/privacy' target='_blank' rel='noopener noreferrer'>Privacy Policy</Link>,&nbsp;
-                    <Link href='https://dify.ai/terms' target='_blank' rel='noopener noreferrer'>Terms of Service</Link>
+                    <Link href='https://cubix.ai/privacy' target='_blank' rel='noopener noreferrer'>Privacy Policy</Link>,&nbsp;
+                    <Link href='https://cubix.ai/terms' target='_blank' rel='noopener noreferrer'>Terms of Service</Link>
                   </>
               }
             </div>
           </div>
-        </div>
-        <div className='-mx-8 mb-4 h-[0.5px] bg-divider-regular' />
+        </div> */}
+        {/* <div className='-mx-8 mb-4 h-[0.5px] bg-divider-regular' />
         <div className='flex items-center justify-between'>
           <div className='text-xs font-medium text-text-tertiary'>
             {
@@ -70,7 +63,7 @@ export default function AccountAbout({
           <div className='flex items-center'>
             <Button className='mr-2' size='small'>
               <Link
-                href={'https://github.com/langgenius/dify/releases'}
+                href={'https://github.com/langgenius/cubix/releases'}
                 target='_blank' rel='noopener noreferrer'
               >
                 {t('common.about.changeLog')}
@@ -89,8 +82,22 @@ export default function AccountAbout({
               )
             }
           </div>
+        </div> */}
+        <div className='flex flex-col items-center gap-4 py-10'>
+          <div className='flex items-center mt-5 mb-3'>
+            <img
+              src={`${basePath}/logo/logo.png`}
+              className='block object-contain w-28'
+              alt='logo'
+            />
+            <span className='pl-2 pr-2 text-gray-300'>|</span>
+            <span className='text-lg'>{t('common.menus.mofang')}</span>
+          </div >
+          {/* <img src={`${basePath}/logo/logo.png`} className='block object-contain w-28' alt='logo'/>
+          <div className="flex text-[24px] justify-center mt-3 mb-3">{t('common.menus.mofang')}</div> */}
+          <div className='text-center text-xs font-normal text-text-tertiary'>Version 0.1.3</div>
         </div>
-      </div>
+      </div>  
     </Modal>
   )
 }

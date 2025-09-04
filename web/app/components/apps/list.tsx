@@ -14,6 +14,7 @@ import {
   RiFile4Line,
   RiMessage3Line,
   RiRobot3Line,
+  RiAddLine,
 } from '@remixicon/react'
 import AppCard from './app-card'
 import NewAppCard from './new-app-card'
@@ -30,17 +31,7 @@ import Input from '@/app/components/base/input'
 import { useStore as useTagStore } from '@/app/components/base/tag-management/store'
 import TagFilter from '@/app/components/base/tag-management/filter'
 import CheckboxWithLabel from '@/app/components/datasets/create/website/base/checkbox-with-label'
-import dynamic from 'next/dynamic'
-import Empty from './empty'
-import Footer from './footer'
-import { useGlobalPublicStore } from '@/context/global-public-context'
-
-const TagManagementModal = dynamic(() => import('@/app/components/base/tag-management'), {
-  ssr: false,
-})
-const CreateFromDSLModal = dynamic(() => import('@/app/components/app/create-from-dsl-modal'), {
-  ssr: false,
-})
+import Pagination from '@/app/components/base/pagination'
 
 const getKey = (
   pageIndex: number,
@@ -49,9 +40,10 @@ const getKey = (
   isCreatedByMe: boolean,
   tags: string[],
   keywords: string,
+  limit:number
 ) => {
   if (!pageIndex || previousPageData.has_more) {
-    const params: any = { url: 'apps', params: { page: pageIndex + 1, limit: 30, name: keywords, is_created_by_me: isCreatedByMe } }
+    const params: any = { url: 'apps', params: { page: pageIndex + 1, limit, name: keywords, is_created_by_me: isCreatedByMe } }
 
     if (activeTab !== 'all')
       params.params.mode = activeTab
@@ -68,7 +60,7 @@ const getKey = (
 
 const List = () => {
   const { t } = useTranslation()
-    const { systemFeatures } = useGlobalPublicStore()
+  document.title = `${t('common.menus.workSpace')}`
   const router = useRouter()
   const { isCurrentWorkspaceEditor, isCurrentWorkspaceDatasetOperator } = useAppContext()
   const showTagManagementModal = useTagStore(s => s.showTagManagementModal)
@@ -80,9 +72,9 @@ const List = () => {
   const [tagFilterValue, setTagFilterValue] = useState<string[]>(tagIDs)
   const [searchKeywords, setSearchKeywords] = useState(keywords)
   const newAppCardRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [showCreateFromDSLModal, setShowCreateFromDSLModal] = useState(false)
-  const [droppedDSLFile, setDroppedDSLFile] = useState<File | undefined>()
+  const [currPage, setCurrPage] = useState<number>(0)
+  const [totalNum, setTotalNum] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(10)
   const setKeywords = useCallback((keywords: string) => {
     setQuery(prev => ({ ...prev, keywords }))
   }, [setQuery])
@@ -102,7 +94,7 @@ const List = () => {
   })
 
   const { data, isLoading, error, setSize, mutate } = useSWRInfinite(
-    (pageIndex: number, previousPageData: AppListResponse) => getKey(pageIndex, previousPageData, activeTab, isCreatedByMe, tagIDs, searchKeywords),
+    (currPage: number, previousPageData: AppListResponse) => getKey(currPage, previousPageData, activeTab, isCreatedByMe, tagIDs, searchKeywords,limit),
     fetchAppList,
     {
       revalidateFirstPage: true,
@@ -123,6 +115,7 @@ const List = () => {
   ]
 
   useEffect(() => {
+    // document.title = `${t('common.menus.workSpace')}`
     if (localStorage.getItem(NEED_REFRESH_APP_LIST_KEY) === '1') {
       localStorage.removeItem(NEED_REFRESH_APP_LIST_KEY)
       mutate()
@@ -143,6 +136,7 @@ const List = () => {
         observer.disconnect()
       return
     }
+    if(data?.[0]?.total&&data?.[0]?.total!==totalNum) setTotalNum(data?.[0]?.total as number)
 
     if (anchorRef.current) {
       observer = new IntersectionObserver((entries) => {
@@ -178,17 +172,28 @@ const List = () => {
 
   return (
     <>
-      <div ref={containerRef} className='relative flex h-0 shrink-0 grow flex-col overflow-y-auto bg-background-body'>
-        {dragging && (
-          <div className="absolute inset-0 z-50 m-0.5 rounded-2xl border-2 border-dashed border-components-dropzone-border-accent bg-[rgba(21,90,239,0.14)] p-2">
-          </div>
-        )}
-
-        <div className='sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-2 bg-background-body px-12 pb-2 pt-4 leading-[56px]'>
-          <TabSliderNew
-            value={activeTab}
-            onChange={setActiveTab}
-            options={options}
+      <div className='sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-2 bg-background-body px-12 py-6'>
+        {/* <TabSliderNew
+          value={activeTab}
+          onChange={setActiveTab}
+          options={options}
+        /> */}
+        <NewAppCard ref={newAppCardRef} className='z-10' onSuccess={mutate} />
+        <div className='flex items-center gap-2'>
+          <CheckboxWithLabel
+            className='mr-2'
+            label={t('app.showMyCreatedAppsOnly')}
+            isChecked={isCreatedByMe}
+            onChange={handleCreatedByMeChange}
+          />
+          {/* <TagFilter type='app' value={tagFilterValue} onChange={handleTagsChange} /> */}
+          <Input
+            showLeftIcon
+            showClearIcon
+            wrapperClassName='w-[200px]'
+            value={keywords}
+            onChange={e => handleKeywordsChange(e.target.value)}
+            onClear={() => handleKeywordsChange('')}
           />
           <div className='flex items-center gap-2'>
             <CheckboxWithLabel
@@ -241,22 +246,34 @@ const List = () => {
           <TagManagementModal type='app' show={showTagManagementModal} />
         )}
       </div>
-
-      {showCreateFromDSLModal && (
-        <CreateFromDSLModal
-          show={showCreateFromDSLModal}
-          onClose={() => {
-            setShowCreateFromDSLModal(false)
-            setDroppedDSLFile(undefined)
-          }}
-          onSuccess={() => {
-            setShowCreateFromDSLModal(false)
-            setDroppedDSLFile(undefined)
-            mutate()
-          }}
-          droppedFile={droppedDSLFile}
-        />
-      )}
+      {(data && data[currPage]?.data?.length > 0)
+        ? <div className='relative grid grow grid-cols-1 content-start gap-8 px-12 pt-1 pb-5 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 2k:grid-cols-6'>
+          {/* {isCurrentWorkspaceEditor
+            && <NewAppCard ref={newAppCardRef} onSuccess={mutate} />} */}
+          {data[currPage].data.map(app => (
+            <AppCard key={app.id} app={app} onRefresh={mutate} />
+          ))}
+        </div>
+        : <div className='relative grid grow grid-cols-1 content-start gap-8 overflow-hidden px-12 pt-1 pb-5 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 2k:grid-cols-6'>
+          {/* {isCurrentWorkspaceEditor
+            && <NewAppCard ref={newAppCardRef} className='z-10' onSuccess={mutate} />} */}
+          <NoAppsFound />
+        </div>}
+        <div className='flex justify-center px-12 pb-5'>
+        <Pagination
+           total={totalNum}
+           current={currPage}
+           limit={limit}
+           onChange={setCurrPage}
+           onLimitChange={setLimit}
+           className='w-full shrink-0 px-0 pb-0'
+         />
+        </div>
+      <CheckModal />
+      <div ref={anchorRef} className='h-0'> </div>
+      {showTagManagementModal && (
+        <TagManagementModal type='app' show={showTagManagementModal} />
+      )}   
     </>
   )
 }

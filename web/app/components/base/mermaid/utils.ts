@@ -14,8 +14,14 @@ export const prepareMermaidCode = (mermaidCode: string, style: 'classic' | 'hand
 
   let code = mermaidCode.trim()
 
-  // Security: Sanitize against javascript: protocol in click events (XSS vector)
-  code = code.replace(/(\bclick\s+\w+\s+")javascript:[^"]*(")/g, '$1#$2')
+  return code
+    // Replace English colons with Chinese colons in section nodes to avoid parsing issues
+    .replace(/section\s+([^:]+):/g, (match, sectionName) => `section ${sectionName}：`)
+    // Fix common syntax issues
+    .replace(/fifopacket/g, 'rect')
+    // Clean up empty lines and extra spaces
+    .trim()
+}
 
   // Convenience: Basic BR replacement. This is a common and safe operation.
   code = code.replace(/<br\s*\/?>/g, '\n')

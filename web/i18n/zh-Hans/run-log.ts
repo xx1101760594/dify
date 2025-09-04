@@ -9,7 +9,7 @@ const translation = {
     tokens: '总 token 数',
   },
   meta: {
-    title: '元数据',
+    title: '标签',
     status: '状态',
     version: '版本',
     executor: '执行人',

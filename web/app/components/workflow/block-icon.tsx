@@ -21,6 +21,7 @@ import {
   QuestionClassifier,
   TemplatingTransform,
   VariableX,
+  Database,
 } from '@/app/components/base/icons/src/vender/workflow'
 import AppIcon from '@/app/components/base/app-icon'
 
@@ -31,9 +32,9 @@ type BlockIconProps = {
   toolIcon?: string | { content: string; background: string }
 }
 const ICON_CONTAINER_CLASSNAME_SIZE_MAP: Record<string, string> = {
-  xs: 'w-4 h-4 rounded-[5px] shadow-xs',
-  sm: 'w-5 h-5 rounded-md shadow-xs',
-  md: 'w-6 h-6 rounded-lg shadow-md',
+  xs: 'w-4 h-4 rounded-[5px]',
+  sm: 'w-5 h-5 rounded-md',
+  md: 'w-6 h-6 rounded-lg',
 }
 const getIcon = (type: BlockEnum, className: string) => {
   return {
@@ -60,6 +61,7 @@ const getIcon = (type: BlockEnum, className: string) => {
     [BlockEnum.DocExtractor]: <DocsExtractor className={className} />,
     [BlockEnum.ListFilter]: <ListFilter className={className} />,
     [BlockEnum.Agent]: <Agent className={className} />,
+    [BlockEnum.Database]: <Database className={className} />,
   }[type]
 }
 const ICON_CONTAINER_BG_COLOR_MAP: Record<string, string> = {
@@ -83,6 +85,7 @@ const ICON_CONTAINER_BG_COLOR_MAP: Record<string, string> = {
   [BlockEnum.DocExtractor]: 'bg-util-colors-green-green-500',
   [BlockEnum.ListFilter]: 'bg-util-colors-cyan-cyan-500',
   [BlockEnum.Agent]: 'bg-util-colors-indigo-indigo-500',
+  [BlockEnum.Database]: 'bg-util-colors-blue-blue-500',
 }
 const BlockIcon: FC<BlockIconProps> = ({
   type,
@@ -92,12 +95,12 @@ const BlockIcon: FC<BlockIconProps> = ({
 }) => {
   return (
     <div className={`
-      flex items-center justify-center border-[0.5px] border-white/2 text-white
+      flex items-center justify-center border-[0.5px] border-white/2 text-[#999999]
       ${ICON_CONTAINER_CLASSNAME_SIZE_MAP[size]}
-      ${ICON_CONTAINER_BG_COLOR_MAP[type]}
       ${toolIcon && '!shadow-none'}
       ${className}
     `}
+      // ${ICON_CONTAINER_BG_COLOR_MAP[type]}
     >
       {
         type !== BlockEnum.Tool && (
@@ -111,7 +114,7 @@ const BlockIcon: FC<BlockIconProps> = ({
               typeof toolIcon === 'string'
                 ? (
                   <div
-                    className='h-full w-full shrink-0 rounded-md bg-cover bg-center'
+                    className='w-full h-full bg-center bg-cover rounded-md shrink-0'
                     style={{
                       backgroundImage: `url(${toolIcon})`,
                     }}

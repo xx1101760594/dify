@@ -9,8 +9,13 @@ import useDocumentTitle from '@/hooks/use-document-title'
 const ToolsList: FC = () => {
   const router = useRouter()
   const { isCurrentWorkspaceDatasetOperator } = useAppContext()
-  const { t } = useTranslation()
-  useDocumentTitle(t('common.menus.tools'))
+
+  useEffect(() => {
+    if (typeof window !== 'undefined')
+      document.title = `${t('common.menus.skillLibrary')}`
+    if (isCurrentWorkspaceDatasetOperator)
+      return router.replace('/datasets')
+  }, [isCurrentWorkspaceDatasetOperator, router, t])
 
   useEffect(() => {
     if (isCurrentWorkspaceDatasetOperator)

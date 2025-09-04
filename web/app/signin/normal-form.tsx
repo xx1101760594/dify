@@ -9,11 +9,10 @@ import MailAndPasswordAuth from './components/mail-and-password-auth'
 import SocialAuth from './components/social-auth'
 import SSOAuth from './components/sso-auth'
 import cn from '@/utils/classnames'
-import { invitationCheck } from '@/service/common'
-import { LicenseStatus } from '@/types/feature'
+import { getSystemFeatures, invitationCheck } from '@/service/common'
+import { LicenseStatus, defaultSystemFeatures } from '@/types/feature'
 import Toast from '@/app/components/base/toast'
 import { IS_CE_EDITION } from '@/config'
-import { useGlobalPublicStore } from '@/context/global-public-context'
 
 const NormalForm = () => {
   const { t } = useTranslation()
@@ -24,7 +23,7 @@ const NormalForm = () => {
   const message = decodeURIComponent(searchParams.get('message') || '')
   const invite_token = decodeURIComponent(searchParams.get('invite_token') || '')
   const [isLoading, setIsLoading] = useState(true)
-  const { systemFeatures } = useGlobalPublicStore()
+  const [systemFeatures, setSystemFeatures] = useState(defaultSystemFeatures)
   const [authType, updateAuthType] = useState<'code' | 'password'>('password')
   const [showORLine, setShowORLine] = useState(false)
   const [allMethodsAreDisabled, setAllMethodsAreDisabled] = useState(false)
@@ -47,9 +46,12 @@ const NormalForm = () => {
           message,
         })
       }
-      setAllMethodsAreDisabled(!systemFeatures.enable_social_oauth_login && !systemFeatures.enable_email_code_login && !systemFeatures.enable_email_password_login && !systemFeatures.sso_enforced_for_signin)
-      setShowORLine((systemFeatures.enable_social_oauth_login || systemFeatures.sso_enforced_for_signin) && (systemFeatures.enable_email_code_login || systemFeatures.enable_email_password_login))
-      updateAuthType(systemFeatures.enable_email_password_login ? 'password' : 'code')
+      const features = await getSystemFeatures()
+      const allFeatures = { ...defaultSystemFeatures, ...features }
+      setSystemFeatures(allFeatures)
+      setAllMethodsAreDisabled(!allFeatures.enable_social_oauth_login && !allFeatures.enable_email_code_login && !allFeatures.enable_email_password_login && !allFeatures.sso_enforced_for_signin)
+      setShowORLine((allFeatures.enable_social_oauth_login || allFeatures.sso_enforced_for_signin) && (allFeatures.enable_email_code_login || allFeatures.enable_email_password_login))
+      updateAuthType(allFeatures.enable_email_password_login ? 'password' : 'code')
       if (isInviteLink) {
         const checkRes = await invitationCheck({
           url: '/activate/check',
@@ -63,9 +65,10 @@ const NormalForm = () => {
     catch (error) {
       console.error(error)
       setAllMethodsAreDisabled(true)
+      setSystemFeatures(defaultSystemFeatures)
     }
     finally { setIsLoading(false) }
-  }, [consoleToken, refreshToken, message, router, invite_token, isInviteLink, systemFeatures])
+  }, [consoleToken, refreshToken, message, router, invite_token, isInviteLink])
   useEffect(() => {
     init()
   }, [init])
@@ -125,15 +128,15 @@ const NormalForm = () => {
 
   return (
     <>
-      <div className="mx-auto mt-8 w-full">
+      <div className="mx-auto w-full">
         {isInviteLink
           ? <div className="mx-auto w-full">
             <h2 className="title-4xl-semi-bold text-text-primary">{t('login.join')}{workspaceName}</h2>
-            {!systemFeatures.branding.enabled && <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.joinTipStart')}{workspaceName}{t('login.joinTipEnd')}</p>}
+            <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.joinTipStart')}{workspaceName}{t('login.joinTipEnd')}</p>
           </div>
           : <div className="mx-auto w-full">
-            <h2 className="title-4xl-semi-bold text-text-primary">{t('login.pageTitle')}</h2>
-            {!systemFeatures.branding.enabled && <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.welcome')}</p>}
+            <h2 className="text-2xl text-text-primary">{t('login.signBtn')}</h2>
+            {/* <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.welcome')}</p> */}
           </div>}
         <div className="relative">
           <div className="mt-6 flex flex-col gap-3">
@@ -144,10 +147,11 @@ const NormalForm = () => {
           </div>
 
           {showORLine && <div className="relative mt-6">
-            <div className="flex items-center">
-              <div className="h-px flex-1 bg-gradient-to-r from-background-gradient-mask-transparent to-divider-regular"></div>
-              <span className="system-xs-medium-uppercase px-3 text-text-tertiary">{t('login.or')}</span>
-              <div className="h-px flex-1 bg-gradient-to-l from-background-gradient-mask-transparent to-divider-regular"></div>
+            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+              <div className='h-px w-full bg-gradient-to-r from-background-gradient-mask-transparent via-divider-regular to-background-gradient-mask-transparent'></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="system-xs-medium-uppercase px-2 text-text-tertiary">{t('login.or')}</span>
             </div>
           </div>}
           {
@@ -159,7 +163,7 @@ const NormalForm = () => {
                 </div>}
               </>}
               {systemFeatures.enable_email_password_login && authType === 'password' && <>
-                <MailAndPasswordAuth isInvite={isInviteLink} isEmailSetup={systemFeatures.is_email_setup} allowRegistration={systemFeatures.is_allow_register} />
+                <MailAndPasswordAuth isInvite={isInviteLink} isEmailSetup={systemFeatures.is_email_setup} allowRegistration={systemFeatures.is_allow_register}  allowSsoLogin={systemFeatures.cloudwalk_sso_enabled} />
                 {systemFeatures.enable_email_code_login && <div className='cursor-pointer py-1 text-center' onClick={() => { updateAuthType('code') }}>
                   <span className='system-xs-medium text-components-button-secondary-accent-text'>{t('login.useVerificationCode')}</span>
                 </div>}
@@ -180,31 +184,29 @@ const NormalForm = () => {
               </div>
             </div>
           </>}
-          {!systemFeatures.branding.enabled && <>
-            <div className="system-xs-regular mt-2 block w-full text-text-tertiary">
-              {t('login.tosDesc')}
-              &nbsp;
-              <Link
-                className='system-xs-medium text-text-secondary hover:underline'
-                target='_blank' rel='noopener noreferrer'
-                href='https://dify.ai/terms'
-              >{t('login.tos')}</Link>
-              &nbsp;&&nbsp;
-              <Link
-                className='system-xs-medium text-text-secondary hover:underline'
-                target='_blank' rel='noopener noreferrer'
-                href='https://dify.ai/privacy'
-              >{t('login.pp')}</Link>
-            </div>
-            {IS_CE_EDITION && <div className="w-hull system-xs-regular mt-2 block text-text-tertiary">
-              {t('login.goToInit')}
-              &nbsp;
-              <Link
-                className='system-xs-medium text-text-secondary hover:underline'
-                href='/install'
-              >{t('login.setAdminAccount')}</Link>
-            </div>}
-          </>}
+          {/* <div className="system-xs-regular mt-2 block w-full text-text-tertiary">
+            {t('login.tosDesc')}
+            &nbsp;
+            <Link
+              className='system-xs-medium text-text-secondary hover:underline'
+              target='_blank' rel='noopener noreferrer'
+              href='https://dify.ai/terms'
+            >{t('login.tos')}</Link>
+            &nbsp;&&nbsp;
+            <Link
+              className='system-xs-medium text-text-secondary hover:underline'
+              target='_blank' rel='noopener noreferrer'
+              href='https://dify.ai/privacy'
+            >{t('login.pp')}</Link>
+          </div>
+          {IS_CE_EDITION && <div className="w-hull system-xs-regular mt-2 block text-text-tertiary">
+            {t('login.goToInit')}
+            &nbsp;
+            <Link
+              className='system-xs-medium text-text-secondary hover:underline'
+              href='/install'
+            >{t('login.setAdminAccount')}</Link>
+          </div>} */}
 
         </div>
       </div>

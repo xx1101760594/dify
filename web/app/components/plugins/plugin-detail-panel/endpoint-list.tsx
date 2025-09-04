@@ -75,8 +75,8 @@ const EndpointList = ({ detail }: Props) => {
                   <RiApps2AddLine className='h-4 w-4 text-text-tertiary' />
                 </div>
                 <div className='system-xs-regular text-text-tertiary'>{t('plugin.detailPanel.endpointsTip')}</div>
-                <a
-                  href={docLink('/plugins/schema-definition/endpoint')}
+                {/* <a
+                  href={`https://docs.dify.ai/${locale === LanguagesSupported[1] ? 'v/zh-hans/' : ''}plugins/schema-definition/endpoint`}
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -84,7 +84,7 @@ const EndpointList = ({ detail }: Props) => {
                     <RiBookOpenLine className='h-3 w-3' />
                     {t('plugin.detailPanel.endpointsDocLink')}
                   </div>
-                </a>
+                </a> */}
               </div>
             }
           />

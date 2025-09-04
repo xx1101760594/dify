@@ -6,13 +6,14 @@
 @import '../../themes/dark.css';
 @import "../../themes/manual-light.css";
 @import "../../themes/manual-dark.css";
+@import "./common.css";
 
 html {
   color-scheme: light;
 }
 
-html[data-theme='dark'] {
-  color-scheme: dark;
+html[data-theme='light'] {
+  color-scheme: light;
 }
 
 html[data-changing-theme] * {
@@ -696,16 +697,5 @@ button:focus-within {
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  /* Hide arrows from number input */
-  .no-spinner::-webkit-outer-spin-button,
-  .no-spinner::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .no-spinner {
-    -moz-appearance: textfield;
   }
 }

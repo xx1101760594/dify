@@ -10,6 +10,8 @@ import {
   RiFileCopy2Line,
   RiFileDownloadLine,
   RiFileUploadLine,
+  RiMoreLine,
+  RiArrowGoBackLine,
 } from '@remixicon/react'
 import AppIcon from '../base/app-icon'
 import { useStore as useAppStore } from '@/app/components/app/store'
@@ -25,31 +27,9 @@ import type { EnvironmentVariable } from '@/app/components/workflow/types'
 import { fetchWorkflowDraft } from '@/service/workflow'
 import ContentDialog from '@/app/components/base/content-dialog'
 import Button from '@/app/components/base/button'
-import CardView from '@/app/(commonLayout)/app/(appDetailLayout)/[appId]/overview/card-view'
-import Divider from '../base/divider'
-import type { Operation } from './app-operations'
-import AppOperations from './app-operations'
-import dynamic from 'next/dynamic'
-import cn from '@/utils/classnames'
-
-const SwitchAppModal = dynamic(() => import('@/app/components/app/switch-app-modal'), {
-  ssr: false,
-})
-const CreateAppModal = dynamic(() => import('@/app/components/explore/create-app-modal'), {
-  ssr: false,
-})
-const DuplicateAppModal = dynamic(() => import('@/app/components/app/duplicate-modal'), {
-  ssr: false,
-})
-const Confirm = dynamic(() => import('@/app/components/base/confirm'), {
-  ssr: false,
-})
-const UpdateDSLModal = dynamic(() => import('@/app/components/workflow/update-dsl-modal'), {
-  ssr: false,
-})
-const DSLExportConfirmModal = dynamic(() => import('@/app/components/workflow/dsl-export-confirm-modal'), {
-  ssr: false,
-})
+import CardView from '@/app/(commonLayout)/app/(appDetailLayout)/[appId]/overview/cardView'
+import { PortalToFollowElem, PortalToFollowElemContent, PortalToFollowElemTrigger } from '../base/portal-to-follow-elem'
+import Link from 'next/link'
 
 export type IAppInfoProps = {
   expand: boolean
@@ -194,6 +174,11 @@ const AppInfo = ({ expand, onlyShowDetail = false, openState = false, onDetailEx
 
   const { isCurrentWorkspaceEditor } = useAppContext()
 
+  const [showMore, setShowMore] = useState(false)
+  const handleTriggerMore = useCallback(() => {
+    setShowMore(true)
+  }, [setShowMore])
+
   if (!appDetail)
     return null
 
@@ -248,51 +233,44 @@ const AppInfo = ({ expand, onlyShowDetail = false, openState = false, onDetailEx
 
   return (
     <div>
-      {!onlyShowDetail && (
-        <button
-          onClick={() => {
-            if (isCurrentWorkspaceEditor)
-              setOpen(v => !v)
-          }}
-          className='block w-full'
-        >
-          <div className='flex flex-col gap-2 rounded-lg p-1 hover:bg-state-base-hover'>
-            <div className='flex items-center gap-1'>
-              <div className={cn(!expand && 'ml-1')}>
-                <AppIcon
-                  size={expand ? 'large' : 'small'}
-                  iconType={appDetail.icon_type}
-                  icon={appDetail.icon}
-                  background={appDetail.icon_background}
-                  imageUrl={appDetail.icon_url}
-                />
+      <Link href='/apps' className={`${expand ? 'w-[80px]' : 'w-[40px] ml-2'} flex justify-center items-center rounded-sm text-[14px] text-gray-500 py-1 mb-3 hover:bg-state-base-hover`}>
+        <RiArrowGoBackLine className={`h-3.5 w-3.5 text-components-button-secondary-text ${expand ? 'mr-2' : ''}`} /> {expand ? '返回' : ''}
+      </Link>
+      <button
+        // onClick={() => {
+        //   if (isCurrentWorkspaceEditor)
+        //     setOpen(v => !v)
+        // }}
+        className='block w-full'
+      >
+        <div className={cn('flex rounded-lg', expand ? 'flex-col gap-2 p-2 pb-2.5' : 'items-start justify-center gap-1 p-1', open && 'bg-state-base-hover', isCurrentWorkspaceEditor && 'cursor-pointer hover:bg-state-base-hover')}>
+          <div className={`flex items-center self-stretch ${expand ? 'justify-between' : 'flex-col gap-1'}`}>
+            <AppIcon
+              size={expand ? 'large' : 'small'}
+              iconType={appDetail.icon_type}
+              icon={appDetail.icon}
+              background={appDetail.icon_background}
+              imageUrl={appDetail.icon_url}
+            />
+            {/* <div className='flex items-center justify-center rounded-md p-0.5'>
+              <div className='flex h-5 w-5 items-center justify-center'>
+                <RiEqualizer2Line className='h-4 w-4 text-text-tertiary' />
               </div>
-              {expand && (
-                <div className='ml-auto flex items-center justify-center rounded-md p-0.5'>
-                  <div className='flex h-5 w-5 items-center justify-center'>
-                    <RiEqualizer2Line className='h-4 w-4 text-text-tertiary' />
+            </div> */}
+            {
+              expand && (
+                <div className='flex flex-col flex-1 items-start pl-3 gap-1 overflow-hidden'>
+                  <div className='flex w-full text-ellipsis'>
+                    <div className='system-md-semibold truncate text-text-secondary' title={appDetail.name}>{appDetail.name}</div>
                   </div>
+                  <div className='system-2xs-medium-uppercase text-text-tertiary'>{appDetail.mode === 'advanced-chat' ? t('app.types.advanced') : appDetail.mode === 'agent-chat' ? t('app.types.agent') : appDetail.mode === 'chat' ? t('app.types.chatbot') : appDetail.mode === 'completion' ? t('app.types.completion') : t('app.types.workflow')}</div>
                 </div>
-              )}
-            </div>
-            {!expand && (
-              <div className='flex items-center justify-center'>
-                <div className='flex h-5 w-5 items-center justify-center rounded-md p-0.5'>
-                  <RiEqualizer2Line className='h-4 w-4 text-text-tertiary' />
-                </div>
-              </div>
-            )}
-            {expand && (
-              <div className='flex flex-col items-start gap-1'>
-                <div className='flex w-full'>
-                  <div className='system-md-semibold truncate whitespace-nowrap text-text-secondary'>{appDetail.name}</div>
-                </div>
-                <div className='system-2xs-medium-uppercase whitespace-nowrap text-text-tertiary'>{appDetail.mode === 'advanced-chat' ? t('app.types.advanced') : appDetail.mode === 'agent-chat' ? t('app.types.agent') : appDetail.mode === 'chat' ? t('app.types.chatbot') : appDetail.mode === 'completion' ? t('app.types.completion') : t('app.types.workflow')}</div>
-              </div>
-            )}
+              )
+            }
           </div>
-        </button>
-      )}
+          
+        </div>
+      </button>
       <ContentDialog
         show={onlyShowDetail ? openState : open}
         onClose={() => {
@@ -317,12 +295,94 @@ const AppInfo = ({ expand, onlyShowDetail = false, openState = false, onDetailEx
           </div>
           {/* description */}
           {appDetail.description && (
-            <div className='system-xs-regular overflow-wrap-anywhere max-h-[105px] w-full max-w-full overflow-y-auto whitespace-normal break-words text-text-tertiary'>{appDetail.description}</div>
+            <div className='system-xs-regular overflow-wrap-anywhere w-full max-w-full whitespace-normal break-words text-text-tertiary'>{appDetail.description}</div>
           )}
           {/* operations */}
-          <AppOperations
-            gap={4}
-            operations={operations}
+          <div className='flex flex-wrap items-center gap-1 self-stretch'>
+            <Button
+              size={'small'}
+              variant={'secondary'}
+              className='gap-[1px]'
+              onClick={() => {
+                setOpen(false)
+                setShowEditModal(true)
+              }}
+            >
+              <RiEditLine className='h-3.5 w-3.5 text-components-button-secondary-text' />
+              <span className='system-xs-medium text-components-button-secondary-text'>{t('app.editApp')}</span>
+            </Button>
+            <Button
+              size={'small'}
+              variant={'secondary'}
+              className='gap-[1px]'
+              onClick={() => {
+                setOpen(false)
+                setShowDuplicateModal(true)
+              }}
+            >
+              <RiFileCopy2Line className='h-3.5 w-3.5 text-components-button-secondary-text' />
+              <span className='system-xs-medium text-components-button-secondary-text'>{t('app.duplicate')}</span>
+            </Button>
+            <Button
+              size={'small'}
+              variant={'secondary'}
+              className='gap-[1px]'
+              onClick={exportCheck}
+            >
+              <RiFileDownloadLine className='h-3.5 w-3.5 text-components-button-secondary-text' />
+              <span className='system-xs-medium text-components-button-secondary-text'>{t('app.export')}</span>
+            </Button>
+            {appDetail.mode !== 'agent-chat' && <PortalToFollowElem
+              open={showMore}
+              onOpenChange={setShowMore}
+              placement='bottom-end'
+              offset={{
+                mainAxis: 4,
+              }}>
+              <PortalToFollowElemTrigger onClick={handleTriggerMore}>
+                <Button
+                  size={'small'}
+                  variant={'secondary'}
+                  className='gap-[1px]'
+                >
+                  <RiMoreLine className='h-3.5 w-3.5 text-components-button-secondary-text' />
+                  <span className='system-xs-medium text-components-button-secondary-text'>{t('common.operation.more')}</span>
+                </Button>
+              </PortalToFollowElemTrigger>
+              <PortalToFollowElemContent className='z-[21]'>
+                <div className='flex w-[264px] flex-col rounded-[12px] border-[0.5px] border-components-panel-border bg-components-panel-bg-blur p-1 shadow-lg backdrop-blur-[5px]'>
+                  {
+                    (appDetail.mode === 'advanced-chat' || appDetail.mode === 'workflow')
+                    && <div className='flex h-8 cursor-pointer items-center gap-x-1 rounded-lg p-1.5 hover:bg-state-base-hover'
+                      onClick={() => {
+                        setOpen(false)
+                        setShowImportDSLModal(true)
+                      }}>
+                      <RiFileUploadLine className='h-4 w-4 text-text-tertiary' />
+                      <span className='system-md-regular text-text-secondary'>{t('workflow.common.importDSL')}</span>
+                    </div>
+                  }
+                  {
+                    (appDetail.mode === 'completion' || appDetail.mode === 'chat')
+                    && <div className='flex h-8 cursor-pointer items-center gap-x-1 rounded-lg p-1.5 hover:bg-state-base-hover'
+                      onClick={() => {
+                        setOpen(false)
+                        setShowSwitchModal(true)
+                      }}>
+                      <RiExchange2Line className='h-4 w-4 text-text-tertiary' />
+                      <span className='system-md-regular text-text-secondary'>{t('app.switch')}</span>
+                    </div>
+                  }
+                </div>
+              </PortalToFollowElemContent>
+            </PortalToFollowElem>}
+          </div>
+        </div>
+        <div className='flex flex-1'>
+          <CardView
+            appId={appDetail.id}
+            isInPanel={true}
+            className='flex grow flex-col gap-2 overflow-auto px-2 py-1'
           />
         </div>
         <CardView

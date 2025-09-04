@@ -35,10 +35,13 @@ const Empty = ({
   const hasTitle = t(`tools.addToolModal.${renderType}.title`) !== `tools.addToolModal.${renderType}.title`
 
   return (
-    <div className='flex h-[336px] flex-col items-center justify-center'>
-      <NoToolPlaceholder className={theme === 'dark' ? 'invert' : ''} />
-      <div className='mb-1 mt-2 text-[13px] font-medium leading-[18px] text-text-primary'>
-        {hasTitle ? t(`tools.addToolModal.${renderType}.title`) : 'No tools available'}
+    <div className='flex flex-col items-center'>
+      <div className="h-[130px] w-[180px] shrink-0 bg-[url('~@/app/components/tools/add-tool-modal/empty.png')] bg-contain bg-no-repeat"></div>
+      <div className='mb-1 text-[13px] font-medium leading-[18px] text-text-primary'>
+        {t(`tools.addToolModal.${searchParams.get('category') === 'workflow' ? 'emptyTitle' : 'emptyTitleCustom'}`)}
+      </div>
+      <div className='text-[13px] leading-[18px] text-text-tertiary'>
+        {t(`tools.addToolModal.${searchParams.get('category') === 'workflow' ? 'emptyTip' : 'emptyTipCustom'}`)}
       </div>
       {(!isAgent && hasTitle) && (
         <Comp className={cn('flex items-center text-[13px] leading-[18px] text-text-tertiary', hasLink && 'cursor-pointer hover:text-text-accent')} {...linkProps}>

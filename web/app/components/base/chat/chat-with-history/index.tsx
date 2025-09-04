@@ -45,6 +45,12 @@ const ChatWithHistory: FC<ChatWithHistoryProps> = ({
 
   useEffect(() => {
     themeBuilder?.buildTheme(site?.chat_color_theme, site?.chat_color_theme_inverted)
+    if (site) {
+      if (customConfig)
+        document.title = `${site.title}`
+      else
+        document.title = `${site.title}`
+    }
   }, [site, customConfig, themeBuilder])
 
   useDocumentTitle(site?.title || 'Chat')
@@ -66,7 +72,7 @@ const ChatWithHistory: FC<ChatWithHistoryProps> = ({
       {isMobile && (
         <HeaderInMobile />
       )}
-      <div className={cn('relative grow p-2', isMobile && 'h-[calc(100%_-_56px)] p-0')}>
+      <div className={cn('relative grow p-5', isMobile && 'h-[calc(100%_-_56px)] p-0')}>
         {isSidebarCollapsed && (
           <div
             className={cn(

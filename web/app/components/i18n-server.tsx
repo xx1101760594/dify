@@ -10,8 +10,8 @@ export type II18NServerProps = {
 const I18NServer = async ({
   children,
 }: II18NServerProps) => {
-  const locale = await getLocaleOnServer()
-
+  // const locale = await getLocaleOnServer()
+  const locale = 'zh-Hans'
   return (
     <I18N {...{ locale }}>
       <ToastProvider>{children}</ToastProvider>

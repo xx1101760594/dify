@@ -107,7 +107,7 @@ const HitTestingPage: FC<Props> = ({ datasetId }: Props) => {
 
   return (
     <div className={s.container}>
-      <div className='flex flex-col px-6 py-3'>
+      <div className='flex flex-col px-6 py-3 min-w-[50%]'>
         <div className='mb-4 flex flex-col justify-center'>
           <h1 className='text-base font-semibold text-text-primary'>{t('datasetHitTesting.title')}</h1>
           <p className='mt-0.5 text-[13px] font-normal leading-4 text-text-tertiary'>{t('datasetHitTesting.desc')}</p>
@@ -177,7 +177,7 @@ const HitTestingPage: FC<Props> = ({ datasetId }: Props) => {
             )}
       </div>
       <FloatRightContainer panelClassName='!justify-start !overflow-y-auto' showClose isMobile={isMobile} isOpen={isShowRightPanel} onClose={hideRightPanel} footer={null}>
-        <div className='flex flex-col pt-3'>
+        <div className='flex flex-col pt-3 overflow-x-auto'>
           {/* {renderHitResults(generalResultData)} */}
           {submitLoading
             ? <div className='flex h-full flex-col rounded-tl-2xl bg-background-body px-4 py-3'>

@@ -39,6 +39,7 @@ import { getMarketplacePluginsByCollectionId } from '@/app/components/plugins/ma
 import { useModalContextSelector } from '@/context/modal-context'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
 import { UPDATE_MODEL_PROVIDER_CUSTOM_MODEL_LIST } from './provider-added-card'
+import { DatabaseConnection } from '@/types/database'
 
 type UseDefaultModelAndModelList = (
   defaultModel: DefaultModelResponse | undefined,
@@ -374,4 +375,41 @@ export const useModelModalHandler = () => {
       },
     })
   }
+}
+
+export const useDatabaseModalHandler = () => {
+  const setShowDatabaseModal = useModalContextSelector(state => state.setShowDatabaseModal)
+  const updateDatabaseList = useUpdateDatabaseList()
+  const { eventEmitter } = useEventEmitterContextContext()
+
+  return (
+    database?: DatabaseConnection,
+    isEditMode: boolean = false,
+  ) => {
+    setShowDatabaseModal({
+      payload: {
+        database,
+        isEditMode,
+      },
+      onSaveCallback: () => {
+        updateDatabaseList()
+
+        // 触发数据库列表更新事件
+        eventEmitter?.emit({
+          type: 'UPDATE_DATABASE_LIST',
+          payload: database?.id,
+        } as any)
+      },
+    })
+  }
+}
+
+export const useUpdateDatabaseList = () => {
+  const { mutate } = useSWRConfig()
+
+  const updateDatabaseList = useCallback(() => {
+    mutate('/databases')
+  }, [mutate])
+
+  return updateDatabaseList
 }

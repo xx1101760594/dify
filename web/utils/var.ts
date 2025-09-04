@@ -117,7 +117,7 @@ export const getVars = (value: string) => {
 }
 
 // Set the value of basePath
-// example: /dify
+// example: /cubix
 export const basePath = ''
 
 export function getMarketplaceUrl(path: string, params?: Record<string, string | undefined>) {

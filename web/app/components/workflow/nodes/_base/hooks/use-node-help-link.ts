@@ -1,12 +1,15 @@
 import { useMemo } from 'react'
-import { useDocLink, useGetLanguage } from '@/context/i18n'
+import { useGetLanguage } from '@/context/i18n'
 import { BlockEnum } from '@/app/components/workflow/types'
 
 export const useNodeHelpLink = (nodeType: BlockEnum) => {
   const language = useGetLanguage()
-  const docLink = useDocLink()
   const prefixLink = useMemo(() => {
-    return docLink('/guides/workflow/node/')
+    // if (language === 'zh_Hans')
+    //   return 'https://docs.dify.ai/zh-hans/guides/workflow/node/'
+
+    // return 'https://docs.dify.ai/en/guides/workflow/node/'
+    return ''
   }, [language])
   const linkMap = useMemo(() => {
     if (language === 'zh_Hans') {

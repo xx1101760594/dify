@@ -61,7 +61,7 @@ const HeaderOptions: FC<Props> = ({
     const content = listTransformer(list).join('\n')
     const file = new Blob([content], { type: 'application/jsonl' })
     a.href = URL.createObjectURL(file)
-    a.download = `annotations-${locale}.jsonl`
+    a.download = `标注-${locale}.jsonl`
     a.click()
   }
 
@@ -126,7 +126,7 @@ const HeaderOptions: FC<Props> = ({
             >
               <CSVDownloader
                 type={Type.Link}
-                filename={`annotations-${locale}`}
+                filename={`标注-${locale}`}
                 bom={true}
                 data={[
                   locale !== LanguagesSupported[1] ? CSV_HEADER_QA_EN : CSV_HEADER_QA_CN,

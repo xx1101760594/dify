@@ -41,6 +41,12 @@ const Chatbot = () => {
 
   useEffect(() => {
     themeBuilder?.buildTheme(site?.chat_color_theme, site?.chat_color_theme_inverted)
+    if (site) {
+      if (customConfig)
+        document.title = `${site.title}`
+      else
+        document.title = `${site.title} - Powered by CloudWalk`
+    }
   }, [site, customConfig, themeBuilder])
 
   useDocumentTitle(site?.title || 'Chat')
@@ -79,13 +85,12 @@ const Chatbot = () => {
               'flex shrink-0 items-center gap-1.5 px-2',
             )}>
               <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
-              {
-                systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
-                  ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
-                  : appData?.custom_config?.replace_webapp_logo
-                    ? <img src={`${appData?.custom_config?.replace_webapp_logo}`} alt='logo' className='block h-5 w-auto' />
-                    : <DifyLogo size='small' />
-              }
+              {appData?.custom_config?.replace_webapp_logo && (
+                <img src={appData?.custom_config?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
+              )}
+              {!appData?.custom_config?.replace_webapp_logo && (
+                <DifyLogo size='small' />
+              )}
             </div>
           )}
         </div>

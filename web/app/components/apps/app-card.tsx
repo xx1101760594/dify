@@ -264,7 +264,8 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
         <button className='mx-1 flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 hover:bg-state-base-hover' onClick={onClickDuplicate}>
           <span className='system-sm-regular text-text-secondary'>{t('app.duplicate')}</span>
         </button>
-        <button className='mx-1 flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 hover:bg-state-base-hover' onClick={onClickExport}>
+        <Divider className="!my-1" />
+        <button className='mx-1 flex h-8 w-[calc(100%_-_8px)] cursor-pointer items-center gap-2 rounded-lg px-3 py-[6px] hover:bg-state-base-hover' onClick={onClickExport}>
           <span className='system-sm-regular text-text-secondary'>{t('app.export')}</span>
         </button>
         {(app.mode === 'completion' || app.mode === 'chat') && (
@@ -278,25 +279,13 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             </button>
           </>
         )}
-        {
-          (isGettingUserCanAccessApp || !userCanAccessApp?.result) ? null : <>
-            <Divider className="my-1" />
-            <button className='mx-1 flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 hover:bg-state-base-hover' onClick={onClickInstalledApp}>
-              <span className='system-sm-regular text-text-secondary'>{t('app.openInExplore')}</span>
-            </button>
-          </>
-        }
-        <Divider className="my-1" />
-        {
-          systemFeatures.webapp_auth.enabled && isCurrentWorkspaceEditor && <>
-            <button className='mx-1 flex h-8 cursor-pointer items-center rounded-lg px-3 hover:bg-state-base-hover' onClick={onClickAccessControl}>
-              <span className='text-sm leading-5 text-text-secondary'>{t('app.accessControl')}</span>
-            </button>
-            <Divider className='my-1' />
-          </>
-        }
-        <button
-          className='group mx-1 flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 py-[6px] hover:bg-state-destructive-hover'
+        {/* <Divider className="!my-1" />
+        <button className='mx-1 flex h-8 w-[calc(100%_-_8px)] cursor-pointer items-center gap-2 rounded-lg px-3 py-[6px] hover:bg-state-base-hover' onClick={onClickInstalledApp}>
+          <span className='system-sm-regular text-text-secondary'>{t('app.openInExplore')}</span>
+        </button> */}
+        <Divider className="!my-1" />
+        <div
+          className='group mx-1 flex h-8 w-[calc(100%_-_8px)] cursor-pointer items-center gap-2 rounded-lg px-3 py-[6px] hover:bg-state-destructive-hover'
           onClick={onClickDelete}
         >
           <span className='system-sm-regular text-text-secondary group-hover:text-text-destructive'>
@@ -327,9 +316,21 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
           e.preventDefault()
           getRedirection(isCurrentWorkspaceEditor, app, push)
         }}
-        className='group relative col-span-1 inline-flex h-[160px] cursor-pointer flex-col rounded-xl border-[1px] border-solid border-components-card-border bg-components-card-bg shadow-sm transition-all duration-200 ease-in-out hover:shadow-lg'
+        className='group relative col-span-1 inline-flex h-[150px] cursor-pointer flex-col rounded-lg border-[1px] border-solid border-components-card-border bg-components-card-bg transition-all duration-200 ease-in-out hover:shadow-lg hover:border-primary-600'
       >
         <div className='flex h-[66px] shrink-0 grow-0 items-center gap-3 px-[14px] pb-3 pt-[14px]'>
+          <div className='w-0 grow py-[1px]'>
+            <div className='flex items-center text-base font-semibold leading-5 text-text-secondary'>
+              <div className='truncate' title={app.name}>{app.name}</div>
+            </div>
+            <div className='flex items-center text-[10px] font-medium leading-[18px] text-text-tertiary mt-1'>
+              {app.mode === 'advanced-chat' && <div className='truncate'>{t('app.typeSelector.advanced').toUpperCase()}</div>}
+              {app.mode === 'chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
+              {app.mode === 'agent-chat' && <div className='truncate'>{t('app.typeSelector.agent').toUpperCase()}</div>}
+              {app.mode === 'workflow' && <div className='truncate'>{t('app.typeSelector.workflow').toUpperCase()}</div>}
+              {app.mode === 'completion' && <div className='truncate'>{t('app.newApp.completeApp').toUpperCase()}</div>}
+            </div>
+          </div>
           <div className='relative shrink-0'>
             <AppIcon
               size="large"
@@ -338,17 +339,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
               background={app.icon_background}
               imageUrl={app.icon_url}
             />
-            <AppTypeIcon type={app.mode} wrapperClassName='absolute -bottom-0.5 -right-0.5 w-4 h-4 shadow-sm' className='h-3 w-3' />
-          </div>
-          <div className='w-0 grow py-[1px]'>
-            <div className='flex items-center text-sm font-semibold leading-5 text-text-secondary'>
-              <div className='truncate' title={app.name}>{app.name}</div>
-            </div>
-            <div className='flex items-center gap-1 text-[10px] font-medium leading-[18px] text-text-tertiary'>
-              <div className='truncate' title={app.author_name}>{app.author_name}</div>
-              <div>·</div>
-              <div className='truncate' title={EditTimeText}>{EditTimeText}</div>
-            </div>
+            {/* <AppTypeIcon type={app.mode} wrapperClassName='absolute -bottom-0.5 -right-0.5 w-4 h-4 shadow-sm' className='h-3 w-3' /> */}
           </div>
           <div className='flex h-5 w-5 shrink-0 items-center justify-center'>
             {app.access_mode === AccessMode.PUBLIC && <Tooltip asChild={false} popupContent={t('app.accessItemsDescription.anyone')}>
@@ -365,23 +356,29 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             </Tooltip>}
           </div>
         </div>
-        <div className='title-wrapper h-[90px] px-[14px] text-xs leading-normal text-text-tertiary'>
+        <div className='title-wrapper h-[40px] px-[14px] text-sm leading-normal text-[#999999]'>
+          {/* tags.length ? 'line-clamp-2' : 'line-clamp-4', 'group-hover: */}
           <div
-            className='line-clamp-2'
+            className={cn('line-clamp-2')}
             title={app.description}
           >
             {app.description}
           </div>
         </div>
-        <div className='absolute bottom-1 left-0 right-0 flex h-[42px] shrink-0 items-center pb-[6px] pl-[14px] pr-[6px] pt-1'>
+        <div className={cn(
+          'absolute bottom-0 left-0 right-0 h-[40px] shrink-0 items-center pl-[14px] pr-[6px] flex',
+          
+        )}>
           {isCurrentWorkspaceEditor && (
             <>
               <div className={cn('flex w-0 grow items-center gap-1')} onClick={(e) => {
                 e.stopPropagation()
                 e.preventDefault()
               }}>
-                <div className='mr-[41px] w-full grow group-hover:!mr-0'>
-                  <TagSelector
+                <div className={cn(
+                  'mr-[41px] w-full grow group-hover:!mr-0 !block',
+                )}>
+                  {/* <TagSelector
                     position='bl'
                     type='app'
                     targetID={app.id}
@@ -389,11 +386,11 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
                     selectedTags={tags}
                     onCacheUpdate={setTags}
                     onChange={onRefresh}
-                  />
+                  /> */}
                 </div>
               </div>
-              <div className='mx-1 !hidden h-[14px] w-[1px] shrink-0 bg-divider-regular group-hover:!flex' />
-              <div className='!hidden shrink-0 group-hover:!flex'>
+              <div className='mx-1 !hidden h-[14px] w-[1px] shrink-0 group-hover:!flex' />
+              <div className='shrink-0 flex'>
                 <CustomPopover
                   htmlContent={<Operations />}
                   position="br"

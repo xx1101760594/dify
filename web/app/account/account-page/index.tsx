@@ -4,6 +4,8 @@ import useSWR from 'swr'
 import { useTranslation } from 'react-i18next'
 import {
   RiGraduationCapFill,
+  RiEyeLine,
+  RiEyeOffLine,
 } from '@remixicon/react'
 import { useContext } from 'use-context-selector'
 import DeleteAccount from '../delete-account'
@@ -127,18 +129,11 @@ export default function AccountPage() {
     }
   }
 
-  const renderAppItem = (item: IItem) => {
-    const { icon, icon_background, icon_type, icon_url } = item as any
+  const renderAppItem = (item: IItem & any) => {
     return (
       <div className='flex px-3 py-1'>
         <div className='mr-3'>
-          <AppIcon
-            size='tiny'
-            iconType={icon_type}
-            icon={icon}
-            background={icon_background}
-            imageUrl={icon_url}
-          />
+          <AppIcon size='tiny' iconType={item.icon_type} imageUrl={item.icon_url} icon={item.icon} background={item.icon_background}/>
         </div>
         <div className='system-sm-medium mt-[3px] text-text-secondary'>{item.name}</div>
       </div>
@@ -147,9 +142,9 @@ export default function AccountPage() {
 
   return (
     <>
-      <div className='pb-3 pt-2'>
+      {/* <div className='pb-3 pt-2'>
         <h4 className='title-2xl-semi-bold text-text-primary'>{t('common.account.myAccount')}</h4>
-      </div>
+      </div> */}
       <div className='mb-8 flex items-center rounded-xl bg-gradient-to-r from-background-gradient-bg-fill-chat-bg-2 to-background-gradient-bg-fill-chat-bg-1 p-6'>
         <AvatarWithEdit avatar={userProfile.avatar_url} name={userProfile.name} onSave={mutateUserProfile} size={64} />
         <div className='ml-4'>
@@ -207,7 +202,7 @@ export default function AccountPage() {
         {!!apps.length && (
           <Collapse
             title={`${t('common.account.showAppLength', { length: apps.length })}`}
-            items={apps.map((app: App) => ({ ...app, key: app.id, name: app.name }))}
+            items={apps.map(app => ({ ...app,key: app.id, name: app.name }))}
             renderItem={renderAppItem}
             wrapperClassName='mt-2'
           />
@@ -267,7 +262,7 @@ export default function AccountPage() {
                       variant='ghost'
                       onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     >
-                      {showCurrentPassword ? '👀' : '😝'}
+                      {showCurrentPassword ? <RiEyeLine className='mr-2 h-4 w-4' /> : <RiEyeOffLine className='mr-2 h-4 w-4' />}
                     </Button>
                   </div>
                 </div>
@@ -288,7 +283,7 @@ export default function AccountPage() {
                   variant='ghost'
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '👀' : '😝'}
+                  {showPassword ? <RiEyeLine className='mr-2 h-4 w-4' /> : <RiEyeOffLine className='mr-2 h-4 w-4' />}
                 </Button>
               </div>
             </div>
@@ -305,7 +300,7 @@ export default function AccountPage() {
                   variant='ghost'
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? '👀' : '😝'}
+                  {showConfirmPassword ? <RiEyeLine className='mr-2 h-4 w-4' /> : <RiEyeOffLine className='mr-2 h-4 w-4' />}
                 </Button>
               </div>
             </div>

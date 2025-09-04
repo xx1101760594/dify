@@ -237,10 +237,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
           </div>
           <div className='system-xs-regular mt-0.5 text-text-tertiary'>
             <span>{t(`${prefixSettings}.modalTip`)}</span>
-            <Link href={docLink('/guides/application-publishing/launch-your-webapp-quickly/README', {
-              'zh-Hans': '/guides/application-publishing/launch-your-webapp-quickly/readme',
-            })}
-              target='_blank' rel='noopener noreferrer' className='text-text-accent'>{t('common.operation.learnMore')}</Link>
+            {/* <Link href={`${locale === LanguagesSupported[1] ? 'https://docs.dify.ai/zh-hans/guides/application-publishing/launch-your-webapp-quickly#she-zhi-ni-de-ai-zhan-dian' : 'https://docs.dify.ai/en/guides/application-publishing/launch-your-webapp-quickly/README'}`} target='_blank' rel='noopener noreferrer' className='text-text-accent'>{t('common.operation.learnMore')}</Link> */}
           </div>
         </div>
         {/* form body */}
@@ -279,7 +276,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
           </div>
           <Divider className="my-0 h-px" />
           {/* answer icon */}
-          {isChat && (
+          {/* {isChat && (
             <div className='w-full'>
               <div className='flex items-center justify-between'>
                 <div className={cn('system-sm-semibold py-1 text-text-secondary')}>{t('app.answerIcon.title')}</div>
@@ -290,7 +287,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
               </div>
               <p className='body-xs-regular pb-0.5 text-text-tertiary'>{t('app.answerIcon.description')}</p>
             </div>
-          )}
+          )} */}
           {/* language */}
           <div className='flex items-center'>
             <div className={cn('system-sm-semibold grow py-1 text-text-secondary')}>{t(`${prefixSettings}.language`)}</div>

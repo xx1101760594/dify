@@ -28,6 +28,7 @@ const Explore: FC<IExploreProps> = ({
   useDocumentTitle(t('common.menus.explore'))
 
   useEffect(() => {
+    document.title = `${t('explore.title')}`;
     (async () => {
       const { accounts } = await fetchMembers({ url: '/workspaces/current/members', params: {} })
       if (!accounts)

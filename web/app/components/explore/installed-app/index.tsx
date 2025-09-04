@@ -100,9 +100,10 @@ const InstalledApp: FC<IInstalledAppProps> = ({
       <AppUnavailable code={404} isUnknownReason />
     </div>
   }
+  console.log('----installedApp.app.mode-----', installedApp.app.mode)
   return (
-    <div className='h-full bg-background-default py-2 pl-0 pr-2 sm:p-2'>
-      {installedApp?.app.mode !== 'completion' && installedApp?.app.mode !== 'workflow' && (
+    <div className='h-full p-5'>
+      {installedApp.app.mode !== 'completion' && installedApp.app.mode !== 'workflow' && (
         <ChatWithHistory installedAppInfo={installedApp} className='overflow-hidden rounded-2xl shadow-md' />
       )}
       {installedApp?.app.mode === 'completion' && (

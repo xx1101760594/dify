@@ -526,7 +526,7 @@ const Flowchart = React.forwardRef((props: {
 
       <div ref={containerRef} style={{ position: 'absolute', visibility: 'hidden', height: 0, overflow: 'hidden' }} />
 
-      {isLoading && !svgString && (
+      {isLoading && !svgCode && (
         <div className='px-[26px] py-4'>
           <LoadingAnim type='text'/>
             <div className="mt-2 text-sm text-gray-500">
@@ -535,8 +535,8 @@ const Flowchart = React.forwardRef((props: {
         </div>
       )}
 
-      {svgString && (
-        <div className={themeClasses.mermaidDiv} style={{ objectFit: 'cover' }} onClick={handlePreviewClick}>
+      {svgCode && (
+        <div className={themeClasses.mermaidDiv} style={{ objectFit: 'cover' }} onClick={() => setImagePreviewUrl(svgCode)}>
           <div className="absolute bottom-2 left-2 z-[100]">
             <button
               onClick={(e) => {

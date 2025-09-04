@@ -72,7 +72,7 @@ const AppDetailNav = ({ title, desc, isExternal, icon, icon_background, navigati
   return (
     <div
       className={`
-        flex shrink-0 flex-col border-r border-divider-burn bg-background-default-subtle transition-all
+        flex shrink-0 flex-col border-r border-divider-regular bg-background-default-subtle transition-all
         ${expand ? 'w-[216px]' : 'w-14'}
       `}
     >

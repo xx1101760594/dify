@@ -429,7 +429,7 @@ const Result: FC<IResultProps> = ({
       taskId={isCallBatchAPI ? ((taskId as number) < 10 ? `0${taskId}` : `${taskId}`) : undefined}
       controlClearMoreLikeThis={controlClearMoreLikeThis}
       isShowTextToSpeech={isShowTextToSpeech}
-      hideProcessDetail
+      hideProcessDetail={false}
       siteInfo={siteInfo}
     />
   )

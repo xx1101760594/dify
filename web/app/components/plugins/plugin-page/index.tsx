@@ -59,7 +59,8 @@ const PluginPage = ({
   const { locale } = useContext(I18n)
   const searchParams = useSearchParams()
   const { replace } = useRouter()
-  useDocumentTitle(t('plugin.metadata.title'))
+
+  document.title = `${t('plugin.metadata.title')}`
 
   // just support install one package now
   const packageId = useMemo(() => {
@@ -185,17 +186,6 @@ const PluginPage = ({
             {
               isExploringMarketplace && (
                 <>
-                  <Link
-                    href='https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml'
-                    target='_blank'
-                  >
-                    <Button
-                      variant='ghost'
-                      className='text-text-tertiary'
-                    >
-                      {t('plugin.requestAPlugin')}
-                    </Button>
-                  </Link>
                   <Link
                     href={getDocsUrl(locale, '/plugins/publish-plugins/publish-to-dify-marketplace/README')}
                     target='_blank'
